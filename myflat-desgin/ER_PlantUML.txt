@@ -1,0 +1,92 @@
+@startuml
+class PropertyManagement {
+  + PropertyManagementID : long
+  AgentName : string
+  AgentEmail : string
+  AgentNumber : string
+  AgentPhonenumber : int
+  isAgent : boolean
+  ManagedProperties : List<Property>
+  ...
+}
+
+class Property {
+  + PropertyID : long
+  + PropertyManagementID : long
+  PropertyName : string
+  PropertyAddress : string
+  NumberOfFloors : int
+  NumberOfApartments : int
+  NumberOfActiveApartments : int
+  NumberOfFreeApartments : int
+  Apartments : List<Apartment>
+  Defects : List<Defects>
+  ...
+}
+
+class Apartment {
+  + ApartmentID : long
+  + PropertyID : long
+  Number : int
+  Floor : int
+  Area : float
+  Tenants : List<Tenant>
+  ...
+}
+
+class Tenant {
+  + TenantID : long
+  FirstName : string
+  LastName : string
+  ContactNumber : string
+  Apartments : List<Apartment>
+  Messages : List<Message>
+  Defects : List<Defects>
+  ...
+}
+
+class Tenant_Apartment {
+  + TenantID : long
+  + ApartmentID : long
+  Active : boolean
+}
+
+class Message {
+  + MessageID : long
+  + SenderID : long
+  + ReceiverID : long
+  MessageType : string
+  Content : string
+  Timestamp : date
+  ...
+}
+
+class AttachmentMessage {
+  + AttachmentMessageID : long
+  + MessageID : long
+  DocumentPath : string
+  Description : string
+  ...
+}
+
+class Defects {
+  + DefectID : long
+  + TenantID : long
+  + PropertyID : long
+  + ApartmentID : long
+  Description : string
+  Status : string
+  Timestamp : date
+  ...
+}
+
+PropertyManagement --|{ Property
+Property --|{ Apartment
+Property --|{ Defects
+Apartment --|{ Tenant_Apartment
+Tenant --|{ Tenant_Apartment
+Tenant --|{ Message
+PropertyManagement --|{ Message
+Message --|{ AttachmentMessage
+Message --|{ Defects
+@enduml
