@@ -18,27 +18,24 @@ function KeyPage() {
   const [comment, setComment] = useState('');
 
   // Funktionen für die Schlüsselverwaltung
-  const handleIssueKey = (apartmentId) => {
+  const handleIssueKey = () => {
     if (comment.trim() === '') {
-      alert('Bitte geben Sie einen Kommentar ein.');
-      return;
-    }
+      alert('Schlüssel ausgeben.');
+          }
     //Logik zum ausgeben
   };
 
-  const handleReturnKey = (apartmentId) => {
+  const handleReturnKey = () => {
     if (comment.trim() === '') {
-      alert('Bitte geben Sie einen Kommentar ein.');
-      return;
-    }
+      alert('Schlüssel zurücknehmen.');
+          }
     //  Logik zur Rücknahme 
   };
 
-  const handleOrderReplacement = (apartmentId) => {
+  const handleOrderReplacement = () => {
     if (comment.trim() === '') {
-      alert('Bitte geben Sie einen Kommentar ein.');
-      return;
-    }
+      alert('Schlüssel austauschen.');
+          }
     //  Logik für Replacement
   };
 
