@@ -1,0 +1,122 @@
+import React, { useState } from 'react';
+import { Button, Container, ListGroup, Modal, Form } from 'react-bootstrap';
+
+import '../styles/KeyPage.css';
+
+function KeyPage() {
+  const initialKeysData = [
+    { apartmentId: 1, apartmentName: "Apartment 1", totalKeys: 3, issues: [{ id: 1, action: "issued", date: "2023-09-01" }, { id: 2, action: "returned", date: "2023-09-10" }] },
+    { apartmentId: 2, apartmentName: "Apartment 2", totalKeys: 2, issues: [{ id: 1, action: "issued", date: "2023-08-15" }] },
+  ];
+
+  // State für die Anzeige der Schlüsseldaten und das Modal
+  const [keysData] = useState(initialKeysData);
+  const [showModal, setShowModal] = useState(false);
+  const [newKeyName, setNewKeyName] = useState('');
+  const [newKeyNumber, setNewKeyNumber] = useState('');
+  const [selectedApartmentId, setSelectedApartmentId] = useState(null);
+  const [comment, setComment] = useState('');
+
+  // Funktionen für die Schlüsselverwaltung
+  const handleIssueKey = (apartmentId) => {
+    if (comment.trim() === '') {
+      alert('Bitte geben Sie einen Kommentar ein.');
+      return;
+    }
+    //Logik zum ausgeben
+  };
+
+  const handleReturnKey = (apartmentId) => {
+    if (comment.trim() === '') {
+      alert('Bitte geben Sie einen Kommentar ein.');
+      return;
+    }
+    //  Logik zur Rücknahme 
+  };
+
+  const handleOrderReplacement = (apartmentId) => {
+    if (comment.trim() === '') {
+      alert('Bitte geben Sie einen Kommentar ein.');
+      return;
+    }
+    //  Logik für Replacement
+  };
+
+  const handleShowAddKeyModal = (apartmentId) => {
+    setSelectedApartmentId(apartmentId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setNewKeyName('');
+    setNewKeyNumber('');
+    setComment('');
+  };
+
+  const handleAddKey = () => {
+    if (newKeyName.trim() === '' || newKeyNumber.trim() === '' || comment.trim() === '') {
+      alert('Bitte füllen Sie alle Felder aus.');
+      return;
+    }
+
+    const newKey = {
+      id: Math.random(), // Einfache Methode, um eine eindeutige ID zu generieren
+      propertyId: selectedApartmentId,
+      keyName: newKeyName,
+      keyNumber: newKeyNumber,
+    };
+    // Logik
+    console.log("Neuer Schlüssel hinzugefügt:", newKey);
+    handleCloseModal();
+  };
+
+  return (
+    <Container className="key-page">
+      <h2>Schlüsselverwaltung</h2>
+      {keysData.map((apartment) => (
+        <div key={apartment.apartmentId} className="key-item mb-4">
+          <h3>{apartment.apartmentName}</h3>
+          <p>Anzahl Schlüssel: {apartment.totalKeys}</p>
+          <Button variant="primary" onClick={() => handleShowAddKeyModal(apartment.apartmentId)} className="me-2">Schlüssel hinzufügen</Button>
+          <Button variant="outline-success" onClick={() => handleIssueKey(apartment.apartmentId)} className="me-2">Schlüssel ausgeben</Button>
+          <Button variant="outline-warning" onClick={() => handleReturnKey(apartment.apartmentId)} className="me-2">Schlüssel zurücknehmen</Button>
+          <Button variant="outline-info" onClick={() => handleOrderReplacement(apartment.apartmentId)}>Ersatz anfordern</Button>
+          <ListGroup className="mt-3">
+            {apartment.issues.map(issue => (
+              <ListGroup.Item key={issue.id}>{issue.action} am {issue.date}</ListGroup.Item>
+            ))}
+          </ListGroup>
+        </div>
+      ))}
+  
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Neuen Schlüssel hinzufügen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Schlüsselname</Form.Label>
+              <Form.Control type="text" value={newKeyName} onChange={(e) => setNewKeyName(e.target.value)} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Schlüsselnummer</Form.Label>
+              <Form.Control type="text" value={newKeyNumber} onChange={(e) => setNewKeyNumber(e.target.value)} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Kommentar</Form.Label>
+              <Form.Control as="textarea" rows={3} value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Drop-Down Menü mit Optionen implementieren" />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>Schließen</Button>
+          <Button variant="primary" onClick={handleAddKey}>Speichern</Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
+  );
+}
+
+export default KeyPage;

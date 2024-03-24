@@ -1,0 +1,48 @@
+.communication-page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .communication-section {
+    margin-bottom: 20px;
+  }
+  
+  .communication-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .messages-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .message-item {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .message-item:hover {
+    background-color: #eaeaea;
+  }
+  
+  .button-link {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .button-link:hover {
+    text-decoration: underline;
+  }
+  
