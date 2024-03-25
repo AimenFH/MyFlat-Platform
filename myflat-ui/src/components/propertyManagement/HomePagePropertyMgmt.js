@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Modal, Navbar, Nav, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import '../styles/HomePage.css'
 
 const HomePagePropertyMgmt = () => {
     const [showSettings, setShowSettings] = useState(false);
@@ -11,7 +13,6 @@ const HomePagePropertyMgmt = () => {
         propertyManagement: true,
     });
 
-    // Funktion zum Umschalten der Sichtbarkeit
     const toggleVisibility = key => {
         setVisibility(prevVisibility => ({
             ...prevVisibility,
@@ -19,18 +20,17 @@ const HomePagePropertyMgmt = () => {
         }));
     };
 
-    // Button-Konfigurationen für die verschiedenen Management-Bereiche
     const managementButtons = [
-        { key: 'tenantManagement', text: 'Mieterverwaltung', variant: 'primary' },
-        { key: 'documentArchive', text: 'Dokumentenarchiv', variant: 'secondary' },
-        { key: 'keyManagement', text: 'Schlüsselverwaltung', variant: 'success' },
-        { key: 'maintenanceRequests', text: 'Wartungsanfragen', variant: 'warning' },
-        { key: 'propertyManagement', text: 'Immobilienverwaltung', variant: 'info' },
+        { key: 'tenantManagement', text: 'Mieterverwaltung', variant: 'primary', href: '/tenant-management' },
+        { key: 'documentArchive', text: 'Dokumentenarchiv', variant: 'secondary', href: '/document-archive' },
+        { key: 'keyManagement', text: 'Schlüsselverwaltung', variant: 'success', href: '/key-management' },
+        { key: 'maintenanceRequests', text: 'Wartungsanfragen', variant: 'warning', href: '/maintenance-requests' },
+        { key: 'propertyManagement', text: 'Immobilienverwaltung', variant: 'info', href: '/property-management' },
     ];
 
     return (
         <>
-            <Navbar bg="light" expand="lg">
+            <Navbar className="navbar-custom" bg="light" expand="lg">
                 <Container>
                     <Navbar.Brand href="/">MyFlat Verwaltungsbereich</Navbar.Brand>
                     <Nav className="me-auto">
@@ -41,25 +41,27 @@ const HomePagePropertyMgmt = () => {
                 </Container>
             </Navbar>
 
-            <Container className="my-5">
+            <Container className="container-custom my-5">
                 <h1>Willkommen im Verwaltungsbereich von MyFlat</h1>
                 <p>Hier finden Sie alle Tools zur effizienten Verwaltung Ihrer Immobilien.</p>
                 <div className="d-flex flex-wrap">
-                    {managementButtons.map(({ key, text, variant }) => visibility[key] && (
-                        <Button key={key} variant={variant} className="m-2">
-                            {text}
-                        </Button>
+                    {managementButtons.map(({ key, text, variant, href }) => visibility[key] && (
+                        <Link to={href} className="button-custom" key={key}>
+                            <Button variant={variant}>
+                                {text}
+                            </Button>
+                        </Link>
                     ))}
                 </div>
             </Container>
 
-            <Modal show={showSettings} onHide={() => setShowSettings(false)} centered>
+            <Modal className="modal-custom" show={showSettings} onHide={() => setShowSettings(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Shortcuts Anpassen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {managementButtons.map(({ key, text }) => (
-                        <Form.Check 
+                        <Form.Check
                             type="switch"
                             id={key}
                             label={text}

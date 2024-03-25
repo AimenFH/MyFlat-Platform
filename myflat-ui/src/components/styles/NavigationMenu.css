@@ -1,0 +1,68 @@
+/* NavigationMenu.css */
+
+/* Basisstile für die Navigation */
+.navbar {
+    background-color: #E3F2FD; /* Hintergrundfarbe der Navigationsleiste */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Schatten für einen "schwebenden" Effekt */
+}
+
+.navbar-brand, .nav-link {
+    color: #1976D2 !important; /* Hauptfarbe für Links */
+    transition: color 0.3s ease-in-out; /* Weicher Übergang für Farbänderungen */
+}
+
+.nav-link {
+    margin-right: 15px; /* Abstand zwischen den Links */
+}
+
+/* Hover-Effekte für Links */
+.navbar-brand:hover, .nav-link:hover {
+    color: #0D47A1 !important; /* Dunklere Farbe beim Überfahren mit der Maus */
+    text-decoration: none; /* Entfernt Unterstreichung beim Hover */
+}
+
+/* Spezielle Stile für nicht anklickbare Links */
+.optionalLink {
+    color: #0D47A1;
+    pointer-events: none; /* Macht den Link nicht anklickbar */
+    opacity: 0.6; /* Macht den Link unauffälliger */
+    font-size: 0.9em; /* Macht die Schrift kleiner */
+}
+
+/* Logout-Button Stil */
+.btn-outline-primary {
+    border-color: #1976D2;
+    color: #1976D2;
+    transition: all 0.3s ease-in-out; /* Weicher Übergang für Farb- und Hintergrundänderungen */
+}
+
+.btn-outline-primary:hover {
+    background-color: #1976D2; /* Hintergrundfarbe beim Hover */
+    color: #fff; /* Textfarbe beim Hover */
+}
+
+/* Anpassungen für das mobile Menü */
+.navbar-toggler {
+    border-color: #0D47A1; /* Farbe des Toggle-Buttons */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml, ..."); /* Optional: Anpassung des Icons */
+}
+
+/* Stil für den aktuell angemeldeten Benutzer */
+.navbar-text {
+    color: #0D47A1; /* Farbe des Textes */
+    font-weight: bold; /* Schrift fett */
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .nav-link {
+        padding: 10px 0; /* Mehr Abstand für bessere Klickbarkeit auf Touch-Geräten */
+    }
+
+    .optionalLink {
+        display: none; /* Versteckt optionale Links auf kleinen Bildschirmen */
+    }
+}
