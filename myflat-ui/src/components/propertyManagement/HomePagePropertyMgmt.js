@@ -23,7 +23,7 @@ const HomePagePropertyMgmt = () => {
     const managementButtons = [
         { key: 'tenantManagement', text: 'Mieterverwaltung', variant: 'primary', href: '/tenant-management' },
         { key: 'documentArchive', text: 'Dokumentenarchiv', variant: 'secondary', href: '/document-archive' },
-        { key: 'keyManagement', text: 'Schlüsselverwaltung', variant: 'success', href: '/key-management' },
+        { key: 'keyManagement', text: 'Schlüsselverwaltung', variant: 'success', href: '/key-management', className: 'custom-key-management' },
         { key: 'maintenanceRequests', text: 'Wartungsanfragen', variant: 'warning', href: '/maintenance-requests' },
         { key: 'propertyManagement', text: 'Immobilienverwaltung', variant: 'info', href: '/property-management' },
     ];
@@ -45,14 +45,15 @@ const HomePagePropertyMgmt = () => {
                 <h1>Willkommen im Verwaltungsbereich von MyFlat</h1>
                 <p>Hier finden Sie alle Tools zur effizienten Verwaltung Ihrer Immobilien.</p>
                 <div className="d-flex flex-wrap">
-                    {managementButtons.map(({ key, text, variant, href }) => visibility[key] && (
-                        <Link to={href} className="button-custom" key={key}>
+                    {managementButtons.map(({ key, text, variant, href, className }) => visibility[key] && (
+                        <Link to={href} className={`button-custom ${className || ''}`} key={key}>
                             <Button variant={variant}>
                                 {text}
                             </Button>
                         </Link>
                     ))}
                 </div>
+
             </Container>
 
             <Modal className="modal-custom" show={showSettings} onHide={() => setShowSettings(false)} centered>

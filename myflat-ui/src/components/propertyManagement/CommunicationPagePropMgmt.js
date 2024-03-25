@@ -65,7 +65,7 @@ function CommunicationPagePropMgmt() {
 
   return (
     <Container className="communication-page">
-      <Image src="%PUBLIC_URL%/myflatLogo.ico" alt="MyFlat Logo" className="mb-4" fluid />
+      <Image src="/myflatLogo.ico" alt="MyFlat Logo" className="mb-4" fluid />
       <h2 className="mb-4">Communication - Property Management</h2>
       {showAlert && <Alert variant="success" className="mb-4">{feedbackMessage}</Alert>}
   

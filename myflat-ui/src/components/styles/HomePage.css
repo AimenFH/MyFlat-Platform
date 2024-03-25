@@ -61,3 +61,14 @@
     width: 100%;
     font-weight: bold;
 }
+
+
+
+.custom-key-management .btn-success {
+    background-color: #618ea1; /* New background color */
+    border-color: #cad9dd; /* New border color */
+}
+
+.custom-key-management .btn-success:hover {
+    background-color: #143044; /* Slightly darker variant for hover */
+}
