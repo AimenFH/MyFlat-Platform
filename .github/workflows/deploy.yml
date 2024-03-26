@@ -19,7 +19,7 @@ jobs:
 
       - name: Deploy to Raspberry Pi
         run: |
-          ssh -o StrictHostKeyChecking=no your_raspberry_pi_username@your_raspberry_pi_host << EOF
-            cd /path/to/your/project
+          ssh -o StrictHostKeyChecking=no 192.168.0.145 @mwerkl << EOF
+            cd /var/www/html/MyFlat-Platform
             git pull
           EOF
