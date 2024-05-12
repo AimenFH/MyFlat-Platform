@@ -39,15 +39,6 @@ public class AuthController {
 
     private final UserRepository userRepository;
 
-    private final AuthService authService;
-
-    @PostMapping("/v1/signup")
-    public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest) {
-        if (authService.hasCustomerWithEmail(signupRequest.getEmail()))
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
-        UserDto createdUserDto = authService.createCustomer(signupRequest);
-        if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);    }
 
     @PostMapping("/v1/login")
     public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws
