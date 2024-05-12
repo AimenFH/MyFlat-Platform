@@ -48,23 +48,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<ApartmentDto> getAllCars() {
+    public List<ApartmentDto> getAllApartments() {
         return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteCar(Long carId) {
+    public void deleteApartment(Long carId) {
         apartmentRepository.deleteById(carId);
     }
 
     @Override
-    public ApartmentDto getCarById(Long cardId) {
+    public ApartmentDto getApartmentById(Long cardId) {
         Optional<Apartment> optionalCar = apartmentRepository.findById(cardId);
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
     @Override
-    public boolean updateCar(Long carId, ApartmentDto apartmentDto) throws IOException {
+    public boolean updateApartment(Long carId, ApartmentDto apartmentDto) throws IOException {
         return false;
     }
 
@@ -79,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ApartmentDtoList searchCar(SearchApartmentDto searchApartmentDto) {
+    public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         return null;
     }
 

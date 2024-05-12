@@ -28,19 +28,19 @@ public class AdminController {
 
     @GetMapping("/v1/cars")
     public ResponseEntity<List<ApartmentDto>> getAllCars() {
-        List<ApartmentDto> apartmentDtoList = adminService.getAllCars();
+        List<ApartmentDto> apartmentDtoList = adminService.getAllApartments();
         return ResponseEntity.ok(apartmentDtoList);
     }
 
     @DeleteMapping("/v1/car/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable Long carId) {
-        adminService.deleteCar(carId);
+        adminService.deleteApartment(carId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/v1/car/{carId}")
     public ResponseEntity<ApartmentDto> getCarById(@PathVariable Long carId) {
-        ApartmentDto apartmentDto = adminService.getCarById(carId);
+        ApartmentDto apartmentDto = adminService.getApartmentById(carId);
         if (apartmentDto != null) return ResponseEntity.ok(apartmentDto);
         return ResponseEntity.notFound().build();
     }
@@ -48,7 +48,7 @@ public class AdminController {
     @PutMapping("/v1/car/{carId}")
     public ResponseEntity<?> updateCar(@PathVariable Long carId, @ModelAttribute ApartmentDto apartmentDto) throws IOException {
         try {
-            boolean success = adminService.updateCar(carId, apartmentDto);
+            boolean success = adminService.updateApartment(carId, apartmentDto);
             if (success) return ResponseEntity.ok().build();
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -70,6 +70,6 @@ public class AdminController {
 
     @PostMapping("/v1/car/search")
     public ResponseEntity<?> searchCar(@RequestBody SearchApartmentDto searchApartmentDto) {
-        return ResponseEntity.ok(adminService.searchCar(searchApartmentDto));
+        return ResponseEntity.ok(adminService.searchApartment(searchApartmentDto));
     }
 }

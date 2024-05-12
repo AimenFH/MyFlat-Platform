@@ -12,18 +12,18 @@ public interface AdminService {
 
     boolean postCar(ApartmentDto apartmentDto);
 
-    List<ApartmentDto> getAllCars();
+    List<ApartmentDto> getAllApartments();
 
-    void deleteCar(Long carId);
+    void deleteApartment(Long carId);
 
-    ApartmentDto getCarById(Long cardId);
+    ApartmentDto getApartmentById(Long cardId);
 
-    boolean updateCar(Long carId, ApartmentDto apartmentDto) throws IOException;
+    boolean updateApartment(Long carId, ApartmentDto apartmentDto) throws IOException;
 
     List<BookApartmentDto> getBookings();
 
     boolean changeBookingStatus(Long bookingId, String status);
 
-    ApartmentDtoList searchCar(SearchApartmentDto searchApartmentDto);
+    ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
 }

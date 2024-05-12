@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<ApartmentDto> getAllCars();
+    List<ApartmentDto> getAllApartments();
 
-    ApartmentDto getCarById(Long carId);
+    ApartmentDto getApartmentById(Long carId);
 
-    boolean bookACar(Long carId, BookApartmentDto bookApartmentDto);
+    boolean bookApartment(Long carId, BookApartmentDto bookApartmentDto);
 
     List<BookApartmentDto> getBookingsByUserId(Long userId);
 
-    ApartmentDtoList searchCar(SearchApartmentDto searchApartmentDto);
+    ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
 }

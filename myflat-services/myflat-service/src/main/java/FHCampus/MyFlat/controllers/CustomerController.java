@@ -20,20 +20,20 @@ public class CustomerController {
 
     @GetMapping("/v1/cars")
     public ResponseEntity<List<ApartmentDto>> getAllCars() {
-        List<ApartmentDto> apartmentDtoList = customerService.getAllCars();
+        List<ApartmentDto> apartmentDtoList = customerService.getAllApartments();
         return ResponseEntity.ok(apartmentDtoList);
     }
 
     @GetMapping("/v1/car/{carId}")
     public ResponseEntity<ApartmentDto> getCarById(@PathVariable Long carId) {
-        ApartmentDto apartmentDto = customerService.getCarById(carId);
+        ApartmentDto apartmentDto = customerService.getApartmentById(carId);
         if (apartmentDto != null) return ResponseEntity.ok(apartmentDto);
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/v1/car/book/{carId}")
     public ResponseEntity<?> bookACar(@PathVariable Long carId, @RequestBody BookApartmentDto bookApartmentDto) {
-        boolean success = customerService.bookACar(carId, bookApartmentDto);
+        boolean success = customerService.bookApartment(carId, bookApartmentDto);
         if (success) return ResponseEntity.ok().build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -45,6 +45,6 @@ public class CustomerController {
 
     @PostMapping("/v1/car/search")
     public ResponseEntity<?> searchCar(@RequestBody SearchApartmentDto searchApartmentDto) {
-        return ResponseEntity.ok(customerService.searchCar(searchApartmentDto));
+        return ResponseEntity.ok(customerService.searchApartment(searchApartmentDto));
     }
 }

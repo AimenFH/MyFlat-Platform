@@ -26,18 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public List<ApartmentDto> getAllCars() {
+    public List<ApartmentDto> getAllApartments() {
         return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
     }
 
     @Override
-    public ApartmentDto getCarById(Long carId) {
+    public ApartmentDto getApartmentById(Long carId) {
         Optional<Apartment> optionalCar = apartmentRepository.findById(carId);
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
     @Override
-    public boolean bookACar(Long carId, BookApartmentDto bookApartmentDto) {
+    public boolean bookApartment(Long carId, BookApartmentDto bookApartmentDto) {
         return false;
     }
 
@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ApartmentDtoList searchCar(SearchApartmentDto searchApartmentDto) {
+    public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         return null;
     }
 
