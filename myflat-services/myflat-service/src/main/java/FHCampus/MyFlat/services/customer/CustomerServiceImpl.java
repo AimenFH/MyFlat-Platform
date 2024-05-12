@@ -6,7 +6,7 @@ import FHCampus.MyFlat.dtos.ApartmentDtoList;
 import FHCampus.MyFlat.dtos.SearchApartmentDto;
 import FHCampus.MyFlat.entities.Apartment;
 
-import FHCampus.MyFlat.repositories.CarRepository;
+import FHCampus.MyFlat.repositories.ApartmentRepository;
 import FHCampus.MyFlat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CarRepository carRepository;
+    private final ApartmentRepository apartmentRepository;
 
     private final UserRepository userRepository;
 
@@ -27,12 +27,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<ApartmentDto> getAllCars() {
-        return carRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
+        return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
     }
 
     @Override
     public ApartmentDto getCarById(Long carId) {
-        Optional<Apartment> optionalCar = carRepository.findById(carId);
+        Optional<Apartment> optionalCar = apartmentRepository.findById(carId);
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 

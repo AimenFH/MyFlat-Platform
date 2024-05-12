@@ -5,7 +5,7 @@ import FHCampus.MyFlat.dtos.ApartmentDtoList;
 import FHCampus.MyFlat.dtos.BookApartmentDto;
 import FHCampus.MyFlat.dtos.SearchApartmentDto;
 import FHCampus.MyFlat.entities.Apartment;
-import FHCampus.MyFlat.repositories.CarRepository;
+import FHCampus.MyFlat.repositories.ApartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    private final CarRepository carRepository;
+    private final ApartmentRepository apartmentRepository;
 
 
 
@@ -49,17 +49,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<ApartmentDto> getAllCars() {
-        return carRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
+        return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteCar(Long carId) {
-        carRepository.deleteById(carId);
+        apartmentRepository.deleteById(carId);
     }
 
     @Override
     public ApartmentDto getCarById(Long cardId) {
-        Optional<Apartment> optionalCar = carRepository.findById(cardId);
+        Optional<Apartment> optionalCar = apartmentRepository.findById(cardId);
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
