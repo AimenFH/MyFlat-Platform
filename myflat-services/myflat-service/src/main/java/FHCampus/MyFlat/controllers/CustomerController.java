@@ -18,33 +18,33 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping("/v1/cars")
-    public ResponseEntity<List<ApartmentDto>> getAllCars() {
+    @GetMapping("/v1/apartments")
+    public ResponseEntity<List<ApartmentDto>> getAllApartments() {
         List<ApartmentDto> apartmentDtoList = customerService.getAllApartments();
         return ResponseEntity.ok(apartmentDtoList);
     }
 
-    @GetMapping("/v1/car/{carId}")
-    public ResponseEntity<ApartmentDto> getCarById(@PathVariable Long carId) {
-        ApartmentDto apartmentDto = customerService.getApartmentById(carId);
+    @GetMapping("/v1/apartment/{apartmentId}")
+    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long apartmentId) {
+        ApartmentDto apartmentDto = customerService.getApartmentById(apartmentId);
         if (apartmentDto != null) return ResponseEntity.ok(apartmentDto);
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/v1/car/book/{carId}")
-    public ResponseEntity<?> bookACar(@PathVariable Long carId, @RequestBody BookApartmentDto bookApartmentDto) {
-        boolean success = customerService.bookApartment(carId, bookApartmentDto);
+    @PostMapping("/v1/apartment/book/{apartmentId}")
+    public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {
+        boolean success = customerService.bookApartment(apartmentId, bookApartmentDto);
         if (success) return ResponseEntity.ok().build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/v1/car/bookings/{userId}")
+    @GetMapping("/v1/apartment/bookings/{userId}")
     public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
     }
 
-    @PostMapping("/v1/car/search")
-    public ResponseEntity<?> searchCar(@RequestBody SearchApartmentDto searchApartmentDto) {
+    @PostMapping("/v1/apartment/search")
+    public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
         return ResponseEntity.ok(customerService.searchApartment(searchApartmentDto));
     }
 }
