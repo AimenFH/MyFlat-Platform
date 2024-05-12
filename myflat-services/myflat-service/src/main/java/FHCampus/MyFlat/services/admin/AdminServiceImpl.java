@@ -44,10 +44,6 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-//    @Override
-//    public boolean postApartment(ApartmentDto apartmentDto) {
-//        return false;
-//    }
 
     @Override
     public List<ApartmentDto> getAllApartments() {

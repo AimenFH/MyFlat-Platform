@@ -6,11 +6,14 @@ import FHCampus.MyFlat.dtos.ApartmentDtoList;
 import FHCampus.MyFlat.dtos.SearchApartmentDto;
 import FHCampus.MyFlat.entities.Apartment;
 
+import FHCampus.MyFlat.entities.BookApartment;
 import FHCampus.MyFlat.repositories.ApartmentRepository;
+import FHCampus.MyFlat.repositories.BookApartmentRepository;
 import FHCampus.MyFlat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +24,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final ApartmentRepository apartmentRepository;
 
-    private final UserRepository userRepository;
+
+
+    private final BookApartmentRepository bookApartmentRepository;
 
 
 
@@ -41,59 +46,18 @@ public class CustomerServiceImpl implements CustomerService {
         return false;
     }
 
-    @Override
-    public List<BookApartmentDto> getBookingsByUserId(Long userId) {
-        return null;
-    }
+
 
     @Override
     public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         return null;
     }
 
-//    @Override
-//    public boolean bookACar(Long carId, BookApartmentDto bookACarDto) {
-//        Optional<Users> optionalUser = userRepository.findById(bookACarDto.getUserId());
-//        Optional<Apartment> optionalCar = carRepository.findById(carId);
-//        if (optionalCar.isPresent() && optionalUser.isPresent()) {
-//            BookApartment bookApartment = new BookApartment();
-//            long diffInMilliseconds = bookACarDto.getToDate().getTime() - bookACarDto.getFromDate().getTime();
-//            long days = TimeUnit.MILLISECONDS.toDays(diffInMilliseconds);
-//            bookApartment.setDays(days);
-//            bookApartment.setUser(optionalUser.get());
-//            bookApartment.setApartment(optionalCar.get());
-//            bookApartment.setAmount(optionalCar.get().getPrice() * days);
-//            bookApartment.setFromDate(bookACarDto.getFromDate());
-//            bookApartment.setToDate(bookACarDto.getToDate());
-//            bookApartment.setBookApartmentStatus(BookApartmentStatus.PENDING);
-//            bookACarRepository.save(bookApartment);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public List<BookApartmentDto> getBookingsByUserId(Long userId) {
-//        return bookACarRepository.findAllByUserId(userId).stream().map(BookApartment::getBookACarDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public ApartmentDtoList searchCar(SearchApartmentDto searchCarDto) {
-//        Apartment apartment = new Apartment();
-//        apartment.setBrand(searchCarDto.getBrand());
-//        apartment.setType(searchCarDto.getType());
-//        apartment.setTransmission(searchCarDto.getTransmission());
-//        apartment.setColor(searchCarDto.getColor());
-//        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
-//                .withMatcher("brand", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("transmission", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("color", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-//        Example<Apartment> carExample = Example.of(apartment,exampleMatcher);
-//        List<Apartment> apartments = carRepository.findAll(carExample);
-//        ApartmentDtoList carDtoList = new ApartmentDtoList();
-//        carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getCarDto).collect(Collectors.toList()));
-//        return carDtoList;
-//    }
+
+
+    @Override
+    public List<BookApartmentDto> getBookingsByUserId(Long userId) {
+        return bookApartmentRepository.findAllByUserId(userId).stream().map(BookApartment::getBookApartmentDto).collect(Collectors.toList());
+    }
 
 }
