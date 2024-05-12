@@ -1,12 +1,10 @@
 package FHCampus.MyFlat.services.customer;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.BookApartmentDto;
-import FHCampus.MyFlat.dtos.ApartmentDtoList;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
+import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.entities.Apartment;
 
 import FHCampus.MyFlat.entities.BookApartment;
+import FHCampus.MyFlat.entities.Users;
 import FHCampus.MyFlat.repositories.ApartmentRepository;
 import FHCampus.MyFlat.repositories.BookApartmentRepository;
 import FHCampus.MyFlat.repositories.UserRepository;
@@ -23,22 +21,21 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
 
     private final ApartmentRepository apartmentRepository;
-
-
-
+    private final UserRepository userRepository;
     private final BookApartmentRepository bookApartmentRepository;
 
 
-
     @Override
-    public List<ApartmentDto> getAllApartments() {
-        return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
+    public UserDto getTenantById(long userId) {
+        Optional<Users> optionalUser = userRepository.findById(userId);
+        return optionalUser.map(Users::getUserDto).orElse(null);
     }
 
+
     @Override
-    public ApartmentDto getApartmentById(Long carId) {
-        Optional<Apartment> optionalCar = apartmentRepository.findById(carId);
-        return optionalCar.map(Apartment::getApartmentDto).orElse(null);
+    public ApartmentDto getApartmentById(Long apartmentId) {
+        Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
+        return optionalApartment.map(Apartment::getApartmentDto).orElse(null);
     }
 
     @Override
@@ -52,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         return null;
     }
+
 
 
 

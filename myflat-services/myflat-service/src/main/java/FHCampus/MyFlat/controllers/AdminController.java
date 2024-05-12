@@ -96,6 +96,4 @@ public class AdminController {
         if (success) return ResponseEntity.ok().build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
-
 }

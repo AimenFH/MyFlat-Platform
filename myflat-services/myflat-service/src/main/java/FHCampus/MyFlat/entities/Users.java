@@ -1,5 +1,6 @@
 package FHCampus.MyFlat.entities;
 
+import FHCampus.MyFlat.dtos.UserDto;
 import FHCampus.MyFlat.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -71,5 +72,14 @@ public class Users implements UserDetails {
         return true;
     }
 
+    public UserDto getUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setId(id);
+        userDto.setName(name);
+        userDto.setEmail(email);
+        userDto.setPhoneNumber(phoneNumber);
+        userDto.setUserRole(userRole);
+        return userDto;
+    }
 
 }

@@ -1,15 +1,11 @@
 package FHCampus.MyFlat.services.customer;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.ApartmentDtoList;
-import FHCampus.MyFlat.dtos.BookApartmentDto;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
+import FHCampus.MyFlat.dtos.*;
 
 import java.util.List;
 
 public interface CustomerService {
 
-    List<ApartmentDto> getAllApartments();
 
     ApartmentDto getApartmentById(Long carId);
 
@@ -19,4 +15,5 @@ public interface CustomerService {
 
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
+    UserDto getTenantById(long userId);
 }
