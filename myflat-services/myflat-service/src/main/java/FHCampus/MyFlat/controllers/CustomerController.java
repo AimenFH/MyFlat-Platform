@@ -31,20 +31,10 @@ public class CustomerController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/v1/apartment/book/{apartmentId}")
-    public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {
-        boolean success = customerService.bookApartment(apartmentId, bookApartmentDto);
-        if (success) return ResponseEntity.ok().build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
 
     @GetMapping("/v1/apartment/bookings/{userId}")
     public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
     }
 
-    @PostMapping("/v1/apartment/search")
-    public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
-        return ResponseEntity.ok(customerService.searchApartment(searchApartmentDto));
-    }
 }

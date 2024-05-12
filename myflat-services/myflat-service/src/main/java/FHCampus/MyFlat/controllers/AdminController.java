@@ -1,12 +1,10 @@
 package FHCampus.MyFlat.controllers;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
-import FHCampus.MyFlat.dtos.SignupRequest;
-import FHCampus.MyFlat.dtos.UserDto;
+import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.repositories.UserRepository;
 import FHCampus.MyFlat.services.admin.AdminService;
 import FHCampus.MyFlat.services.auth.AuthService;
+import FHCampus.MyFlat.services.customer.CustomerService;
 import FHCampus.MyFlat.services.jwt.UserService;
 import FHCampus.MyFlat.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,7 @@ public class AdminController {
 
     private final AuthService authService;
 
+    // sign up
     @PostMapping("/v1/signup")
     public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest) {
         if (authService.hasCustomerWithEmail(signupRequest.getEmail()))
@@ -35,7 +34,7 @@ public class AdminController {
         if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);    }
 
-
+// admin section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postCar(@ModelAttribute ApartmentDto apartmentDto) {
         boolean success = adminService.postCar(apartmentDto);
@@ -90,4 +89,17 @@ public class AdminController {
     public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
         return ResponseEntity.ok(adminService.searchApartment(searchApartmentDto));
     }
+
+    // customer service
+
+    private final CustomerService customerService;
+
+    @PostMapping("/v1/apartment/book/{apartmentId}")
+    public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {
+        boolean success = customerService.bookApartment(apartmentId, bookApartmentDto);
+        if (success) return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+
 }
