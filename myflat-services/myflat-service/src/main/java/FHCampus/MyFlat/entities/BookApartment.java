@@ -35,7 +35,6 @@ public class BookApartment {
     @Size(max = 50)
     private Long amount;
 
-    private BookApartmentStatus bookCarStatus;
 
      @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -51,14 +50,14 @@ public class BookApartment {
 
     private BookApartmentStatus bookApartmentStatus;
 
-    public BookApartmentDto getBookACarDto() {
+    public BookApartmentDto getBookApartmentDto() {
         BookApartmentDto bookApartmentDto = new BookApartmentDto();
         bookApartmentDto.setId(id);
         bookApartmentDto.setFromDate(fromDate);
         bookApartmentDto.setToDate(toDate);
         bookApartmentDto.setMonths(months);
         bookApartmentDto.setAmount(amount);
-        bookApartmentDto.setBookApartmentStatus(bookCarStatus);
+        bookApartmentDto.setBookApartmentStatus(bookApartmentStatus);
         bookApartmentDto.setEmail(user.getEmail());
         bookApartmentDto.setUsername(user.getName());
         bookApartmentDto.setUserId(user.getId());
