@@ -1,8 +1,11 @@
 package FHCampus.MyFlat.entities;
 
 import FHCampus.MyFlat.dtos.ApartmentDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -31,6 +34,12 @@ public class Apartment {
     @NotBlank
     @Size(max = 50)
     private Integer price;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "property_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Property property;
 
 
     public ApartmentDto getApartmentDto() {

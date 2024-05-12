@@ -42,11 +42,7 @@ public class BookApartment {
     @JsonIgnore
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "property_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Property property;
+
 
     private BookApartmentStatus bookApartmentStatus;
 

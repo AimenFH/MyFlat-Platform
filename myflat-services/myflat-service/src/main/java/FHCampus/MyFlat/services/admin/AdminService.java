@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AdminService {
 
-    boolean postCar(ApartmentDto apartmentDto);
+    boolean postApartment(ApartmentDto apartmentDto);
 
     List<ApartmentDto> getAllApartments();
 

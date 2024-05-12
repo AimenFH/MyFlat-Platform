@@ -5,12 +5,18 @@ import FHCampus.MyFlat.dtos.ApartmentDtoList;
 import FHCampus.MyFlat.dtos.BookApartmentDto;
 import FHCampus.MyFlat.dtos.SearchApartmentDto;
 import FHCampus.MyFlat.entities.Apartment;
+import FHCampus.MyFlat.entities.BookApartment;
+import FHCampus.MyFlat.enums.BookApartmentStatus;
 import FHCampus.MyFlat.repositories.ApartmentRepository;
+import FHCampus.MyFlat.repositories.BookApartmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,33 +25,29 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final ApartmentRepository apartmentRepository;
+  private final BookApartmentRepository bookApartmentRepository;
 
-
-
-//    @Override
-//    public boolean postCar(ApartmentDto carDto) {
-//        try {
-//            Apartment apartment = new Apartment();
-//            apartment.setName(carDto.getName());
-//            apartment.setBrand(carDto.getBrand());
-//            apartment.setColor(carDto.getColor());
-//            apartment.setPrice(carDto.getPrice());
-//            apartment.setType(carDto.getType());
-//            apartment.setDescription(carDto.getDescription());
-//            apartment.setModelYear(carDto.getModelYear());
-//            apartment.setTransmission(carDto.getTransmission());
-//            apartment.setImage(carDto.getImage().getBytes());
-//            carRepository.save(apartment);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
 
     @Override
-    public boolean postCar(ApartmentDto apartmentDto) {
-        return false;
+    public boolean postApartment(ApartmentDto apartmentDto) {
+        try {
+            Apartment apartment = new Apartment();
+            apartment.setId(apartmentDto.getId());
+            apartment.setNumber(apartmentDto.getNumber());
+            apartment.setFloor(apartmentDto.getFloor());
+            apartment.setArea(apartmentDto.getArea());
+            apartment.setPrice(apartmentDto.getPrice());
+            apartmentRepository.save(apartment);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+//    @Override
+//    public boolean postApartment(ApartmentDto apartmentDto) {
+//        return false;
+//    }
 
     @Override
     public List<ApartmentDto> getAllApartments() {
@@ -63,84 +65,60 @@ public class AdminServiceImpl implements AdminService {
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
+
     @Override
-    public boolean updateApartment(Long carId, ApartmentDto apartmentDto) throws IOException {
+    public boolean updateApartment(Long apartmentId, ApartmentDto apartmentDto) throws IOException {
+        Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
+        if (optionalApartment.isPresent()) {
+            Apartment existingApartment = optionalApartment.get();
+
+            existingApartment.setNumber(apartmentDto.getNumber());
+            existingApartment.setFloor(apartmentDto.getFloor());
+            existingApartment.setArea(apartmentDto.getArea());
+            existingApartment.setPrice(apartmentDto.getPrice());
+            apartmentRepository.save(existingApartment);
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<BookApartmentDto> getBookings() {
-        return null;
+        return bookApartmentRepository.findAll().stream().map(BookApartment::getBookApartmentDto).collect(Collectors.toList());
     }
 
     @Override
     public boolean changeBookingStatus(Long bookingId, String status) {
+        Optional<BookApartment> optionalBookACar = bookApartmentRepository.findById(bookingId);
+        if (optionalBookACar.isPresent()) {
+            BookApartment existingBookApartment = optionalBookACar.get();
+            if (Objects.equals(status, "CurrentStatus"))
+                existingBookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
+            else
+                existingBookApartment.setBookApartmentStatus(BookApartmentStatus.FORMERTENANT);
+            bookApartmentRepository.save(existingBookApartment);
+            return true;
+        }
         return false;
     }
 
     @Override
     public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
-        return null;
+        Apartment apartment = new Apartment();
+        apartment.setNumber(searchApartmentDto.getNumber());
+        apartment.setFloor(searchApartmentDto.getFloor());
+        apartment.setArea(searchApartmentDto.getArea());
+        apartment.setPrice(searchApartmentDto.getPrice());
+        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+                .withMatcher("number", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("floor", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("area", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("price", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+        Example<Apartment> apartmentExampleExample = Example.of(apartment,exampleMatcher);
+        List<Apartment> apartments = apartmentRepository.findAll(apartmentExampleExample);
+        ApartmentDtoList carDtoList = new ApartmentDtoList();
+        carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getApartmentDto).collect(Collectors.toList()));
+        return carDtoList;
     }
-
-//    @Override
-//    public boolean updateCar(Long carId, ApartmentDto carDto) throws IOException {
-//        Optional<Apartment> optionalCar = carRepository.findById(carId);
-//        if (optionalCar.isPresent()) {
-//            Apartment existingApartment = optionalCar.get();
-//            existingApartment.setName(carDto.getName());
-//            existingApartment.setBrand(carDto.getBrand());
-//            existingApartment.setColor(carDto.getColor());
-//            existingApartment.setPrice(carDto.getPrice());
-//            existingApartment.setType(carDto.getType());
-//            existingApartment.setDescription(carDto.getDescription());
-//            existingApartment.setModelYear(carDto.getModelYear());
-//            existingApartment.setTransmission(carDto.getTransmission());
-//            if (carDto.getImage() != null)
-//                existingApartment.setImage(carDto.getImage().getBytes());
-//            carRepository.save(existingApartment);
-//            return true;
-//        }
-//        return false;
-//    }
-
-//    @Override
-//    public List<BookApartmentDto> getBookings() {
-//        return bookACarRepository.findAll().stream().map(BookApartment::getBookACarDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public boolean changeBookingStatus(Long bookingId, String status) {
-//        Optional<BookApartment> optionalBookACar = bookACarRepository.findById(bookingId);
-//        if (optionalBookACar.isPresent()) {
-//            BookApartment existingBookApartment = optionalBookACar.get();
-//            if (Objects.equals(status, "Approve"))
-//                existingBookApartment.setBookApartmentStatus(BookApartmentStatus.APPROVED);
-//            else
-//                existingBookApartment.setBookApartmentStatus(BookApartmentStatus.REJECTED);
-//            bookACarRepository.save(existingBookApartment);
-//            return true;
-//        }
-//        return false;
-//    }
-
-//    @Override
-//    public ApartmentDtoList searchCar(SearchApartmentDto searchCarDto) {
-//        Apartment apartment = new Apartment();
-//        apartment.setBrand(searchCarDto.getBrand());
-//        apartment.setType(searchCarDto.getType());
-//        apartment.setTransmission(searchCarDto.getTransmission());
-//        apartment.setColor(searchCarDto.getColor());
-//        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
-//                .withMatcher("brand", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("transmission", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-//                .withMatcher("color", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-//        Example<Apartment> carExample = Example.of(apartment,exampleMatcher);
-//        List<Apartment> apartments = carRepository.findAll(carExample);
-//        ApartmentDtoList carDtoList = new ApartmentDtoList();
-//        carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getCarDto).collect(Collectors.toList()));
-//        return carDtoList;
-//    }
 
 }

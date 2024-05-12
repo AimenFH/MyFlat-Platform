@@ -1,16 +1,12 @@
 package FHCampus.MyFlat.controllers;
 
 import FHCampus.MyFlat.dtos.*;
-import FHCampus.MyFlat.repositories.UserRepository;
 import FHCampus.MyFlat.services.admin.AdminService;
 import FHCampus.MyFlat.services.auth.AuthService;
 import FHCampus.MyFlat.services.customer.CustomerService;
-import FHCampus.MyFlat.services.jwt.UserService;
-import FHCampus.MyFlat.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -37,7 +33,7 @@ public class AdminController {
 // admin section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postCar(@ModelAttribute ApartmentDto apartmentDto) {
-        boolean success = adminService.postCar(apartmentDto);
+        boolean success = adminService.postApartment(apartmentDto);
         if (success)
             return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class SearchApartmentDto {
 
-    private String brand;
+    private int number;
 
-    private String type;
+    private int floor;
 
-    private String transmission;
+    private float area;
 
-    private String color;
+    private Integer price;
 
 }
