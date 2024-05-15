@@ -14,27 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/tenant")
 @RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
 
-   @GetMapping("/v1/tenant/{userId}")
+   @GetMapping("/v1/{userId}")
    public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
        UserDto userDto = customerService.getTenantById(userId);
        if(userDto != null) return  ResponseEntity.ok(userDto);
        return ResponseEntity.notFound().build();
    }
-
-
-
-    @GetMapping("/v1/apartment/{apartmentId}")
-    public ResponseEntity<ApartmentDto> getApartmentById(@PathVariable Long apartmentId) {
-        ApartmentDto apartmentDto = customerService.getApartmentById(apartmentId);
-        if (apartmentDto != null) return ResponseEntity.ok(apartmentDto);
-        return ResponseEntity.notFound().build();
-    }
 
 
     @GetMapping("/v1/apartment/bookings/{userId}")

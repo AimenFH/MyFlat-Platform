@@ -9,7 +9,7 @@ public interface CustomerService {
 
     ApartmentDto getApartmentById(Long carId);
 
-    boolean bookApartment(Long carId, BookApartmentDto bookApartmentDto);
+    boolean bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto);
 
     List<BookApartmentDto> getBookingsByUserId(Long userId);
 

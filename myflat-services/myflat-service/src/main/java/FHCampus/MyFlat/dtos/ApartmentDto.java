@@ -19,7 +19,6 @@ public class ApartmentDto {
 
     private Long propertyId;
 
-    private String propertyName;
 
     public ApartmentDto() {
     }

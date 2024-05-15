@@ -21,18 +21,21 @@ public class AdminController {
 
     private final AuthService authService;
 
-    // sign up
-    @PostMapping("/v1/signup")
-    public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest) {
-        if (authService.hasCustomerWithEmail(signupRequest.getEmail()))
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
-        UserDto createdUserDto = authService.createCustomer(signupRequest);
-        if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);    }
+    //////////////////////////////// Admin Property Section
 
-// admin section
+    @PostMapping("/v1/property")
+    public ResponseEntity<?> postProperty(@RequestBody PropertyDto propertyDto) {
+        boolean success = adminService.postProperty(propertyDto);
+        if (success)
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+
+
+////////////////////////////////  Admin Apartment Section
     @PostMapping("/v1/apartment")
-    public ResponseEntity<?> postCar(@ModelAttribute ApartmentDto apartmentDto) {
+    public ResponseEntity<?> postApartment(@RequestBody ApartmentDto apartmentDto) {
         boolean success = adminService.postApartment(apartmentDto);
         if (success)
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -40,7 +43,7 @@ public class AdminController {
     }
 
     @GetMapping("/v1/apartments")
-    public ResponseEntity<List<ApartmentDto>> getAllCars() {
+    public ResponseEntity<List<ApartmentDto>> getAllApartments() {
         List<ApartmentDto> apartmentDtoList = adminService.getAllApartments();
         return ResponseEntity.ok(apartmentDtoList);
     }
@@ -86,9 +89,18 @@ public class AdminController {
         return ResponseEntity.ok(adminService.searchApartment(searchApartmentDto));
     }
 
-    // customer service
-
+    /////////////////////////////Admin customer service
     private final CustomerService customerService;
+
+    //////// sign up
+    @PostMapping("/v1/signup")
+    public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest) {
+        if (authService.hasCustomerWithEmail(signupRequest.getEmail()))
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
+        UserDto createdUserDto = authService.createCustomer(signupRequest);
+        if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);    }
+
 
     @PostMapping("/v1/apartment/book/{apartmentId}")
     public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {

@@ -1,5 +1,6 @@
 package FHCampus.MyFlat.entities;
 
+import FHCampus.MyFlat.dtos.PropertyDto;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -31,10 +32,21 @@ public class Property {
 
     @NotBlank(message = "numberOfFloors cannot be blank")
     @Column(name = "number_of_floors", nullable = false)
-    private int numberOfFloors;
+    private Integer numberOfFloors;
 
     @NotBlank(message = "numberOfApartments cannot be blank")
     @Column(name = "number_of_apartments", nullable = false)
-    private int numberOfApartments;
+    private Integer numberOfApartments;
+
+
+    public PropertyDto getPropertyDto() {
+        PropertyDto propertyDto = new PropertyDto();
+        propertyDto.setId(id);
+        propertyDto.setPropertyAddress(propertyAddress);
+        propertyDto.setPropertyName(propertyName);
+        propertyDto.setNumberOfFloors(numberOfFloors);
+        propertyDto.setNumberOfApartments(numberOfApartments);
+        return  propertyDto;
+    }
 
 }

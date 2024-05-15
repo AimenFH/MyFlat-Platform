@@ -1,14 +1,13 @@
 package FHCampus.MyFlat.services.admin;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.ApartmentDtoList;
-import FHCampus.MyFlat.dtos.BookApartmentDto;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
+import FHCampus.MyFlat.dtos.*;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface AdminService {
+
+    boolean postProperty(PropertyDto propertyDto);
 
     boolean postApartment(ApartmentDto apartmentDto);
 

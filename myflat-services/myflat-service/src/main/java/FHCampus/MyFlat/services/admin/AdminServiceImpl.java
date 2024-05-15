@@ -1,14 +1,13 @@
 package FHCampus.MyFlat.services.admin;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.ApartmentDtoList;
-import FHCampus.MyFlat.dtos.BookApartmentDto;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
+import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.entities.Apartment;
 import FHCampus.MyFlat.entities.BookApartment;
+import FHCampus.MyFlat.entities.Property;
 import FHCampus.MyFlat.enums.BookApartmentStatus;
 import FHCampus.MyFlat.repositories.ApartmentRepository;
 import FHCampus.MyFlat.repositories.BookApartmentRepository;
+import FHCampus.MyFlat.repositories.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -25,23 +24,42 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final ApartmentRepository apartmentRepository;
-  private final BookApartmentRepository bookApartmentRepository;
+    private final PropertyRepository propertyRepository;
+    private final BookApartmentRepository bookApartmentRepository;
 
 
     @Override
-    public boolean postApartment(ApartmentDto apartmentDto) {
+    public boolean postProperty(PropertyDto propertyDto) {
         try {
-            Apartment apartment = new Apartment();
-            apartment.setId(apartmentDto.getId());
-            apartment.setNumber(apartmentDto.getNumber());
-            apartment.setFloor(apartmentDto.getFloor());
-            apartment.setArea(apartmentDto.getArea());
-            apartment.setPrice(apartmentDto.getPrice());
-            apartmentRepository.save(apartment);
+            Property property = new Property();
+            property.setId(propertyDto.getId());
+            property.setPropertyAddress(propertyDto.getPropertyAddress());
+            property.setPropertyName(propertyDto.getPropertyName());
+            property.setNumberOfApartments(propertyDto.getNumberOfApartments());
+            property.setNumberOfFloors(propertyDto.getNumberOfFloors());
+            propertyRepository.save(property);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean postApartment(ApartmentDto apartmentDto) {
+
+            Optional<Property> optionalProperty = propertyRepository.findById(apartmentDto.getPropertyId());
+            if (optionalProperty.isPresent()) {
+                Apartment apartment = new Apartment();
+                apartment.setId(apartmentDto.getId());
+                apartment.setNumber(apartmentDto.getNumber());
+                apartment.setFloor(apartmentDto.getFloor());
+                apartment.setArea(apartmentDto.getArea());
+                apartment.setPrice(apartmentDto.getPrice());
+                apartment.setProperty(optionalProperty.get());
+                apartmentRepository.save(apartment);
+                return true;
+            }
+            return false;
     }
 
 
@@ -110,7 +128,7 @@ public class AdminServiceImpl implements AdminService {
                 .withMatcher("floor", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("area", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("price", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-        Example<Apartment> apartmentExampleExample = Example.of(apartment,exampleMatcher);
+        Example<Apartment> apartmentExampleExample = Example.of(apartment, exampleMatcher);
         List<Apartment> apartments = apartmentRepository.findAll(apartmentExampleExample);
         ApartmentDtoList carDtoList = new ApartmentDtoList();
         carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getApartmentDto).collect(Collectors.toList()));
