@@ -104,8 +104,10 @@ public class AdminController {
 
     @PostMapping("/v1/apartment/book/{apartmentId}")
     public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {
-        boolean success = customerService.bookApartment(apartmentId, bookApartmentDto);
-        if (success) return ResponseEntity.ok().build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        BookingResult bookingResult = customerService.bookApartment(apartmentId, bookApartmentDto);
+        if (bookingResult.isSuccess()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bookingResult.getMessage());
     }
 }

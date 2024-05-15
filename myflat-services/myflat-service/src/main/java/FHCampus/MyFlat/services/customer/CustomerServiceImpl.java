@@ -43,12 +43,28 @@ public class CustomerServiceImpl implements CustomerService {
         return optionalApartment.map(Apartment::getApartmentDto).orElse(null);
     }
 
-    @Override
-    public boolean bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto) {
+
+    
+    public BookingResult bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto) {
         Optional<Users> optionalUser = userRepository.findById(bookApartmentDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
         Optional<Property> optionalProperty = propertyRepository.findById(bookApartmentDto.getPropertyId());
-        if (optionalApartment.isPresent() && optionalUser.isPresent() && optionalProperty.isPresent()) {
+
+        // Check if all entities exist and the apartment belongs to the property
+        if (optionalApartment.isPresent() && optionalUser.isPresent() && optionalProperty.isPresent()
+                && optionalApartment.get().getProperty().equals(optionalProperty.get())) {
+
+            // Check if the apartment is already booked for the provided dates
+            List<BookApartment> overlappingBookings = bookApartmentRepository
+                    .findByApartmentAndToDateGreaterThanEqualAndFromDateLessThanEqual(optionalApartment.get(),
+                            bookApartmentDto.getFromDate(), bookApartmentDto.getToDate());
+
+            if (!overlappingBookings.isEmpty()) {
+                // Apartment is already booked for the provided dates
+                return new BookingResult(false, "Apartment is already booked for the provided dates.");
+            }
+
+            // Create a new booking
             BookApartment bookApartment = new BookApartment();
             bookApartment.setUser(optionalUser.get());
             bookApartment.setApartment(optionalApartment.get());
@@ -57,10 +73,14 @@ public class CustomerServiceImpl implements CustomerService {
             bookApartment.setToDate(bookApartmentDto.getToDate());
             bookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
             bookApartmentRepository.save(bookApartment);
-            return true;
+
+            return new BookingResult(true, "Booking successful.");
         }
-        return false;
+
+        return new BookingResult(false, "One or more required entities do not exist or the apartment does not belong to the property.");
     }
+
+
 
 
     @Override
