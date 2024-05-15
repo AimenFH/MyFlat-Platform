@@ -1,0 +1,36 @@
+.navbar-custom {
+    background-color: #E3F2FD; /* Custom background color */
+    /* Add more custom navbar styles here */
+}
+
+.logo {
+    width: 60px; /* Logo width */
+    height: 60px; /* Logo height */
+    margin-right: 10px; /* Space between logo and brand name */
+}
+
+.logout-button {
+    /* Custom styles for logout button */
+    padding: 10px 20px; /* Increase padding */
+    font-size: 1.2rem; /* Increase font size */
+}
+
+.logged-in-info {
+    /* Styles for the "Logged in as" text */
+    color: #618ea1; /* Custom color */
+}
+
+.btn-outline-primary {
+    border-color: #f60000;
+    color: #1976D2;
+    font-size: 0.8em; /* Schriftgröße verkleinern /
+    padding: 5px 10px; / Innenabstand verkleinern /
+    margin: 0 10px; / Außenabstand hinzufügen, falls nötig /
+    transition: all 0.3s ease-in-out; / Weicher Übergang für Farb- und Hintergrundänderungen beibehalten /
+}
+
+.btn-outline-primary:hover {
+    background-color: #1976D2; / Hintergrundfarbe beim Hover /
+    color: #fff; / Textfarbe beim Hover /
+    transform: scale(1.05); / Button leicht vergrößern beim Hover, um Benutzerfreundlichkeit zu erhöhen */
+}

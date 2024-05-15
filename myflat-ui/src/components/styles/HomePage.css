@@ -1,0 +1,74 @@
+.container-custom {
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom {
+    margin-bottom: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-custom {
+    font-weight: bold;
+    margin: 10px;
+}
+
+.modal-custom {
+    font-size: 16px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+}
+
+.modal-body .form-check {
+    margin-bottom: 15px;
+}
+
+/* HomePage.css */
+
+.container-custom {
+    padding-top: 40px;
+}
+
+.card-custom {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.card-title {
+    color: #007bff; /* Hauptfarbe für Titel */
+}
+
+.card-text {
+    color: #6c757d; /* Dunkelgrau für Text */
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.button-custom {
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+.custom-key-management .btn-success {
+    background-color: #618ea1; /* New background color */
+    border-color: #cad9dd; /* New border color */
+}
+
+.custom-key-management .btn-success:hover {
+    background-color: #143044; /* Slightly darker variant for hover */
+}

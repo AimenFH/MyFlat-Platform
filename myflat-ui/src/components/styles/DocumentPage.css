@@ -1,0 +1,37 @@
+.document-page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .document-section {
+    margin-bottom: 20px;
+  }
+  
+  .document-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .documents-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .document {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .document:hover {
+    background-color: #eaeaea;
+  }
+  
