@@ -4,10 +4,12 @@ import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.entities.Apartment;
 
 import FHCampus.MyFlat.entities.BookApartment;
+import FHCampus.MyFlat.entities.Property;
 import FHCampus.MyFlat.entities.Users;
 import FHCampus.MyFlat.enums.BookApartmentStatus;
 import FHCampus.MyFlat.repositories.ApartmentRepository;
 import FHCampus.MyFlat.repositories.BookApartmentRepository;
+import FHCampus.MyFlat.repositories.PropertyRepository;
 import FHCampus.MyFlat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final ApartmentRepository apartmentRepository;
     private final UserRepository userRepository;
     private final BookApartmentRepository bookApartmentRepository;
+    private final PropertyRepository propertyRepository ;
 
 
     @Override
@@ -44,17 +47,15 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto) {
         Optional<Users> optionalUser = userRepository.findById(bookApartmentDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
-        if (optionalApartment.isPresent() && optionalUser.isPresent()) {
+        Optional<Property> optionalProperty = propertyRepository.findById(bookApartmentDto.getPropertyId());
+        if (optionalApartment.isPresent() && optionalUser.isPresent() && optionalProperty.isPresent()) {
             BookApartment bookApartment = new BookApartment();
-            long diffInMilliseconds = bookApartmentDto.getToDate().getTime() - bookApartmentDto.getFromDate().getTime();
-            long months = TimeUnit.MILLISECONDS.toDays(diffInMilliseconds);
-            bookApartment.setMonths(months);
             bookApartment.setUser(optionalUser.get());
             bookApartment.setApartment(optionalApartment.get());
-            bookApartment.setAmount(optionalApartment.get().getPrice() * months);
+            bookApartment.setProperty(optionalProperty.get());
             bookApartment.setFromDate(bookApartmentDto.getFromDate());
             bookApartment.setToDate(bookApartmentDto.getToDate());
-          bookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
+            bookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
             bookApartmentRepository.save(bookApartment);
             return true;
         }

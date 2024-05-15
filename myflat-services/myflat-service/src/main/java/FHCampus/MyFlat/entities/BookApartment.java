@@ -27,16 +27,13 @@ public class BookApartment {
     @JsonFormat(pattern = "yyyy/MM/dd")
     private Date toDate;
 
-    @NotBlank
-    @Size(max = 50)
-    private Long months;
 
     @NotBlank
     @Size(max = 50)
     private Long amount;
 
 
-     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
@@ -49,6 +46,13 @@ public class BookApartment {
     private Apartment apartment;
 
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "property_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Property property;
+
+
 
     private BookApartmentStatus bookApartmentStatus;
 
@@ -57,12 +61,9 @@ public class BookApartment {
         bookApartmentDto.setId(id);
         bookApartmentDto.setFromDate(fromDate);
         bookApartmentDto.setToDate(toDate);
-        bookApartmentDto.setMonths(months);
         bookApartmentDto.setAmount(amount);
-        bookApartmentDto.setBookApartmentStatus(bookApartmentStatus);
-        bookApartmentDto.setEmail(user.getEmail());
-        bookApartmentDto.setUsername(user.getName());
         bookApartmentDto.setUserId(user.getId());
+        bookApartmentDto.setPropertyId(apartment.getId());
         return bookApartmentDto;
     }
 

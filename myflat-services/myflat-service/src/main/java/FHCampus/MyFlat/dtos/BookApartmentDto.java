@@ -14,16 +14,9 @@ public class BookApartmentDto {
 
     private Date toDate;
 
-    private Long months;
-
     private Long amount;
-
-    private BookApartmentStatus bookApartmentStatus;
 
     private Long userId;
 
-    private String email;
-
-    private String username;
-
+    private Long propertyId;
 }
