@@ -2,7 +2,6 @@ package FHCampus.MyFlat.services.customer;
 
 import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.entities.Apartment;
-
 import FHCampus.MyFlat.entities.BookApartment;
 import FHCampus.MyFlat.entities.Property;
 import FHCampus.MyFlat.entities.Users;
@@ -14,10 +13,8 @@ import FHCampus.MyFlat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final ApartmentRepository apartmentRepository;
     private final UserRepository userRepository;
     private final BookApartmentRepository bookApartmentRepository;
-    private final PropertyRepository propertyRepository ;
+    private final PropertyRepository propertyRepository;
 
 
     @Override
@@ -44,7 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    
     public BookingResult bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto) {
         Optional<Users> optionalUser = userRepository.findById(bookApartmentDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
@@ -79,8 +75,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         return new BookingResult(false, "One or more required entities do not exist or the apartment does not belong to the property.");
     }
-
-
 
 
     @Override
