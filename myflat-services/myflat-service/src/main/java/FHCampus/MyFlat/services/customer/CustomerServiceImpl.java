@@ -1,15 +1,9 @@
 package FHCampus.MyFlat.services.customer;
 
 import FHCampus.MyFlat.dtos.*;
-import FHCampus.MyFlat.entities.Apartment;
-import FHCampus.MyFlat.entities.BookApartment;
-import FHCampus.MyFlat.entities.Property;
-import FHCampus.MyFlat.entities.Users;
+import FHCampus.MyFlat.entities.*;
 import FHCampus.MyFlat.enums.BookApartmentStatus;
-import FHCampus.MyFlat.repositories.ApartmentRepository;
-import FHCampus.MyFlat.repositories.BookApartmentRepository;
-import FHCampus.MyFlat.repositories.PropertyRepository;
-import FHCampus.MyFlat.repositories.UserRepository;
+import FHCampus.MyFlat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final UserRepository userRepository;
     private final BookApartmentRepository bookApartmentRepository;
     private final PropertyRepository propertyRepository;
+    private final DefectRepository defectRepository;
 
 
     @Override
@@ -32,6 +27,30 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Users> optionalUser = userRepository.findById(userId);
         return optionalUser.map(Users::getUserDto).orElse(null);
     }
+
+    @Override
+    public DefectReport defectReport(Long defectId, DefectDto defectDto) {
+        Optional<Users> optionalUser = userRepository.findById(defectDto.getUserId());
+        Optional<Defect> optionalDefect = defectRepository.findById(defectId);
+        Optional<Apartment> optionalApartment = apartmentRepository.findById(defectDto.getApartmentId());
+
+        // Check if all entities exist
+        if (!optionalUser.isPresent() || !optionalApartment.isPresent()) {
+            return new DefectReport(false, "User or apartment does not exist.");
+        }
+
+        // Create a new defect
+        Defect newDefect = new Defect();
+        newDefect.setUser(optionalUser.get());
+        newDefect.setApartment(optionalApartment.get());
+        newDefect.setDescription(defectDto.getDescription());
+        newDefect.setTimestamp(defectDto.getTimestamp());
+        newDefect.setStatus(defectDto.getStatus());
+        defectRepository.save(newDefect);
+
+        return new DefectReport(true, "Defect reported successfully.");
+    }
+
 
 
     @Override

@@ -16,4 +16,6 @@ public interface CustomerService {
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
     UserDto getTenantById(long userId);
+
+    DefectReport defectReport(Long defectId, DefectDto defectDto);
 }

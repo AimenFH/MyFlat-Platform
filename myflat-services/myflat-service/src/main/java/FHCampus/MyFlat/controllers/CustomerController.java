@@ -1,9 +1,6 @@
 package FHCampus.MyFlat.controllers;
 
-import FHCampus.MyFlat.dtos.BookApartmentDto;
-import FHCampus.MyFlat.dtos.ApartmentDto;
-import FHCampus.MyFlat.dtos.SearchApartmentDto;
-import FHCampus.MyFlat.dtos.UserDto;
+import FHCampus.MyFlat.dtos.*;
 import FHCampus.MyFlat.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -20,6 +17,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+
    @GetMapping("/v1/{userId}")
    public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
        UserDto userDto = customerService.getTenantById(userId);
@@ -33,4 +31,15 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
     }
 
+
+
+    @PostMapping("/v1/defect/{defectId}")
+    public ResponseEntity<?> reportDefect(@PathVariable Long defectId, @RequestBody DefectDto defectDto) {
+        DefectReport defectreport = customerService.defectReport(defectId, defectDto);
+        if (defectreport.isSuccess()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(defectreport.getMessage());
+    }
 }
+

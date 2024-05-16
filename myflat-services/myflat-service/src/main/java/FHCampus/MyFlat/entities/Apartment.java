@@ -51,4 +51,6 @@ public class Apartment {
         apartmentDto.setPrice(price);
         return apartmentDto;
     }
+
+
 }

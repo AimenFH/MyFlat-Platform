@@ -10,7 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
-import java.sql.Date;
+import java.util.Date;
 
 
 @Entity
