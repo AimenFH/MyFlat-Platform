@@ -1,4 +1,5 @@
 package FHCampus.MyFlat.entities;
+import FHCampus.MyFlat.dtos.DefectDto;
 import FHCampus.MyFlat.enums.DefectStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -34,6 +35,10 @@ public class Defect {
     private Date timestamp;
 
 
+    @Column(columnDefinition = "longblob")
+    private byte[] image;
+
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -50,5 +55,18 @@ public class Defect {
      private DefectStatus status;
 
     public Defect() {
+
     }
-}
+
+    public DefectDto Defect() {
+        DefectDto defectDto = new DefectDto();
+        defectDto.setId(id);
+        defectDto.setDescription(description);
+        defectDto.setTimestamp(timestamp);
+        defectDto.setReturnedImage(image);
+        defectDto.setUserId(user.getId());
+        defectDto.setApartmentId(apartment.getId());
+        return defectDto;
+    }
+
+    }

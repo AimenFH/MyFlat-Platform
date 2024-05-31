@@ -2,6 +2,7 @@ package FHCampus.MyFlat.services.customer;
 
 import FHCampus.MyFlat.dtos.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CustomerService {
@@ -17,5 +18,5 @@ public interface CustomerService {
 
     UserDto getTenantById(long userId);
 
-    DefectReport defectReport(DefectDto defectDto);
+    DefectReport defectReport(DefectDto defectDto) throws IOException;
 }

@@ -3,12 +3,15 @@ package FHCampus.MyFlat.dtos;
 
 import FHCampus.MyFlat.enums.DefectStatus;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Past;
 import java.util.Date;
 
 @Data
 public class DefectDto {
+
+    private Long id;
 
     private String description;
 
@@ -20,4 +23,8 @@ public class DefectDto {
     private Long apartmentId;
 
     private DefectStatus status;
+
+    private MultipartFile image;
+
+    private byte[] returnedImage;
 }

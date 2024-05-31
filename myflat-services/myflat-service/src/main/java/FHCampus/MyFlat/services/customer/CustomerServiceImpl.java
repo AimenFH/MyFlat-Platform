@@ -7,6 +7,7 @@ import FHCampus.MyFlat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public DefectReport defectReport( DefectDto defectDto) {
+    public DefectReport defectReport( DefectDto defectDto) throws IOException {
         Optional<Users> optionalUser = userRepository.findById(defectDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(defectDto.getApartmentId());
 
@@ -45,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
         newDefect.setDescription(defectDto.getDescription());
         newDefect.setTimestamp(defectDto.getTimestamp());
         newDefect.setStatus(defectDto.getStatus());
+        newDefect.setImage(defectDto.getImage().getBytes());
         defectRepository.save(newDefect);
         return new DefectReport(true, "Defect reported successfully.");
     }

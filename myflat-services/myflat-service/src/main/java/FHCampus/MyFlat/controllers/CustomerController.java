@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/tenant")
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class CustomerController {
     }
 
     @PostMapping("/v1/defect")
-    public ResponseEntity<?> reportDefect(@RequestBody DefectDto defectDto) {
+    public ResponseEntity<?> reportDefect(@RequestBody DefectDto defectDto) throws IOException {
         DefectReport defectreport = customerService.defectReport(defectDto);
         if (defectreport.isSuccess()) {
             return ResponseEntity.ok().build();
