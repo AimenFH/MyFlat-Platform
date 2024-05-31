@@ -14,7 +14,6 @@ import java.util.List;
 public interface BookApartmentRepository extends JpaRepository<BookApartment, Long> {
     List<BookApartment> findAllByUserId(Long userId);
 
-
     @Query("SELECT b FROM BookApartment b " +
             "WHERE b.apartment = :apartment " +
             "AND b.toDate >= :fromDate " +

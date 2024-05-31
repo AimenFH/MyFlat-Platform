@@ -41,7 +41,6 @@ public class Apartment {
     @JsonIgnore
     private Property property;
 
-
     public ApartmentDto getApartmentDto() {
         ApartmentDto apartmentDto = new ApartmentDto();
         apartmentDto.setId(id);

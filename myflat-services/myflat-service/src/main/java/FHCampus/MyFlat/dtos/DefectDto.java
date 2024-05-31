@@ -10,7 +10,6 @@ import java.util.Date;
 @Data
 public class DefectDto {
 
-
     private String description;
 
     @Past(message = "Timestamp cannot be in the future")

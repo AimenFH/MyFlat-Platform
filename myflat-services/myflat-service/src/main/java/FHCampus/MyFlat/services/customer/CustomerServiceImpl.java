@@ -49,8 +49,6 @@ public class CustomerServiceImpl implements CustomerService {
         return new DefectReport(true, "Defect reported successfully.");
     }
 
-
-
     @Override
     public ApartmentDto getApartmentById(Long apartmentId) {
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
@@ -103,5 +101,4 @@ public class CustomerServiceImpl implements CustomerService {
     public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         return null;
     }
-
 }

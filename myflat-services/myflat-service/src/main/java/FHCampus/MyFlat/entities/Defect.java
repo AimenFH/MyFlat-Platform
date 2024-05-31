@@ -50,6 +50,5 @@ public class Defect {
      private DefectStatus status;
 
     public Defect() {
-
     }
 }

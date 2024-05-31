@@ -1,17 +1,12 @@
 package FHCampus.MyFlat.controllers;
 
 import FHCampus.MyFlat.dtos.AuthenticationRequest;
-import FHCampus.MyFlat.dtos.SignupRequest;
-import FHCampus.MyFlat.dtos.UserDto;
+import FHCampus.MyFlat.dtos.AuthenticationResponse;
 import FHCampus.MyFlat.entities.Users;
 import FHCampus.MyFlat.repositories.UserRepository;
-import FHCampus.MyFlat.dtos.AuthenticationResponse;
-import FHCampus.MyFlat.services.auth.AuthService;
 import FHCampus.MyFlat.services.jwt.UserService;
 import FHCampus.MyFlat.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -30,7 +25,6 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-
     private final AuthenticationManager authenticationManager;
 
     private final UserService userService;
@@ -38,7 +32,6 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     private final UserRepository userRepository;
-
 
     @PostMapping("/v1/login")
     public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws

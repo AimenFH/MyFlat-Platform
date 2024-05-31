@@ -79,7 +79,6 @@ public class AdminServiceImpl implements AdminService {
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
-
     @Override
     public boolean updateApartment(Long apartmentId, ApartmentDto apartmentDto) throws IOException {
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);

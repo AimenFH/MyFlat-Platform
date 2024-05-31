@@ -45,14 +45,11 @@ public class BookApartment {
     @JsonIgnore
     private Apartment apartment;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "property_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Property property;
-
-
 
     private BookApartmentStatus bookApartmentStatus;
 
@@ -67,5 +64,4 @@ public class BookApartment {
         bookApartmentDto.setBookApartmentStatus(bookApartmentStatus);
         return bookApartmentDto;
     }
-
 }

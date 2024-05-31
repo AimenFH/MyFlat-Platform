@@ -18,11 +18,9 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
-
     private final AuthService authService;
 
     //////////////////////////////// Admin Property Section
-
     @PostMapping("/v1/property")
     public ResponseEntity<?> postProperty(@RequestBody PropertyDto propertyDto) {
         boolean success = adminService.postProperty(propertyDto);
@@ -31,9 +29,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-
-
-////////////////////////////////  Admin Apartment Section
+    ////////////////////////////////  Admin Apartment Section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postApartment(@RequestBody ApartmentDto apartmentDto) {
         boolean success = adminService.postApartment(apartmentDto);
@@ -84,8 +80,6 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getBookings());
     }
 
-
-
     @PostMapping("/v1/apartment/search")
     public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
         return ResponseEntity.ok(adminService.searchApartment(searchApartmentDto));
@@ -99,15 +93,12 @@ public class AdminController {
         return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
     }
 
-
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
         UserDto userDto = customerService.getTenantById(userId);
-        if(userDto != null) return  ResponseEntity.ok(userDto);
+        if (userDto != null) return ResponseEntity.ok(userDto);
         return ResponseEntity.notFound().build();
     }
-
-
 
     //////// sign up
     @PostMapping("/v1/signup")
@@ -116,8 +107,8 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
         UserDto createdUserDto = authService.createCustomer(signupRequest);
         if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);    }
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
+    }
 
     @PostMapping("/v1/apartment/book/{apartmentId}")
     public ResponseEntity<?> bookApartment(@PathVariable Long apartmentId, @RequestBody BookApartmentDto bookApartmentDto) {

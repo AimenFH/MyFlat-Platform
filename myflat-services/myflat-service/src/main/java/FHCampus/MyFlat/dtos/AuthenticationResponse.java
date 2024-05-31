@@ -13,5 +13,4 @@ public class AuthenticationResponse {
     private UserRole userRole;
 
     private Long userId;
-
 }
