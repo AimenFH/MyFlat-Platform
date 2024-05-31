@@ -30,7 +30,7 @@ public class BookApartment {
 
     @NotBlank
     @Size(max = 50)
-    private Long amount;
+    private Integer amount;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -64,6 +64,7 @@ public class BookApartment {
         bookApartmentDto.setAmount(amount);
         bookApartmentDto.setUserId(user.getId());
         bookApartmentDto.setPropertyId(apartment.getId());
+        bookApartmentDto.setBookApartmentStatus(bookApartmentStatus);
         return bookApartmentDto;
     }
 

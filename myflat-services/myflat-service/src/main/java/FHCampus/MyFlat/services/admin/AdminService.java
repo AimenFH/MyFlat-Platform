@@ -21,7 +21,7 @@ public interface AdminService {
 
     List<BookApartmentDto> getBookings();
 
-    boolean changeBookingStatus(Long bookingId, String status);
+    boolean changeBookingStatus(Long bookingId, Integer status);
 
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 

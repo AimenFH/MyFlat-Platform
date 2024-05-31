@@ -33,9 +33,9 @@ public class CustomerController {
 
 
 
-    @PostMapping("/v1/defect/{defectId}")
-    public ResponseEntity<?> reportDefect(@PathVariable Long defectId, @RequestBody DefectDto defectDto) {
-        DefectReport defectreport = customerService.defectReport(defectId, defectDto);
+    @PostMapping("/v1/defect")
+    public ResponseEntity<?> reportDefect(@RequestBody DefectDto defectDto) {
+        DefectReport defectreport = customerService.defectReport(defectDto);
         if (defectreport.isSuccess()) {
             return ResponseEntity.ok().build();
         }

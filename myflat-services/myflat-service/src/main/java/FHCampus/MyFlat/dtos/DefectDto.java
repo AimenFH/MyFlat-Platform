@@ -10,8 +10,6 @@ import java.util.Date;
 @Data
 public class DefectDto {
 
-    private Long id;
-
 
     private String description;
 

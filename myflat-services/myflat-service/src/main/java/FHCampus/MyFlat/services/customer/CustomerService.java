@@ -17,5 +17,5 @@ public interface CustomerService {
 
     UserDto getTenantById(long userId);
 
-    DefectReport defectReport(Long defectId, DefectDto defectDto);
+    DefectReport defectReport(DefectDto defectDto);
 }

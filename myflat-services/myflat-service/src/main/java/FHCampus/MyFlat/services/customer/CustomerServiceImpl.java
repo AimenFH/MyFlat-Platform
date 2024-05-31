@@ -29,9 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public DefectReport defectReport(Long defectId, DefectDto defectDto) {
+    public DefectReport defectReport( DefectDto defectDto) {
         Optional<Users> optionalUser = userRepository.findById(defectDto.getUserId());
-        Optional<Defect> optionalDefect = defectRepository.findById(defectId);
         Optional<Apartment> optionalApartment = apartmentRepository.findById(defectDto.getApartmentId());
 
         // Check if all entities exist
@@ -47,7 +46,6 @@ public class CustomerServiceImpl implements CustomerService {
         newDefect.setTimestamp(defectDto.getTimestamp());
         newDefect.setStatus(defectDto.getStatus());
         defectRepository.save(newDefect);
-
         return new DefectReport(true, "Defect reported successfully.");
     }
 

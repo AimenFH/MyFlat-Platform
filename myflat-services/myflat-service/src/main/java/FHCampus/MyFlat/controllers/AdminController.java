@@ -72,17 +72,19 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/v1/apartment/bookings")
-    public ResponseEntity<?> getBookings() {
-        return ResponseEntity.ok(adminService.getBookings());
-    }
-
-    @GetMapping("/v1/apartment/booking/{bookingId}/{status}")
-    public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId, @PathVariable String status) {
+    @PutMapping("/v1/apartment/booking/{bookingId}/{status}")
+    public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId, @PathVariable Integer status) {
         boolean success = adminService.changeBookingStatus(bookingId, status);
         if (success) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/v1/apartment/bookings")
+    public ResponseEntity<?> getBookedApartment() {
+        return ResponseEntity.ok(adminService.getBookings());
+    }
+
+
 
     @PostMapping("/v1/apartment/search")
     public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
@@ -91,6 +93,21 @@ public class AdminController {
 
     /////////////////////////////Admin customer service
     private final CustomerService customerService;
+
+    @GetMapping("/v1/apartment/bookings/{userId}")
+    public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
+    }
+
+
+    @GetMapping("/v1/{userId}")
+    public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
+        UserDto userDto = customerService.getTenantById(userId);
+        if(userDto != null) return  ResponseEntity.ok(userDto);
+        return ResponseEntity.notFound().build();
+    }
+
+
 
     //////// sign up
     @PostMapping("/v1/signup")

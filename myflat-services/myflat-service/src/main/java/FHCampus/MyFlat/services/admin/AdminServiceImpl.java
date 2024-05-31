@@ -102,11 +102,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean changeBookingStatus(Long bookingId, String status) {
+    public boolean changeBookingStatus(Long bookingId, Integer status) {
         Optional<BookApartment> optionalBookACar = bookApartmentRepository.findById(bookingId);
         if (optionalBookACar.isPresent()) {
             BookApartment existingBookApartment = optionalBookACar.get();
-            if (Objects.equals(status, "CurrentStatus"))
+            if (Objects.equals(status, 0))
                 existingBookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
             else
                 existingBookApartment.setBookApartmentStatus(BookApartmentStatus.FORMERTENANT);

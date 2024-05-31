@@ -14,9 +14,11 @@ public class BookApartmentDto {
 
     private Date toDate;
 
-    private Long amount;
+    private Integer amount;
 
     private Long userId;
 
     private Long propertyId;
+
+    private BookApartmentStatus bookApartmentStatus;
 }

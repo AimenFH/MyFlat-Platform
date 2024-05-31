@@ -49,6 +49,7 @@ public class Apartment {
         apartmentDto.setFloor(floor);
         apartmentDto.setArea(area);
         apartmentDto.setPrice(price);
+        apartmentDto.setPropertyId(property.getId());
         return apartmentDto;
     }
 
