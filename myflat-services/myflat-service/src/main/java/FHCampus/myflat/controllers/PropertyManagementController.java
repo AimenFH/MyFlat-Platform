@@ -102,7 +102,7 @@ public class PropertyManagementController {
 
     @PostMapping("/v1/tenant/create")
     public ResponseEntity<?> createTenant(@RequestBody SignupRequest signupRequest) {
-        if (authService.hasTenantWithEmail(signupRequest.getEmail()))
+        if (authService.hasUserWithEmail(signupRequest.getEmail()))
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
         UserDto createdUserDto = authService.createTenant(signupRequest);
         if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");

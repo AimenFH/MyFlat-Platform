@@ -6,6 +6,7 @@ import fhcampus.myflat.entities.Users;
 import fhcampus.myflat.enums.UserRole;
 import fhcampus.myflat.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
-    @PostConstruct
+    /*@PostConstruct
     public void createPropertyManagementAccount(){
         Users propertyManagementAccount = userRepository.findByUserRole(UserRole.PROPERTY_MANAGEMENT);
         if (propertyManagementAccount == null){
@@ -28,29 +29,40 @@ public class AuthServiceImpl implements AuthService {
             newPropertyManagementAccount.setPassword(new BCryptPasswordEncoder().encode("adminadmin"));
             userRepository.save(newPropertyManagementAccount);
         }
+    }*/
+
+    @Transactional
+    @Override
+    public UserDto createTenant(SignupRequest signupRequest) {
+        return createUser(signupRequest, UserRole.TENANT);
+    }
+
+    @Transactional
+    @Override
+    public UserDto createPropertyManager(SignupRequest signupRequest) {
+        return createUser(signupRequest, UserRole.PROPERTY_MANAGEMENT);
     }
 
     @Override
-    public UserDto createTenant(SignupRequest signupRequest) {
+    public boolean hasUserWithEmail(String email) {
+        return userRepository.findFirstByEmail(email).isPresent();
+    }
+
+    private UserDto createUser(SignupRequest signupRequest, UserRole userRole) {
         Users user = new Users();
         user.setEmail(signupRequest.getEmail());
         user.setName(signupRequest.getName());
         user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
         user.setPhoneNumber(signupRequest.getPhoneNumber());
-        user.setUserRole(UserRole.TENANT);
-        Users createdTenant = userRepository.save(user);
-        UserDto cretaedUserDto = new UserDto();
-        cretaedUserDto.setId(createdTenant.getId());
-        cretaedUserDto.setName(createdTenant.getName());
-        cretaedUserDto.setEmail(createdTenant.getEmail());
-        cretaedUserDto.setPhoneNumber(createdTenant.getPhoneNumber());
-        cretaedUserDto.setUserRole(createdTenant.getUserRole());
-        return cretaedUserDto;
-    }
-
-    @Override
-    public boolean hasTenantWithEmail(String email) {
-        return userRepository.findFirstByEmail(email).isPresent();
+        user.setUserRole(userRole);
+        Users createdUser = userRepository.save(user);
+        UserDto createdUserDto = new UserDto();
+        createdUserDto.setId(createdUser.getId());
+        createdUserDto.setName(createdUser.getName());
+        createdUserDto.setEmail(createdUser.getEmail());
+        createdUserDto.setPhoneNumber(createdUser.getPhoneNumber());
+        createdUserDto.setUserRole(createdUser.getUserRole());
+        return createdUserDto;
     }
 
 }

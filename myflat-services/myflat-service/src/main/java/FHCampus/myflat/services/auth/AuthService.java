@@ -7,6 +7,8 @@ public interface AuthService {
 
     UserDto createTenant(SignupRequest signupRequest);
 
-    boolean hasTenantWithEmail(String email);
+    UserDto createPropertyManager(SignupRequest signupRequest);
+
+    boolean hasUserWithEmail(String email);
 
 }
