@@ -3,7 +3,9 @@ package fhcampus.myflat.entities;
 import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.enums.UserRole;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +17,11 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Table(name = "users")
-public class Users implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +45,14 @@ public class Users implements UserDetails {
     @NotBlank(message = "AgentNumber cannot be blank")
     @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
+
+    public User(String name, String email, String password, UserRole userRole, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+        this.phoneNumber = phoneNumber;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

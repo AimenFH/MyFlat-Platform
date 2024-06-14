@@ -25,13 +25,13 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public UserDto getTenantById(long userId) {
-        Optional<Users> optionalUser = userRepository.findById(userId);
-        return optionalUser.map(Users::getUserDto).orElse(null);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.map(User::getUserDto).orElse(null);
     }
 
     @Override
     public DefectReport defectReport( DefectDto defectDto) throws IOException {
-        Optional<Users> optionalUser = userRepository.findById(defectDto.getUserId());
+        Optional<User> optionalUser = userRepository.findById(defectDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(defectDto.getApartmentId());
 
         // Check if all entities exist
@@ -59,7 +59,7 @@ public class TenantServiceImpl implements TenantService {
 
 
     public BookingResult bookApartment(Long apartmentId, BookApartmentDto bookApartmentDto) {
-        Optional<Users> optionalUser = userRepository.findById(bookApartmentDto.getUserId());
+        Optional<User> optionalUser = userRepository.findById(bookApartmentDto.getUserId());
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
         Optional<Property> optionalProperty = propertyRepository.findById(bookApartmentDto.getPropertyId());
 

@@ -4,8 +4,8 @@ import fhcampus.myflat.dtos.AuthenticationRequest;
 import fhcampus.myflat.dtos.AuthenticationResponse;
 import fhcampus.myflat.dtos.SignupRequest;
 import fhcampus.myflat.dtos.UserDto;
-import fhcampus.myflat.entities.Users;
-import fhcampus.myflat.enums.UserRole;
+import fhcampus.myflat.entities.User;
+import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
 import fhcampus.myflat.repositories.UserRepository;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.jwt.UserService;
@@ -39,10 +39,12 @@ public class AuthController {
 
     @PostMapping("/v1/register/property-management")
     public ResponseEntity<?> registerPropertyManagement(@RequestBody SignupRequest signupRequest) {
-        if (authService.hasUserWithEmail(signupRequest.getEmail()))
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Email already exist. Try again with another email");
-        UserDto createdUserDto = authService.createPropertyManager(signupRequest);
-        if (createdUserDto == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request!");
+        UserDto createdUserDto;
+        try {
+            createdUserDto = authService.createPropertyManagement(signupRequest);
+        } catch (EmailAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
     }
 
@@ -57,7 +59,7 @@ public class AuthController {
             throw new BadCredentialsException("Incorrect username or password.");
         }
         final UserDetails userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
-        Optional<Users> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
+        Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         if (optionalUser.isPresent()) {
