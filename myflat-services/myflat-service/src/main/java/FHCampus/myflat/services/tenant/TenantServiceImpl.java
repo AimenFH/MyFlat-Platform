@@ -4,6 +4,7 @@ import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.*;
 import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.*;
+import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,7 @@ public class TenantServiceImpl implements TenantService {
     private final BookApartmentRepository bookApartmentRepository;
     private final PropertyRepository propertyRepository;
     private final DefectRepository defectRepository;
-
+    private final UserService userService;
 
     @Override
     public UserDto getTenantById(long userId) {
@@ -32,8 +33,7 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException {
-        User user = userRepository.findById(defectDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User does not exist."));
+        User user = userService.getCurrentUser();
         Apartment apartment = apartmentRepository.findById(defectDto.getApartmentId())
                 .orElseThrow(() -> new IllegalArgumentException("Apartment does not exist."));
 

@@ -4,10 +4,12 @@ import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.tenant.TenantService;
+import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,8 +21,9 @@ public class PropertyManagementController {
 
     private final PropertyManagementService propertyManagementService;
     private final AuthService authService;
+    private final TenantService tenantService;
 
-    //////////////////////////////// PropertyManagement Property Section
+    // region Property Section
     @PostMapping("/v1/property")
     public ResponseEntity<?> postProperty(@RequestBody PropertyDto propertyDto) {
         boolean success = propertyManagementService.postProperty(propertyDto);
@@ -28,8 +31,9 @@ public class PropertyManagementController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    // endregion
 
-    ////////////////////////////////  PropertyManagement Apartment Section
+    // region Apartment Section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postApartment(@RequestBody ApartmentDto apartmentDto) {
         boolean success = propertyManagementService.postApartment(apartmentDto);
@@ -84,10 +88,9 @@ public class PropertyManagementController {
     public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
         return ResponseEntity.ok(propertyManagementService.searchApartment(searchApartmentDto));
     }
+    // endregion
 
-    /////////////////////////////PropertyManagement tenant service
-    private final TenantService tenantService;
-
+    // region Tenant Section
     @GetMapping("/v1/apartment/bookings/{userId}")
     public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(tenantService.getBookingsByUserId(userId));
@@ -119,4 +122,20 @@ public class PropertyManagementController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bookingResult.getMessage());
     }
+    // endregion
+
+    // region Defect Section
+    @PostMapping(value = "/v1/defect")
+    public ResponseEntity<String> reportDefect(
+            @RequestPart("defectDto") DefectDto defectDto,
+            @RequestParam("image") MultipartFile image
+    ) throws IOException {
+        try {
+            propertyManagementService.reportDefect(defectDto, image);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
+    }
+    // endregion
 }

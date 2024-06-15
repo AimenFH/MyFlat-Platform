@@ -1,6 +1,7 @@
 package fhcampus.myflat.services.propertymanagement;
 
 import fhcampus.myflat.dtos.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,5 +25,7 @@ public interface PropertyManagementService {
     boolean changeBookingStatus(Long bookingId, Integer status);
 
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
+
+    void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException;
 
 }

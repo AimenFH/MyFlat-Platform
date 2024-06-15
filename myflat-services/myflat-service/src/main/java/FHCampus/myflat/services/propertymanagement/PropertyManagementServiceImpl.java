@@ -1,17 +1,19 @@
 package fhcampus.myflat.services.propertymanagement;
 
 import fhcampus.myflat.dtos.*;
-import fhcampus.myflat.entities.Apartment;
-import fhcampus.myflat.entities.BookApartment;
-import fhcampus.myflat.entities.Property;
+import fhcampus.myflat.entities.*;
 import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.ApartmentRepository;
-import fhcampus.myflat.repositories.BookApartmentRepository;
-import fhcampus.myflat.repositories.PropertyRepository;
+import fhcampus.myflat.repositories.*;
+import fhcampus.myflat.services.user.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +28,8 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     private final ApartmentRepository apartmentRepository;
     private final PropertyRepository propertyRepository;
     private final BookApartmentRepository bookApartmentRepository;
-
+    private final DefectRepository defectRepository;
+    private final UserService userService;
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
@@ -132,6 +135,17 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         ApartmentDtoList carDtoList = new ApartmentDtoList();
         carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getApartmentDto).collect(Collectors.toList()));
         return carDtoList;
+    }
+
+    @Transactional
+    @Override
+    public void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException {
+        User user = userService.getCurrentUser();
+        Apartment apartment = apartmentRepository.findById(defectDto.getApartmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Apartment does not exist."));
+
+        Defect newDefect = new Defect(defectDto, image, user, apartment);
+        defectRepository.save(newDefect);
     }
 
 }
