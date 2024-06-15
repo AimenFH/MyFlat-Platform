@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>stud.fhcampuswien.</groupId>
-<artifactId>carRental</artifactId>
+<artifactId>myFlat</artifactId>
 <version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<java.version>17</java.version>

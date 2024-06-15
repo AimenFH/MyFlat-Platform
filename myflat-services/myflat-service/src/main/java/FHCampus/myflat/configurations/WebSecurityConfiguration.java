@@ -1,7 +1,7 @@
 package fhcampus.myflat.configurations;
 
 import fhcampus.myflat.enums.UserRole;
-import fhcampus.myflat.services.jwt.UserService;
+import fhcampus.myflat.services.jwt.JwtUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class WebSecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final UserService userService;
+    private final JwtUserService jwtUserService;
 
 
     @Bean
@@ -51,7 +51,7 @@ public class WebSecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService.userDetailsService());
+        authProvider.setUserDetailsService(jwtUserService.userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

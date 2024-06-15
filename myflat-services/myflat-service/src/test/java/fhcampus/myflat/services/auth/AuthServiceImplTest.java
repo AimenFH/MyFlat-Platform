@@ -1,16 +1,25 @@
 package fhcampus.myflat.services.auth;
 
+import fhcampus.myflat.dtos.AuthenticationRequest;
+import fhcampus.myflat.dtos.AuthenticationResponse;
 import fhcampus.myflat.dtos.SignupRequest;
 import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.entities.User;
 import fhcampus.myflat.enums.UserRole;
 import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
 import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.services.jwt.JwtUserService;
+import fhcampus.myflat.utils.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
@@ -23,6 +32,15 @@ class AuthServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private JwtUserService jwtUserService;
+
+    @Mock
+    private JwtUtil jwtUtil;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
 
     @InjectMocks
     private AuthServiceImpl authService;
@@ -98,6 +116,63 @@ class AuthServiceImplTest {
         when(userRepository.findFirstByEmail(signupRequest.getEmail())).thenReturn(Optional.of(new User()));
 
         assertThrows(EmailAlreadyExistsException.class, () -> authService.createPropertyManagement(signupRequest));
+    }
+
+    @Test
+    void loginReturnsAuthenticationResponseWhenCredentialsAreValid() {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest("validEmail@test.com", "validpassword");
+
+        UserDetails mockUserDetails = mock(UserDetails.class);
+        when(mockUserDetails.getUsername()).thenReturn(authenticationRequest.getEmail());
+
+        User mockUser = new User(1L, "Valid User", authenticationRequest.getEmail(),
+                new BCryptPasswordEncoder().encode(authenticationRequest.getPassword()), UserRole.TENANT,
+                "123456789");
+
+        UserDetailsService mockUserDetailsService = mock(UserDetailsService.class);
+        when(mockUserDetailsService.loadUserByUsername(authenticationRequest.getEmail())).thenReturn(mockUserDetails);
+        when(jwtUserService.userDetailsService()).thenReturn(mockUserDetailsService);
+
+        when(userRepository.findFirstByEmail(mockUserDetails.getUsername())).thenReturn(Optional.of(mockUser));
+        when(jwtUtil.generateToken(mockUserDetails)).thenReturn("validToken");
+
+        AuthenticationResponse result = authService.login(authenticationRequest);
+
+        assertNotNull(result);
+        assertEquals("validToken", result.getJwt());
+        assertEquals(mockUser.getId(), result.getUserId());
+        assertEquals(mockUser.getUserRole(), result.getUserRole());
+    }
+
+    @Test
+    void loginThrowsBadCredentialsExceptionWhenCredentialsAreInvalid() {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest("invalidEmail@test.com", "invalidpassword");
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new BadCredentialsException("Incorrect username or password."));
+
+        assertThrows(BadCredentialsException.class, () -> authService.login(authenticationRequest));
+    }
+
+    @Test
+    void loginReturnsEmptyAuthenticationResponseWhenUserDoesNotExist() {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest("nonExistingEmail@test.com", "validpassword");
+
+        UserDetails mockUserDetails = mock(UserDetails.class);
+        when(mockUserDetails.getUsername()).thenReturn(authenticationRequest.getEmail());
+
+        UserDetailsService mockUserDetailsService = mock(UserDetailsService.class);
+        when(mockUserDetailsService.loadUserByUsername(authenticationRequest.getEmail())).thenReturn(mockUserDetails);
+        when(jwtUserService.userDetailsService()).thenReturn(mockUserDetailsService);
+
+        when(userRepository.findFirstByEmail(mockUserDetails.getUsername())).thenReturn(Optional.empty());
+
+        AuthenticationResponse result = authService.login(authenticationRequest);
+
+        assertNotNull(result);
+        assertNull(result.getJwt());
+        assertNull(result.getUserId());
+        assertNull(result.getUserRole());
     }
 
     /*@Test

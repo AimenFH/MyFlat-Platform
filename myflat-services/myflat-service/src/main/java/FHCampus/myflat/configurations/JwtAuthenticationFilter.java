@@ -1,6 +1,6 @@
 package fhcampus.myflat.configurations;
 
-import fhcampus.myflat.services.jwt.UserService;
+import fhcampus.myflat.services.jwt.JwtUserService;
 import fhcampus.myflat.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    private final UserService userService;
+    private final JwtUserService jwtUserService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         userEmail = jwtUtil.extractUserName(jwt);
         if (StringUtils.isNotEmpty(userEmail)
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+            UserDetails userDetails = jwtUserService.userDetailsService().loadUserByUsername(userEmail);
             if (jwtUtil.isTokenValid(jwt, userDetails)) {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
