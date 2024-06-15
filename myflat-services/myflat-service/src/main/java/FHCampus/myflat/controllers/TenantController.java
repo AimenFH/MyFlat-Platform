@@ -2,6 +2,7 @@ package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.DefectDto;
 import fhcampus.myflat.dtos.UserDto;
+import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.tenant.TenantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class TenantController {
 
     private final TenantService tenantService;
+    private final DefectService defectService;
 
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
@@ -36,7 +38,7 @@ public class TenantController {
             @RequestParam("image") MultipartFile image
     ) throws IOException {
         try {
-            tenantService.reportDefect(defectDto, image);
+            defectService.reportDefect(defectDto, image);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

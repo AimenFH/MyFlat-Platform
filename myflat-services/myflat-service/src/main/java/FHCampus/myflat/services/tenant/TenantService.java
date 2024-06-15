@@ -17,6 +17,4 @@ public interface TenantService {
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
     UserDto getTenantById(long userId);
-
-    void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException;
 }

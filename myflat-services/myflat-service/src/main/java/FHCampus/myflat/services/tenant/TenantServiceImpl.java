@@ -22,23 +22,11 @@ public class TenantServiceImpl implements TenantService {
     private final UserRepository userRepository;
     private final BookApartmentRepository bookApartmentRepository;
     private final PropertyRepository propertyRepository;
-    private final DefectRepository defectRepository;
-    private final UserService userService;
 
     @Override
     public UserDto getTenantById(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.map(User::getUserDto).orElse(null);
-    }
-
-    @Override
-    public void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException {
-        User user = userService.getCurrentUser();
-        Apartment apartment = apartmentRepository.findById(defectDto.getApartmentId())
-                .orElseThrow(() -> new IllegalArgumentException("Apartment does not exist."));
-
-        Defect newDefect = new Defect(defectDto, image, user, apartment);
-        defectRepository.save(newDefect);
     }
 
     @Override

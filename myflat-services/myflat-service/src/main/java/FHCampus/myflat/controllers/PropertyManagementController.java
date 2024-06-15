@@ -1,6 +1,7 @@
 package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.tenant.TenantService;
@@ -22,6 +23,7 @@ public class PropertyManagementController {
     private final PropertyManagementService propertyManagementService;
     private final AuthService authService;
     private final TenantService tenantService;
+    private final DefectService defectService;
 
     // region Property Section
     @PostMapping("/v1/property")
@@ -131,7 +133,7 @@ public class PropertyManagementController {
             @RequestParam("image") MultipartFile image
     ) throws IOException {
         try {
-            propertyManagementService.reportDefect(defectDto, image);
+            defectService.reportDefect(defectDto, image);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

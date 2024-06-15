@@ -26,6 +26,4 @@ public interface PropertyManagementService {
 
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
-    void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException;
-
 }

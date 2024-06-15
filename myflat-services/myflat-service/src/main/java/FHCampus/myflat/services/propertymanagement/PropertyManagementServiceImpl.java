@@ -137,15 +137,4 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return carDtoList;
     }
 
-    @Transactional
-    @Override
-    public void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException {
-        User user = userService.getCurrentUser();
-        Apartment apartment = apartmentRepository.findById(defectDto.getApartmentId())
-                .orElseThrow(() -> new IllegalArgumentException("Apartment does not exist."));
-
-        Defect newDefect = new Defect(defectDto, image, user, apartment);
-        defectRepository.save(newDefect);
-    }
-
 }
