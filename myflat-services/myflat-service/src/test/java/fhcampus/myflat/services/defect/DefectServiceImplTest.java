@@ -48,7 +48,7 @@ class DefectServiceImplTest {
     }
 
     @Test
-    void reportDefectSuccessful() throws IOException {
+    void reportDefectSuccessfully() throws IOException {
         User user = new User();
         Apartment apartment = new Apartment();
         when(userService.getCurrentUser()).thenReturn(user);

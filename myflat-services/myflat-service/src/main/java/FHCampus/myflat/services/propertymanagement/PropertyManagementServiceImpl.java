@@ -1,25 +1,21 @@
 package fhcampus.myflat.services.propertymanagement;
 
 import fhcampus.myflat.dtos.*;
-import fhcampus.myflat.entities.*;
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.BookApartment;
+import fhcampus.myflat.entities.Property;
 import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.*;
-import fhcampus.myflat.services.user.UserService;
-import jakarta.transaction.Transactional;
+import fhcampus.myflat.repositories.ApartmentRepository;
+import fhcampus.myflat.repositories.BookApartmentRepository;
+import fhcampus.myflat.repositories.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +24,6 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     private final ApartmentRepository apartmentRepository;
     private final PropertyRepository propertyRepository;
     private final BookApartmentRepository bookApartmentRepository;
-    private final DefectRepository defectRepository;
-    private final UserService userService;
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
@@ -68,7 +62,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public List<ApartmentDto> getAllApartments() {
-        return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).collect(Collectors.toList());
+        return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).toList();
     }
 
     @Override
@@ -83,7 +77,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     }
 
     @Override
-    public boolean updateApartment(Long apartmentId, ApartmentDto apartmentDto) throws IOException {
+    public boolean updateApartment(Long apartmentId, ApartmentDto apartmentDto) {
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
         if (optionalApartment.isPresent()) {
             Apartment existingApartment = optionalApartment.get();
@@ -100,7 +94,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public List<BookApartmentDto> getBookings() {
-        return bookApartmentRepository.findAll().stream().map(BookApartment::getBookApartmentDto).collect(Collectors.toList());
+        return bookApartmentRepository.findAll().stream().map(BookApartment::getBookApartmentDto).toList();
     }
 
     @Override
@@ -133,7 +127,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         Example<Apartment> apartmentExampleExample = Example.of(apartment, exampleMatcher);
         List<Apartment> apartments = apartmentRepository.findAll(apartmentExampleExample);
         ApartmentDtoList carDtoList = new ApartmentDtoList();
-        carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getApartmentDto).collect(Collectors.toList()));
+        carDtoList.setApartmentDtoList(apartments.stream().map(Apartment::getApartmentDto).toList());
         return carDtoList;
     }
 
