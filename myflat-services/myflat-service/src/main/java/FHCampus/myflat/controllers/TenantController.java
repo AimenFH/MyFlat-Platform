@@ -1,13 +1,13 @@
 package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.DefectDto;
-import fhcampus.myflat.dtos.DefectReport;
 import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.services.tenant.TenantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -30,13 +30,17 @@ public class TenantController {
         return ResponseEntity.ok(tenantService.getBookingsByUserId(userId));
     }
 
-    @PostMapping("/v1/defect")
-    public ResponseEntity<?> reportDefect(@RequestBody DefectDto defectDto) throws IOException {
-        DefectReport defectreport = tenantService.defectReport(defectDto);
-        if (defectreport.isSuccess()) {
-            return ResponseEntity.ok().build();
+    @PostMapping(value = "/v1/defect")
+    public ResponseEntity<String> reportDefect(
+            @RequestPart("defectDto") DefectDto defectDto,
+            @RequestParam("image") MultipartFile image
+    ) throws IOException {
+        try {
+            tenantService.reportDefect(defectDto, image);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(defectreport.getMessage());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
 }
 

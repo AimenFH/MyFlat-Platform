@@ -6,6 +6,7 @@ import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,25 +31,14 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public DefectReport defectReport( DefectDto defectDto) throws IOException {
-        Optional<User> optionalUser = userRepository.findById(defectDto.getUserId());
-        Optional<Apartment> optionalApartment = apartmentRepository.findById(defectDto.getApartmentId());
+    public void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException {
+        User user = userRepository.findById(defectDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist."));
+        Apartment apartment = apartmentRepository.findById(defectDto.getApartmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Apartment does not exist."));
 
-        // Check if all entities exist
-        if (!optionalUser.isPresent() || !optionalApartment.isPresent()) {
-            return new DefectReport(false, "User or apartment does not exist.");
-        }
-
-        // Create a new defect
-        Defect newDefect = new Defect();
-        newDefect.setUser(optionalUser.get());
-        newDefect.setApartment(optionalApartment.get());
-        newDefect.setDescription(defectDto.getDescription());
-        newDefect.setTimestamp(defectDto.getTimestamp());
-        newDefect.setStatus(defectDto.getStatus());
-        newDefect.setImage(defectDto.getImage().getBytes());
+        Defect newDefect = new Defect(defectDto, image, user, apartment);
         defectRepository.save(newDefect);
-        return new DefectReport(true, "Defect reported successfully.");
     }
 
     @Override

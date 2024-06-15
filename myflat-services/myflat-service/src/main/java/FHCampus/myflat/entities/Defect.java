@@ -1,20 +1,26 @@
 package fhcampus.myflat.entities;
 import fhcampus.myflat.dtos.DefectDto;
+import fhcampus.myflat.enums.DefectCategory;
+import fhcampus.myflat.enums.DefectLocation;
 import fhcampus.myflat.enums.DefectStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
+import java.io.IOException;
 import java.util.Date;
 
 
 @Entity
+@NoArgsConstructor
 @Data
 @Table(name = "defect")
 public class Defect {
@@ -34,10 +40,8 @@ public class Defect {
     @Column(name = "Timestamp", nullable = false)
     private Date timestamp;
 
-
     @Column(columnDefinition = "longblob")
     private byte[] image;
-
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -45,28 +49,27 @@ public class Defect {
     @JsonIgnore
     private User user;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "apartment_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Apartment apartment;
 
-     private DefectStatus status;
+    private DefectStatus status;
 
-    public Defect() {
+    private DefectCategory category;
 
+    private DefectLocation location;
+
+    public Defect(DefectDto defectDto, MultipartFile image, User user, Apartment apartment) throws IOException {
+        this.description = defectDto.getDescription();
+        this.timestamp = defectDto.getTimestamp();
+        this.image = image.getBytes();
+        this.user = user;
+        this.apartment = apartment;
+        this.status = defectDto.getStatus();
+        this.category = defectDto.getCategory();
+        this.location = defectDto.getLocation();
     }
 
-    public DefectDto Defect() {
-        DefectDto defectDto = new DefectDto();
-        defectDto.setId(id);
-        defectDto.setDescription(description);
-        defectDto.setTimestamp(timestamp);
-        defectDto.setReturnedImage(image);
-        defectDto.setUserId(user.getId());
-        defectDto.setApartmentId(apartment.getId());
-        return defectDto;
-    }
-
-    }
+}

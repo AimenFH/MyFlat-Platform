@@ -1,9 +1,10 @@
 package fhcampus.myflat.dtos;
 
 
+import fhcampus.myflat.enums.DefectCategory;
+import fhcampus.myflat.enums.DefectLocation;
 import fhcampus.myflat.enums.DefectStatus;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Past;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class DefectDto {
 
     private DefectStatus status;
 
-    private MultipartFile image;
+    private DefectCategory category;
 
-    private byte[] returnedImage;
+    private DefectLocation location;
 }
