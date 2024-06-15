@@ -3,7 +3,9 @@ package fhcampus.myflat.entities;
 import fhcampus.myflat.dtos.ApartmentDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,6 +13,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Table(name = "apartment")
 public class Apartment {

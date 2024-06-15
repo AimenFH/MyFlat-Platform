@@ -5,7 +5,9 @@ import fhcampus.myflat.enums.BookApartmentStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,6 +16,8 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BookApartment {
 
