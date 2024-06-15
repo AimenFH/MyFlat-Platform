@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import '../styles/RegisterPage.css';
+import './styles/RegisterPage.css';
 
 function RegisterPageTenant() {
   const [firstName, setFirstName] = useState('');

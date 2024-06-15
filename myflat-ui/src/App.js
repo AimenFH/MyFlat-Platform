@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
-import RegisterPageTenant from './components/propertyManagement/RegisterPageTenant';
+import RegisterPageTenant from './components/RegisterPageTenant';
 import RegisterPagePropertyMgmt from './components/RegisterPagePropertyMgmt';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import CommunicationPageTenant from './components/tenant/CommunicationPageTenant';
