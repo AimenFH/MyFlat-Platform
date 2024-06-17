@@ -19,7 +19,7 @@ function RegisterPageTenant() {
 
     const data = {
       email: email,
-      name: `${firstName}${lastName}`,
+      name: `${firstName} ${lastName}`,
       password: password,
       phoneNumber: '' // todo Add logic to get the phone number
     };
