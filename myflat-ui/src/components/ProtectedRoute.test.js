@@ -12,7 +12,7 @@ describe('ProtectedRoute', () => {
 
     render(
       <Router>
-        <ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}>
+        <ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}>
           <div>Protected content</div>
         </ProtectedRoute>
       </Router>
@@ -23,11 +23,11 @@ describe('ProtectedRoute', () => {
   });
 
   it('renders children if user is authenticated and has correct role', () => {
-    useAuth.mockReturnValue({ user: { role: 'tenant' } });
+    useAuth.mockReturnValue({ user: { role: 'TENANT' } });
 
     render(
       <Router>
-        <ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}>
+        <ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}>
           <div>Protected content</div>
         </ProtectedRoute>
       </Router>

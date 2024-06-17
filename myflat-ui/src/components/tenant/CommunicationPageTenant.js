@@ -13,7 +13,7 @@ function CommunicationPageTenant() {
     const handleSendMessage = (e) => {
         e.preventDefault();
         setShowAlert(true);
-        const recipientText = recipient === 'propertyManagement' ? 'Property Management' : recipient === 'tenant' ? `Other Tenant: ${tenantName}` : 'Group Chat';
+        const recipientText = recipient === 'propertyManagement' ? 'Property Management' : recipient === 'TENANT' ? `Other Tenant: ${tenantName}` : 'Group Chat';
         setFeedbackMessage(`Your message to ${recipientText} has been sent.`);
         setMessage('');
         setRecipient('');
@@ -23,7 +23,7 @@ function CommunicationPageTenant() {
 
     const handleRecipientChange = (eventKey) => {
         setRecipient(eventKey);
-        if (eventKey !== 'tenant') {
+        if (eventKey !== 'TENANT') {
             setTenantName('');
         }
     };
@@ -47,7 +47,7 @@ function CommunicationPageTenant() {
                 <Form.Group className="mb-3">
                     <DropdownButton
                         id="dropdown-basic-button"
-                        title={recipient ? (recipient === 'propertyManagement' ? "Property Management" : recipient === 'tenant' ? `Other Tenant: ${tenantName || 'Select'}` : "Group Chat") : "Select Recipient"}
+                        title={recipient ? (recipient === 'propertyManagement' ? "Property Management" : recipient === 'TENANT' ? `Other Tenant: ${tenantName || 'Select'}` : "Group Chat") : "Select Recipient"}
                         variant="outline-secondary"
                         onSelect={handleRecipientChange}
                     >
@@ -57,7 +57,7 @@ function CommunicationPageTenant() {
                     </DropdownButton>
                 </Form.Group>
 
-                {recipient === 'tenant' && (
+                {recipient === 'TENANT' && (
                     <Form.Group controlId="tenantName" className="mb-3">
                         <Form.Label>Tenant Name:</Form.Label>
                         <Form.Control
@@ -65,7 +65,7 @@ function CommunicationPageTenant() {
                             placeholder="Enter tenant's name"
                             value={tenantName}
                             onChange={(e) => setTenantName(e.target.value)}
-                            required={recipient === 'tenant'}
+                            required={recipient === 'TENANT'}
                         />
                     </Form.Group>
                 )}
@@ -82,7 +82,7 @@ function CommunicationPageTenant() {
                     />
                 </Form.Group>
 
-                <Button variant="outline-success" type="submit" disabled={!recipient || (recipient === 'tenant' && !tenantName)} className="me-2">Send Message</Button>
+                <Button variant="outline-success" type="submit" disabled={!recipient || (recipient === 'TENANT' && !tenantName)} className="me-2">Send Message</Button>
                 <Form.Group controlId="fileForm" className="d-inline-block">
                     <Form.Control
                         type="file"

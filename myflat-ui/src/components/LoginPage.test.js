@@ -21,12 +21,12 @@ describe('LoginPage', () => {
     it('should call the login function with the correct arguments when the form is submitted', () => {
         const {getByLabelText, getByText} = renderLoginPage();
 
-        fireEvent.change(getByLabelText('Username:'), {target: {value: 'tenant'}});
-        fireEvent.change(getByLabelText('Password:'), {target: {value: 'tenant'}});
+        fireEvent.change(getByLabelText('Username:'), {target: {value: 'TENANT'}});
+        fireEvent.change(getByLabelText('Password:'), {target: {value: 'TENANT'}});
 
         fireEvent.click(getByText('Login'));
 
-        expect(mockLogin).toHaveBeenCalledWith({username: 'tenant', role: 'tenant'});
+        expect(mockLogin).toHaveBeenCalledWith({username: 'TENANT', role: 'TENANT'});
     });
 
     it('should call the login function with the correct arguments when the form is submitted with propmgmt credentials', () => {

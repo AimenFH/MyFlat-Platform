@@ -22,7 +22,7 @@ describe('NavigationMenu', () => {
     });
 
     it('should call the logout function when the logout button is clicked', () => {
-        const user = {username: 'tenant', role: 'tenant'};
+        const user = {username: 'TENANT', role: 'TENANT'};
         const {getByText} = renderNavigationMenu(user);
 
         fireEvent.click(getByText('Logout'));
@@ -37,7 +37,7 @@ describe('NavigationMenu', () => {
     });
 
     it('should display tenant links when a tenant is logged in', () => {
-        const user = {username: 'tenant', role: 'tenant'};
+        const user = {username: 'TENANT', role: 'TENANT'};
         const {getByText} = renderNavigationMenu(user);
 
         expect(getByText('Communication')).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('NavigationMenu', () => {
     });
 
     it('should display the logged-in info when a user is logged in', () => {
-        const user = {username: 'tenant', role: 'tenant'};
+        const user = {username: 'TENANT', role: 'TENANT'};
         const {getByText} = renderNavigationMenu(user);
 
         expect(getByText(/Logged in as:/i)).toBeInTheDocument();
