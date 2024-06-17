@@ -12,21 +12,21 @@ function RegisterPageTenant() {
   const [property, setProperty] = useState('');
   const [apartment, setApartment] = useState('');
 
-  const { jwt } = useAuth();
+  const { user } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = {
       email: email,
-      name: `${firstName} ${lastName}`,
+      name: `${firstName}${lastName}`,
       password: password,
       phoneNumber: '' // todo Add logic to get the phone number
     };
 
     axios.post('http://localhost:8080/api/property-management/v1/tenant/create', data, {
       headers: {
-        'Authorization': `Bearer ${jwt}`
+        'Authorization': `Bearer ${user.jwt}`
       }
     })
         .then(response => {
