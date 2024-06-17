@@ -46,7 +46,7 @@ describe('NavigationMenu', () => {
     });
 
     it('should display property management links when property management is logged in', () => {
-        const user = {username: 'propmgmt', role: 'propmgmt'};
+        const user = {username: 'PROPERTY_MANAGEMENT', role: 'PROPERTY_MANAGEMENT'};
         const {getByText} = renderNavigationMenu(user);
 
         expect(getByText('Properties')).toBeInTheDocument();

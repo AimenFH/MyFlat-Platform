@@ -30,14 +30,14 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registerTenant" element={<RegisterPageTenant />} />
           <Route path="/registerPropertyMgmt" element={<RegisterPagePropertyMgmt />} />
-          <Route path="/communication" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><CommunicationPage /></ProtectedRoute>} />
-          <Route path="/documents" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><DocumentPage /></ProtectedRoute>} />
-          <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><MaintenancePage /></ProtectedRoute>} />
-          <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['propmgmt']}><ManageProperties /></ProtectedRoute>} />
-          <Route path="/keys" element={<ProtectedRoute allowedRoles={['propmgmt']}><KeyPage /></ProtectedRoute>} />
-          <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['propmgmt']}><ManageApartments /></ProtectedRoute>} />
-          <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['propmgmt']}><EditApartment /></ProtectedRoute>} />
-          <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['propmgmt']}><KeyPage /></ProtectedRoute>} />
+          <Route path="/communication" element={<ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}><CommunicationPage /></ProtectedRoute>} />
+          <Route path="/documents" element={<ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}><DocumentPage /></ProtectedRoute>} />
+          <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}><MaintenancePage /></ProtectedRoute>} />
+          <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageProperties /></ProtectedRoute>} />
+          <Route path="/keys" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
+          <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
+          <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
+          <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
 
         </Routes>
       </AuthProvider>

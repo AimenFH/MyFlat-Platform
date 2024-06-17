@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import './styles/RegisterPage.css';
+import axios from "axios";
+import { useAuth } from './AuthContext';
 
 function RegisterPageTenant() {
   const [firstName, setFirstName] = useState('');
@@ -10,10 +12,29 @@ function RegisterPageTenant() {
   const [property, setProperty] = useState('');
   const [apartment, setApartment] = useState('');
 
+  const { jwt } = useAuth();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Registrierungs Logik 
-    console.log({ firstName, lastName, email, password, property, apartment });
+
+    const data = {
+      email: email,
+      name: `${firstName} ${lastName}`,
+      password: password,
+      phoneNumber: '' // todo Add logic to get the phone number
+    };
+
+    axios.post('http://localhost:8080/api/property-management/v1/tenant/create', data, {
+      headers: {
+        'Authorization': `Bearer ${jwt}`
+      }
+    })
+        .then(response => {
+          console.log('Success:', response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
   };
 
   return (

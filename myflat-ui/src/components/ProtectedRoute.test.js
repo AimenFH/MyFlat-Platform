@@ -12,7 +12,7 @@ describe('ProtectedRoute', () => {
 
     render(
       <Router>
-        <ProtectedRoute allowedRoles={['tenant', 'propmgmt']}>
+        <ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}>
           <div>Protected content</div>
         </ProtectedRoute>
       </Router>
@@ -27,7 +27,7 @@ describe('ProtectedRoute', () => {
 
     render(
       <Router>
-        <ProtectedRoute allowedRoles={['tenant', 'propmgmt']}>
+        <ProtectedRoute allowedRoles={['tenant', 'PROPERTY_MANAGEMENT']}>
           <div>Protected content</div>
         </ProtectedRoute>
       </Router>

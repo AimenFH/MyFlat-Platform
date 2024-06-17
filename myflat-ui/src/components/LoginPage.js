@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext'; 
 import './styles/LoginPage.css';
+import axios from "axios";
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -9,7 +10,21 @@ function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === 'tenant' && password === 'tenant') {
+
+    const data = {
+      email: username,
+      password: password
+    };
+
+    axios.post('http://localhost:8080/api/auth/v1/login', data)
+        .then(response => {
+          console.log('Success:', response.data);
+          login({ username: data.email, role: response.data.userRole , jwt: response.data.jwt});
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    /*if (username === 'tenant' && password === 'tenant') {
       login({ username: 'tenant', role: 'tenant' });
       window.location.href = '/';
     } else if (username === 'propmgmt' && password === 'propmgmt') {
@@ -17,7 +32,7 @@ function LoginPage() {
       window.location.href = '/';
     } else {
       alert('Login failed: Incorrect username or password.');
-    }
+    }*/
   };
 
   const handleResetPassword = () => {

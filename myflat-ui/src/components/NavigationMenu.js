@@ -34,8 +34,8 @@ function NavigationMenu() {
                     <Nav.Link as={Link} to="/communication" className="nav-link">Communication</Nav.Link>
                     <Nav.Link as={Link} to="/documents" className="nav-link">Documents</Nav.Link>
                     <Nav.Link as={Link} to="/maintenance" className="nav-link">Maintenance</Nav.Link>
-                    {user?.role === 'propmgmt' && <Nav.Link as={Link} to="/manageProperties" className="nav-link">Properties</Nav.Link>}
-                    {user?.role === 'propmgmt' && <Nav.Link as={Link} to="/registerTenant" className="nav-link">Tenants</Nav.Link>}
+                    {user?.role === 'PROPERTY_MANAGEMENT' && <Nav.Link as={Link} to="/manageProperties" className="nav-link">Properties</Nav.Link>}
+                    {user?.role === 'PROPERTY_MANAGEMENT' && <Nav.Link as={Link} to="/registerTenant" className="nav-link">Tenants</Nav.Link>}
                     <Nav.Link className="optionalLink">Settings</Nav.Link>
                   </>
               )}
@@ -44,8 +44,7 @@ function NavigationMenu() {
                 <Button variant="outline-primary" className="logout-button" onClick={handleLogout}>Logout</Button>
             )}
             <Navbar.Text className="ms-3 logged-in-info">
-              Logged in as: <strong>{user ? (user.role === 'propmgmt' ? 'Property Management' : 'Tenant') : 'N/A'}</strong>
-            </Navbar.Text>
+              Logged in as: <strong>{user ? `${user.username} (${user.role === 'PROPERTY_MANAGEMENT' ? 'Property Management' : 'Tenant'})` : 'N/A'}</strong>            </Navbar.Text>
           </Navbar.Collapse>
         </Container>
       </Navbar>

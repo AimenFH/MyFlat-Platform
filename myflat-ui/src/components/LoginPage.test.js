@@ -32,12 +32,12 @@ describe('LoginPage', () => {
     it('should call the login function with the correct arguments when the form is submitted with propmgmt credentials', () => {
         const {getByLabelText, getByText} = renderLoginPage();
 
-        fireEvent.change(getByLabelText('Username:'), {target: {value: 'propmgmt'}});
-        fireEvent.change(getByLabelText('Password:'), {target: {value: 'propmgmt'}});
+        fireEvent.change(getByLabelText('Username:'), {target: {value: 'PROPERTY_MANAGEMENT'}});
+        fireEvent.change(getByLabelText('Password:'), {target: {value: 'PROPERTY_MANAGEMENT'}});
 
         fireEvent.click(getByText('Login'));
 
-        expect(mockLogin).toHaveBeenCalledWith({username: 'propmgmt', role: 'propmgmt'});
+        expect(mockLogin).toHaveBeenCalledWith({username: 'PROPERTY_MANAGEMENT', role: 'PROPERTY_MANAGEMENT'});
     });
 
     it('should not call the login function when the form is submitted with incorrect credentials', () => {
