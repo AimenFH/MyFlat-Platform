@@ -1,7 +1,7 @@
 package fhcampus.myflat.entities;
 
-import fhcampus.myflat.dtos.BookApartmentDto;
 import fhcampus.myflat.enums.BookApartmentStatus;
+import fhcampus.myflat.dtos.BookApartmentDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

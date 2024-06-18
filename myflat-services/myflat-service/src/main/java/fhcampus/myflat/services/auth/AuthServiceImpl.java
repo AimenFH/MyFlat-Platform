@@ -1,5 +1,6 @@
 package fhcampus.myflat.services.auth;
 
+import fhcampus.myflat.repositories.UserRepository;
 import fhcampus.myflat.dtos.AuthenticationRequest;
 import fhcampus.myflat.dtos.AuthenticationResponse;
 import fhcampus.myflat.dtos.SignupRequest;
@@ -7,7 +8,6 @@ import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.entities.User;
 import fhcampus.myflat.enums.UserRole;
 import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
-import fhcampus.myflat.repositories.UserRepository;
 import fhcampus.myflat.services.jwt.JwtUserService;
 import fhcampus.myflat.utils.JwtUtil;
 import jakarta.transaction.Transactional;

@@ -1,15 +1,12 @@
 package fhcampus.myflat.services.tenant;
 
+import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.*;
-import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.*;
-import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

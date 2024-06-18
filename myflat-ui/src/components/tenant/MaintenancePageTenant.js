@@ -1,80 +1,117 @@
 import React, { useState } from 'react';
 import { Form, Dropdown, DropdownButton } from 'react-bootstrap';
+import axios from 'axios';
 import '../styles/MaintenancePage.css';
+import { useAuth } from '../AuthContext';
 
 const MaintenancePageTenant = () => {
-  const [issue, setIssue] = useState('');
-  const [apartment, setApartment] = useState('');
-  const [property, setProperty] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [category, setCategory] = useState(''); // Kategoriezustand hinzufügen
+    const [description, setDescription] = useState('');
+    const [apartmentId, setApartmentId] = useState('');
+    const [category, setCategory] = useState('');
+    const [location, setLocation] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    const [image, setImage] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted Issue:', issue, 'Apartment:', apartment, 'Property:', property);
-    setSubmitted(true);
-  };
+    const { user } = useAuth();
 
-  const options = Array.from({ length: 10 }, (_, i) => i + 1);
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-  return (
-    <div className="maintenance-page">
-      <h2>Maintenance Requestssss</h2>
-      <form onSubmit={handleSubmit} className="maintenance-form">
-        <label htmlFor="issue">Describe the issue:</label>
-        <textarea
-          id="issue"
-          value={issue}
-          onChange={(e) => setIssue(e.target.value)}
-          required
-        ></textarea>
+        const timestamp = new Date().toISOString(); // Current timestamp
+        const status = 'OPEN'; // Default status
 
-        <label htmlFor="apartment">Apartment:</label>
-        <select
-          id="apartment"
-          value={apartment}
-          onChange={(e) => setApartment(e.target.value)}
-          required
-        >
-          <option value="">Select...</option>
-          {options.map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
+        const formData = new FormData();
+        const defectDto = JSON.stringify({
+            userId: user.id, // Assuming user.id is available from the authentication context
+            apartmentId,
+            description,
+            timestamp,
+            status,
+            category: category.toUpperCase(),
+            location
+        });
 
-        <label htmlFor="property">Property:</label>
-        <select
-          id="property"
-          value={property}
-          onChange={(e) => setProperty(e.target.value)}
-          required
-        >
-          <option value="">Select...</option>
-          {options.map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
-        <Form.Group className="mb-3">
-              <Form.Label>Category:</Form.Label>
-              <DropdownButton
-                id="dropdown-item-button"
-                title={category || "Select Category"}
-                onSelect={(e) => setCategory(e)}
-                variant="secondary"
-              >
-                <Dropdown.Item eventKey="Electrical">Electrical</Dropdown.Item>
-                <Dropdown.Item eventKey="Plumbing">Plumbing</Dropdown.Item>
-                <Dropdown.Item eventKey="Construction">Construction</Dropdown.Item>
-                <Dropdown.Item eventKey="Key">New Key</Dropdown.Item>
+        formData.append('defectDto', new Blob([defectDto], { type: 'application/json' }));
+        formData.append('image', image);
 
-              </DropdownButton>
-            </Form.Group>
-        <button type="submit" className="submit-btn">Submit Request</button>
-      </form>
-      {submitted && <div className="confirmation-message">Your maintenance request has been submitted.</div>}
-              
-    </div>
-  );
+        axios.post('http://localhost:8080/api/tenant/v1/defect', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                console.log('Success:', response.data);
+                setSubmitted(true);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
+
+    const options = Array.from({ length: 10 }, (_, i) => i + 1);
+
+    return (
+        <div className="maintenance-page">
+            <h2>Maintenance Requests</h2>
+            <form onSubmit={handleSubmit} className="maintenance-form">
+                <label htmlFor="description">Describe the issue:</label>
+                <textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                ></textarea>
+
+                <label htmlFor="apartmentId">Apartment:</label>
+                <select
+                    id="apartmentId"
+                    value={apartmentId}
+                    onChange={(e) => setApartmentId(e.target.value)}
+                    required
+                >
+                    <option value="">Select...</option>
+                    {options.map(option => (
+                        <option key={option} value={option}>{option}</option>
+                    ))}
+                </select>
+
+                <label htmlFor="location">Location:</label>
+                <input
+                    id="location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    required
+                />
+
+                <Form.Group className="mb-3">
+                    <Form.Label>Category:</Form.Label>
+                    <DropdownButton
+                        id="dropdown-item-button"
+                        title={category || "Select Category"}
+                        onSelect={(e) => setCategory(e)}
+                        variant="secondary"
+                    >
+                        <Dropdown.Item eventKey="PLUMBING">Plumbing</Dropdown.Item>
+                        <Dropdown.Item eventKey="ELECTRICAL">Electrical</Dropdown.Item>
+                        <Dropdown.Item eventKey="CONSTRUCTION">Construction</Dropdown.Item>
+                        <Dropdown.Item eventKey="KEY">New Key</Dropdown.Item>
+                    </DropdownButton>
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Label>Upload Image:</Form.Label>
+                    <Form.Control
+                        type="file"
+                        onChange={(e) => setImage(e.target.files[0])}
+                    />
+                </Form.Group>
+
+                <button type="submit" className="submit-btn">Submit Request</button>
+            </form>
+            {submitted && <div className="confirmation-message">Your maintenance request has been submitted.</div>}
+        </div>
+    );
 };
 
 export default MaintenancePageTenant;

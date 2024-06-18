@@ -29,13 +29,13 @@ public class WebSecurityConfiguration {
 
     private final JwtUserService jwtUserService;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
                         request.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/property-management/**").hasAnyAuthority(UserRole.PROPERTY_MANAGEMENT.name()).
                                 requestMatchers("/api/tenant/**").hasAnyAuthority(UserRole.TENANT.name()).
+                                requestMatchers("/api/defects/**").authenticated().  // Ensure /api/defects is accessible to authenticated users
                                 anyRequest().authenticated()).sessionManagement(manager ->
                         manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 authenticationProvider(authenticationProvider()).
@@ -60,5 +60,4 @@ public class WebSecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 }

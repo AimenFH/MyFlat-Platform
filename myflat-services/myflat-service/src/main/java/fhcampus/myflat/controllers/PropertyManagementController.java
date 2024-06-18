@@ -1,10 +1,10 @@
 package fhcampus.myflat.controllers;
 
-import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
-import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.tenant.TenantService;
+import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
