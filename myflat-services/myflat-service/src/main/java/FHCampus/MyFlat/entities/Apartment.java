@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.entities;
+package fhcampus.myflat.entities;
 
-import FHCampus.MyFlat.dtos.ApartmentDto;
+import fhcampus.myflat.dtos.ApartmentDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;

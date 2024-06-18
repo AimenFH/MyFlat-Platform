@@ -1,4 +1,4 @@
-package FHCampus.MyFlat;
+package fhcampus.myflat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

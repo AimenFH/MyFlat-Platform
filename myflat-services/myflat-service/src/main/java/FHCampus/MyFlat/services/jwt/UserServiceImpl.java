@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.services.jwt;
+package fhcampus.myflat.services.jwt;
 
-import FHCampus.MyFlat.repositories.UserRepository;
+import fhcampus.myflat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

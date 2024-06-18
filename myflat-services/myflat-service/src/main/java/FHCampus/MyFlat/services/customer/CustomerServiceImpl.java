@@ -1,9 +1,9 @@
-package FHCampus.MyFlat.services.customer;
+package fhcampus.myflat.services.customer;
 
-import FHCampus.MyFlat.dtos.*;
-import FHCampus.MyFlat.entities.*;
-import FHCampus.MyFlat.enums.BookApartmentStatus;
-import FHCampus.MyFlat.repositories.*;
+import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.entities.*;
+import fhcampus.myflat.enums.BookApartmentStatus;
+import fhcampus.myflat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

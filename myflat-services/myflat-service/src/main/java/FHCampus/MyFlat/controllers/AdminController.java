@@ -1,9 +1,9 @@
-package FHCampus.MyFlat.controllers;
+package fhcampus.myflat.controllers;
 
-import FHCampus.MyFlat.dtos.*;
-import FHCampus.MyFlat.services.admin.AdminService;
-import FHCampus.MyFlat.services.auth.AuthService;
-import FHCampus.MyFlat.services.customer.CustomerService;
+import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.services.admin.AdminService;
+import fhcampus.myflat.services.auth.AuthService;
+import fhcampus.myflat.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

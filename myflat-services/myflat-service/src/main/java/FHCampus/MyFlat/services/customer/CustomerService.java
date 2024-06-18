@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.services.customer;
+package fhcampus.myflat.services.customer;
 
-import FHCampus.MyFlat.dtos.*;
+import fhcampus.myflat.dtos.*;
 
 import java.io.IOException;
 import java.util.List;

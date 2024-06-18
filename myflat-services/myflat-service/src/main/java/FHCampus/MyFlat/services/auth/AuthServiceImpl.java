@@ -1,10 +1,10 @@
-package FHCampus.MyFlat.services.auth;
+package fhcampus.myflat.services.auth;
 
-import FHCampus.MyFlat.dtos.SignupRequest;
-import FHCampus.MyFlat.dtos.UserDto;
-import FHCampus.MyFlat.entities.Users;
-import FHCampus.MyFlat.enums.UserRole;
-import FHCampus.MyFlat.repositories.UserRepository;
+import fhcampus.myflat.dtos.SignupRequest;
+import fhcampus.myflat.dtos.UserDto;
+import fhcampus.myflat.entities.Users;
+import fhcampus.myflat.enums.UserRole;
+import fhcampus.myflat.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

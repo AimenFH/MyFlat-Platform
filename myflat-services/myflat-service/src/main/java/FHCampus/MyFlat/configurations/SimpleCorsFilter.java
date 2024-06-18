@@ -1,4 +1,4 @@
-package FHCampus.MyFlat.configurations;
+package fhcampus.myflat.configurations;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

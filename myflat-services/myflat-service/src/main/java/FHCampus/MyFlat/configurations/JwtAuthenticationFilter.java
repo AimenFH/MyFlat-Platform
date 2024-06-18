@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.configurations;
+package fhcampus.myflat.configurations;
 
-import FHCampus.MyFlat.services.jwt.UserService;
-import FHCampus.MyFlat.utils.JwtUtil;
+import fhcampus.myflat.services.jwt.UserService;
+import fhcampus.myflat.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

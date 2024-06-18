@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.dtos;
+package fhcampus.myflat.dtos;
 
-import FHCampus.MyFlat.enums.BookApartmentStatus;
+import fhcampus.myflat.enums.BookApartmentStatus;
 import lombok.Data;
 
 import java.util.Date;

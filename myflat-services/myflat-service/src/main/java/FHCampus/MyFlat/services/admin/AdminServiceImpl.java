@@ -1,13 +1,13 @@
-package FHCampus.MyFlat.services.admin;
+package fhcampus.myflat.services.admin;
 
-import FHCampus.MyFlat.dtos.*;
-import FHCampus.MyFlat.entities.Apartment;
-import FHCampus.MyFlat.entities.BookApartment;
-import FHCampus.MyFlat.entities.Property;
-import FHCampus.MyFlat.enums.BookApartmentStatus;
-import FHCampus.MyFlat.repositories.ApartmentRepository;
-import FHCampus.MyFlat.repositories.BookApartmentRepository;
-import FHCampus.MyFlat.repositories.PropertyRepository;
+import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.BookApartment;
+import fhcampus.myflat.entities.Property;
+import fhcampus.myflat.enums.BookApartmentStatus;
+import fhcampus.myflat.repositories.ApartmentRepository;
+import fhcampus.myflat.repositories.BookApartmentRepository;
+import fhcampus.myflat.repositories.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

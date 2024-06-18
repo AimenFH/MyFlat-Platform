@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.dtos;
+package fhcampus.myflat.dtos;
 
 
-import FHCampus.MyFlat.enums.DefectStatus;
+import fhcampus.myflat.enums.DefectStatus;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

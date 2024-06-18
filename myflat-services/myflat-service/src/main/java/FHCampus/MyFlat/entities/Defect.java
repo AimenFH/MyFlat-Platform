@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.entities;
-import FHCampus.MyFlat.dtos.DefectDto;
-import FHCampus.MyFlat.enums.DefectStatus;
+package fhcampus.myflat.entities;
+import fhcampus.myflat.dtos.DefectDto;
+import fhcampus.myflat.enums.DefectStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

@@ -1,4 +1,4 @@
-package FHCampus.MyFlat.utils;
+package fhcampus.myflat.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

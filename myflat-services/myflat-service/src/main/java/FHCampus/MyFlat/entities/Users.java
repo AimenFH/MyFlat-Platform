@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.entities;
+package fhcampus.myflat.entities;
 
-import FHCampus.MyFlat.dtos.UserDto;
-import FHCampus.MyFlat.enums.UserRole;
+import fhcampus.myflat.dtos.UserDto;
+import fhcampus.myflat.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

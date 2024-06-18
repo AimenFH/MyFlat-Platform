@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.services.auth;
+package fhcampus.myflat.services.auth;
 
-import FHCampus.MyFlat.dtos.SignupRequest;
-import FHCampus.MyFlat.dtos.UserDto;
+import fhcampus.myflat.dtos.SignupRequest;
+import fhcampus.myflat.dtos.UserDto;
 
 public interface AuthService {
 

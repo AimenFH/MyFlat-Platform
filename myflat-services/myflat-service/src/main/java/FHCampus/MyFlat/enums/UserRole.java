@@ -1,4 +1,4 @@
-package FHCampus.MyFlat.enums;
+package fhcampus.myflat.enums;
 
 public enum UserRole {
 

@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.repositories;
+package fhcampus.myflat.repositories;
 
-import FHCampus.MyFlat.entities.Apartment;
-import FHCampus.MyFlat.entities.BookApartment;
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.BookApartment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.entities;
+package fhcampus.myflat.entities;
 
-import FHCampus.MyFlat.dtos.PropertyDto;
+import fhcampus.myflat.dtos.PropertyDto;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

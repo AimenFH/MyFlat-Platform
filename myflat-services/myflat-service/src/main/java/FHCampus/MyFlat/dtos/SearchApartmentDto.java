@@ -1,4 +1,4 @@
-package FHCampus.MyFlat.dtos;
+package fhcampus.myflat.dtos;
 
 import lombok.Data;
 

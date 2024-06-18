@@ -1,7 +1,7 @@
-package FHCampus.MyFlat.configurations;
+package fhcampus.myflat.configurations;
 
-import FHCampus.MyFlat.enums.UserRole;
-import FHCampus.MyFlat.services.jwt.UserService;
+import fhcampus.myflat.enums.UserRole;
+import fhcampus.myflat.services.jwt.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

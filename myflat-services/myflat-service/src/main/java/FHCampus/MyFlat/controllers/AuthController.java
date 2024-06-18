@@ -1,11 +1,11 @@
-package FHCampus.MyFlat.controllers;
+package fhcampus.myflat.controllers;
 
-import FHCampus.MyFlat.dtos.AuthenticationRequest;
-import FHCampus.MyFlat.dtos.AuthenticationResponse;
-import FHCampus.MyFlat.entities.Users;
-import FHCampus.MyFlat.repositories.UserRepository;
-import FHCampus.MyFlat.services.jwt.UserService;
-import FHCampus.MyFlat.utils.JwtUtil;
+import fhcampus.myflat.dtos.AuthenticationRequest;
+import fhcampus.myflat.dtos.AuthenticationResponse;
+import fhcampus.myflat.entities.Users;
+import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.services.jwt.UserService;
+import fhcampus.myflat.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

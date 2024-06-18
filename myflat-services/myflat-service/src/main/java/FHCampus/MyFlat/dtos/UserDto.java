@@ -1,6 +1,6 @@
-package FHCampus.MyFlat.dtos;
+package fhcampus.myflat.dtos;
 
-import FHCampus.MyFlat.enums.UserRole;
+import fhcampus.myflat.enums.UserRole;
 import lombok.Data;
 
 @Data

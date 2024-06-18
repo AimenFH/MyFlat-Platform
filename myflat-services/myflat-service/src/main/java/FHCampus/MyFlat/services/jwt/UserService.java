@@ -1,4 +1,4 @@
-package FHCampus.MyFlat.services.jwt;
+package fhcampus.myflat.services.jwt;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
