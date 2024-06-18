@@ -29,6 +29,7 @@ function NavigationMenu() {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/" className="nav-link">Home</Nav.Link>
               {!user && <Nav.Link as={Link} to="/login" className="nav-link">Login</Nav.Link>}
+              {!user && <Nav.Link as={Link} to="/registerPropertyMgmt" className="nav-link">Register</Nav.Link>}
               {user && (
                   <>
                     <Nav.Link as={Link} to="/communication" className="nav-link">Communication</Nav.Link>
