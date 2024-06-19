@@ -1,5 +1,6 @@
 package fhcampus.myflat.services.propertymanagement;
 
+import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.BookApartment;
 import fhcampus.myflat.entities.Property;
@@ -7,7 +8,6 @@ import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.BookApartmentRepository;
 import fhcampus.myflat.repositories.PropertyRepository;
-import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
