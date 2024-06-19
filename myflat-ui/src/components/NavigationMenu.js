@@ -1,16 +1,20 @@
+// NavigationMenu.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Ensure this path is correct
+import { useAuth } from './AuthContext';
+import { useDarkMode } from '../DarkModeContext';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import './styles/NavigationMenu.css'; // Ensure the path to your CSS file is correct
+import './styles/NavigationMenu.css';
 
 function NavigationMenu() {
   const { user, logout } = useAuth();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const navigate = useNavigate();
 
+  console.log("Dark mode in NavigationMenu:", isDarkMode);
   const handleLogout = () => {
     logout();
-    navigate('/login'); // Redirects the user to the login page after logout
+    navigate('/login');
   };
 
   return (
@@ -18,8 +22,8 @@ function NavigationMenu() {
         <Container>
           <Navbar.Brand as={Link} to="/" className="navbar-brand">
             <img
-                src="/myFlatLogo.png" // Update this path to your actual logo
-                className="logo" // Use class for styling
+                src="/myFlatLogo.png"
+                className="logo"
                 alt="MyFlat Management Logo"
             />
             MyFlat Management
@@ -45,7 +49,11 @@ function NavigationMenu() {
                 <Button variant="outline-primary" className="logout-button" onClick={handleLogout}>Logout</Button>
             )}
             <Navbar.Text className="ms-3 logged-in-info">
-              Logged in as: <strong>{user ? `${user.username} (${user.role === 'PROPERTY_MANAGEMENT' ? 'Property Management' : 'Tenant'})` : 'N/A'}</strong>            </Navbar.Text>
+              Logged in as: <strong>{user ? `${user.username} (${user.role === 'PROPERTY_MANAGEMENT' ? 'Property Management' : 'Tenant'})` : 'N/A'}</strong>
+            </Navbar.Text>
+            <Button variant="outline-secondary" onClick={toggleDarkMode}>
+              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
