@@ -76,13 +76,18 @@ const MaintenancePageTenant = () => {
                     ))}
                 </select>
 
-                <label htmlFor="location">Location:</label>
-                <input
-                    id="location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    required
-                />
+                <Form.Group className="mb-3">
+                    <Form.Label>Location:</Form.Label>
+                    <DropdownButton
+                        id="dropdown-item-button-location"
+                        title={location ? location.replace(/_/g, ' ') : "Select Location"}
+                        onSelect={(e) => setLocation(e)}
+                        variant="secondary"
+                    >
+                        <Dropdown.Item eventKey="COMMON_AREA">Common Area</Dropdown.Item>
+                        <Dropdown.Item eventKey="RENTAL_PROPERTY">Rental Property</Dropdown.Item>
+                    </DropdownButton>
+                </Form.Group>
 
                 <Form.Group className="mb-3">
                     <Form.Label>Category:</Form.Label>
