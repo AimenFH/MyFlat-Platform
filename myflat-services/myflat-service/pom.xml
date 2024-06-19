@@ -9,12 +9,13 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>stud.fhcampuswien.</groupId>
-<artifactId>carRental</artifactId>
+<artifactId>myFlat</artifactId>
 <version>0.0.1-SNAPSHOT</version>
-<name>carRental</name>
-<description>A apartment rental project in Java designed for a master&apos;s program at FH Campus Wien would involve developing a comprehensive software application to manage apartment rentals. This application would include features for customers to book vehicles, administrators to manage vehicle inventory</description>
 	<properties>
 		<java.version>17</java.version>
+
+		<!-- Coverage configuration -->
+		<jacoco.maven.version>0.8.12</jacoco.maven.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -103,6 +104,32 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<!-- Required for generating coverage report -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.maven.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/ui/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+
 			</plugin>
 		</plugins>
 	</build>

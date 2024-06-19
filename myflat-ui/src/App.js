@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
-import RegisterPageTenant from './components/propertyManagement/RegisterPageTenant';
+import RegisterPageTenant from './components/RegisterPageTenant';
 import RegisterPagePropertyMgmt from './components/RegisterPagePropertyMgmt';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import CommunicationPageTenant from './components/tenant/CommunicationPageTenant';
@@ -30,14 +30,14 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registerTenant" element={<RegisterPageTenant />} />
           <Route path="/registerPropertyMgmt" element={<RegisterPagePropertyMgmt />} />
-          <Route path="/communication" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><CommunicationPage /></ProtectedRoute>} />
-          <Route path="/documents" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><DocumentPage /></ProtectedRoute>} />
-          <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['tenant', 'propmgmt']}><MaintenancePage /></ProtectedRoute>} />
-          <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['propmgmt']}><ManageProperties /></ProtectedRoute>} />
-          <Route path="/keys" element={<ProtectedRoute allowedRoles={['propmgmt']}><KeyPage /></ProtectedRoute>} />
-          <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['propmgmt']}><ManageApartments /></ProtectedRoute>} />
-          <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['propmgmt']}><EditApartment /></ProtectedRoute>} />
-          <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['propmgmt']}><KeyPage /></ProtectedRoute>} />
+          <Route path="/communication" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><CommunicationPage /></ProtectedRoute>} />
+          <Route path="/documents" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><DocumentPage /></ProtectedRoute>} />
+          <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><MaintenancePage /></ProtectedRoute>} />
+          <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageProperties /></ProtectedRoute>} />
+          <Route path="/keys" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
+          <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
+          <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
+          <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
 
         </Routes>
       </AuthProvider>
@@ -48,22 +48,22 @@ const App = () => {
 const Home = () => {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" />;
-  return user.role === 'tenant' ? <HomePageTenant /> : <HomePagePropertyMgmt />;
+  return user.role === 'TENANT' ? <HomePageTenant /> : <HomePagePropertyMgmt />;
 };
 
 const DocumentPage = () => {
   const { user } = useAuth();
-  return user.role === 'tenant' ? <DocumentPageTenant /> : <DocumentPagePropMgmt />;
+  return user.role === 'TENANT' ? <DocumentPageTenant /> : <DocumentPagePropMgmt />;
 };
 
 const MaintenancePage = () => {
   const { user } = useAuth();
-  return user.role === 'tenant' ? <MaintenancePageTenant /> : <MaintenancePagePropMgmt />;
+  return user.role === 'TENANT' ? <MaintenancePageTenant /> : <MaintenancePagePropMgmt />;
 };
 
 const CommunicationPage = () => {
   const { user } = useAuth();
-  return user.role === 'tenant' ? <CommunicationPageTenant /> : <CommunicationPagePropMgmt />;
+  return user.role === 'TENANT' ? <CommunicationPageTenant /> : <CommunicationPagePropMgmt />;
 };
 
 // ProtectedRoute Komponente ist hier definiert, um den Zugriff basierend auf erlaubten Rollen zu steuern
