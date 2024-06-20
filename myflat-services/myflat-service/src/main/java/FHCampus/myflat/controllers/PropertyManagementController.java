@@ -138,5 +138,10 @@ public class PropertyManagementController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
+
+    @GetMapping(value = "/v1/defects")
+    public List<DefectDto> getAllDefects() {
+        return defectService.getAllDefects();
+    }
     // endregion
 }

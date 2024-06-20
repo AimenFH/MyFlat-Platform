@@ -1,9 +1,11 @@
 package fhcampus.myflat.dtos;
 
 
+import fhcampus.myflat.entities.Defect;
 import fhcampus.myflat.enums.DefectCategory;
 import fhcampus.myflat.enums.DefectLocation;
 import fhcampus.myflat.enums.DefectStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Past;
@@ -28,4 +30,15 @@ public class DefectDto {
     private DefectCategory category;
 
     private DefectLocation location;
+
+    public DefectDto(Defect defect) {
+        this.id = defect.getId();
+        this.description = defect.getDescription();
+        this.timestamp = defect.getTimestamp();
+        this.userId = defect.getUser().getId();
+        this.apartmentId = defect.getApartment().getId();
+        this.status = defect.getStatus();
+        this.category = defect.getCategory();
+        this.location = defect.getLocation();
+    }
 }
