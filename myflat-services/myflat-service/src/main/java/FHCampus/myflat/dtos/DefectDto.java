@@ -7,10 +7,12 @@ import fhcampus.myflat.enums.DefectLocation;
 import fhcampus.myflat.enums.DefectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Past;
 import java.util.Date;
 
+@NoArgsConstructor
 @Data
 public class DefectDto {
 
