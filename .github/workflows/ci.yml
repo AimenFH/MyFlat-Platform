@@ -29,14 +29,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Change directory
-        run: cd myflat-services/myflat-service
-
-      - name: pwd
-        run: pwd
-
       - name: Build with Maven
-        run: mvn -B clean install
+        run: mvn -B -f myflat-services/myflat-service/pom.xml clean install
 
       - name: Run unit tests
-        run: mvn test
+        run: mvn -f myflat-services/myflat-service/pom.xml test
