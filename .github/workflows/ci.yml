@@ -1,11 +1,3 @@
-name: Java CI with Maven
-
-on:
-  push:
-    branches: [ "ci" ]
-  pull_request:
-    branches: [ "ci" ]
-
 jobs:
   build:
 
@@ -28,6 +20,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Change directory
+        run: cd myflat-services/myflat-service
 
       - name: Build with Maven
         run: mvn -B clean install
