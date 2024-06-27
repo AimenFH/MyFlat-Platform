@@ -29,6 +29,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Change directory
+        run: cd myflat-services/myflat-service
+
       - name: pwd
         run: pwd
 
