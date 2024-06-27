@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Change directory
-        run: cd myflat-services/myflat-service
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -31,6 +28,9 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Change directory
+        run: cd myflat-services/myflat-service
 
       - name: Build with Maven
         run: mvn -B clean install
