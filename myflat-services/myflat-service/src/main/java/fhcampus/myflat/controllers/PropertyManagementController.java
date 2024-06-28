@@ -1,7 +1,13 @@
 package fhcampus.myflat.controllers;
 
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.KeyManagement;
+import fhcampus.myflat.entities.User;
+import fhcampus.myflat.repositories.ApartmentRepository;
+import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.KeyManagementRepository;
+import fhcampus.myflat.repositories.UserRepository;
 import fhcampus.myflat.services.KeyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
@@ -9,6 +15,7 @@ import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
 import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +35,14 @@ public class PropertyManagementController {
     private final TenantService tenantService;
     private final DefectService defectService;
     private final KeyManagementService keyManagementService;
+    @Autowired
+    private DocumentRepository documentRepository;
+
+    @Autowired
+    private ApartmentRepository apartmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // region Property Section
     @PostMapping("/v1/property")
@@ -204,5 +219,48 @@ public class PropertyManagementController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+
+    ///Document
+
+    @PostMapping("/v1/document")
+    public ResponseEntity<Object> createDocument(@RequestBody DocumentDto documentDto) {
+        Optional<Apartment> apartment = apartmentRepository.findById(documentDto.getApartmentId());
+        Optional<User> user = userRepository.findById(documentDto.getUserId());
+        if (apartment.isPresent() && user.isPresent()) {
+            Document document = new Document();
+            document.setApartment(apartment.get());
+            document.setTitle(documentDto.getTitle());
+            document.setContent(documentDto.getContent());
+            document.setArchived(documentDto.isArchived());
+            document.setUser(user.get());
+            Document savedDocument = documentRepository.save(document);
+            return new ResponseEntity<>(savedDocument.documentDto(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
+    }
+
+
+    @GetMapping("/v1/document")
+    public ResponseEntity<Object> getAllDocuments() {
+        List<Document> documents = documentRepository.findAll();
+        return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/v1/document/{apartmentId}/{documentId}")
+    public ResponseEntity<Object> updateDocumentState(@PathVariable Long apartmentId, @PathVariable Long documentId, @RequestBody DocumentDto documentDto) {
+        List<Document> documents = documentRepository.findAll();
+        Optional<Document> apartmentDocument = documents.stream()
+                .filter(document -> document.getApartment().getId().equals(apartmentId) && document.getId().equals(documentId))
+                .findFirst();
+
+        if (apartmentDocument.isPresent()) {
+            Document document = apartmentDocument.get();
+            document.setArchived(documentDto.isArchived());
+            Document updatedDocument = documentRepository.save(document);
+            return new ResponseEntity<>(updatedDocument.documentDto(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Document not found for the given apartment", HttpStatus.NOT_FOUND);
+    }
 
 }

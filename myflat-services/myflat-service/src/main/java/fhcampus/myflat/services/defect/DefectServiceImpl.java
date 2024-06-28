@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,4 +32,29 @@ public class DefectServiceImpl implements DefectService {
         Defect newDefect = new Defect(defectDto, image, user, apartment);
         defectRepository.save(newDefect);
     }
+
+
+
+    @Override
+    public List<DefectDto> getDefectsByUserId(Long userId) {
+        List<Defect> defects = defectRepository.findByUserId(userId);
+        return defects.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private DefectDto convertToDto(Defect defect) {
+        DefectDto defectDto = new DefectDto();
+        defectDto.setId(defect.getId());
+        defectDto.setDescription(defect.getDescription());
+        defectDto.setTimestamp(defect.getTimestamp());
+        defectDto.setUserId(defect.getUser().getId());
+        defectDto.setApartmentId(defect.getApartment().getId());
+        defectDto.setStatus(defect.getStatus());
+        defectDto.setCategory(defect.getCategory());
+        defectDto.setLocation(defect.getLocation());
+        return defectDto;
+    }
+
+
 }

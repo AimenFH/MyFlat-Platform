@@ -17,11 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByUserRole(UserRole userRole);
 
 
-
-
-    @Query("SELECT u FROM User u JOIN u.bookApartments b WHERE b.property.id = :propertyId")
-    List<User> findUsersByPropertyId(@Param("propertyId") Long propertyId);
-
-    @Query("SELECT u FROM User u JOIN u.bookApartments b WHERE b.top = :top AND b.property.id = :propertyId")
-    List<User> findUsersByTopAndPropertyId(@Param("top") Long top, @Param("propertyId") Long propertyId);
 }

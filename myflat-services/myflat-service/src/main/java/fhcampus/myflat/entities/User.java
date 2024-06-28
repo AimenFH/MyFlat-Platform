@@ -44,6 +44,8 @@ public class User implements UserDetails {
 
 
 
+
+
     private String phoneNumber;
 
     public User(String name, String email, String password, UserRole userRole, String phoneNumber) {
@@ -99,5 +101,8 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<BookApartment> bookApartments;
+
+    @OneToMany(mappedBy = "user")
+    private List<Document> documents;
 
 }

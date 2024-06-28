@@ -9,7 +9,7 @@ public class ApartmentDto {
 
     private Long id;
 
-    private int number;
+    private Integer number;
 
     private int floor;
 

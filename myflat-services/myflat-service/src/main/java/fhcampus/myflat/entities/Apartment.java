@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -44,6 +45,10 @@ public class Apartment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Property property;
+
+
+    @OneToMany(mappedBy = "apartment")
+    private List<Document> documents;
 
     public ApartmentDto getApartmentDto() {
         ApartmentDto apartmentDto = new ApartmentDto();
