@@ -25,4 +25,5 @@ public interface PropertyManagementService {
 
     ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto);
 
+    boolean distributeNotification(DistributionRequestDto distributionRequestDto);
 }

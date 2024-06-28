@@ -20,5 +20,7 @@ public class BookApartmentDto {
 
     private Long propertyId;
 
+    private Long top;
+
     private BookApartmentStatus bookApartmentStatus;
 }

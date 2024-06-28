@@ -60,6 +60,7 @@ public class TenantServiceImpl implements TenantService {
             bookApartment.setFromDate(bookApartmentDto.getFromDate());
             bookApartment.setToDate(bookApartmentDto.getToDate());
             bookApartment.setBookApartmentStatus(BookApartmentStatus.CURRENTENANT);
+            bookApartment.setTop(bookApartmentDto.getTop());
             bookApartmentRepository.save(bookApartment);
 
             return new BookingResult(true, "Booking successful.");

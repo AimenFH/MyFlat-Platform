@@ -1,18 +1,16 @@
 package fhcampus.myflat.services.propertymanagement;
 
-import fhcampus.myflat.entities.Apartment;
-import fhcampus.myflat.entities.BookApartment;
-import fhcampus.myflat.entities.Property;
+import fhcampus.myflat.entities.*;
 import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.ApartmentRepository;
-import fhcampus.myflat.repositories.BookApartmentRepository;
-import fhcampus.myflat.repositories.PropertyRepository;
+import fhcampus.myflat.repositories.*;
 import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +22,8 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     private final ApartmentRepository apartmentRepository;
     private final PropertyRepository propertyRepository;
     private final BookApartmentRepository bookApartmentRepository;
+    private UserRepository userRepository;
+
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
@@ -131,4 +131,40 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return carDtoList;
     }
 
+
+
+    @Override
+    public boolean distributeNotification(DistributionRequestDto distributionRequestDto) {
+        try {
+            Message message = new Message();
+            message.setMessage(distributionRequestDto.getMessage());
+            if (distributionRequestDto.getDocument() != null) {
+                message.setDocument(distributionRequestDto.getDocument().getBytes());
+            }
+
+            List<BookApartment> users;
+            if (distributionRequestDto.getBuildingId() == null && distributionRequestDto.getTopId() == null) {
+                users = bookApartmentRepository.findAllUserIds();
+            } else if (distributionRequestDto.getBuildingId() != null && distributionRequestDto.getTopId() == null) {
+                users = bookApartmentRepository.findUserIdsByPropertyId(distributionRequestDto.getBuildingId());
+            } else {
+                users = bookApartmentRepository.findUserIdsByPropertyIdAndTop(distributionRequestDto.getBuildingId(), distributionRequestDto.getTopId());
+            }
+
+            for (BookApartment userApp : users) {
+                Long userId = userApp.getUser().getId();
+                Optional<User> userOptional = userRepository.findById(userId);
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    user.getMessages().add(message);
+                    userRepository.save(user);
+                }
+            }
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

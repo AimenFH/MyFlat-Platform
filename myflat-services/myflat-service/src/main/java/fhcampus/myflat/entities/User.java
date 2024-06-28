@@ -27,23 +27,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+
     @Size(max = 20)
     private String name;
 
-    @NotBlank
+
     @Size(max = 50)
     @Email
     private String email;
 
-    @NotBlank
+
     @Size(max = 120)
     private String password;
 
     private UserRole userRole;
 
-    @NotBlank(message = "AgentNumber cannot be blank")
-    @Column(name = "phoneNumber", nullable = false)
+
+
     private String phoneNumber;
 
     public User(String name, String email, String password, UserRole userRole, String phoneNumber) {
@@ -93,5 +93,11 @@ public class User implements UserDetails {
         userDto.setUserRole(userRole);
         return userDto;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Message> messages;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookApartment> bookApartments;
 
 }

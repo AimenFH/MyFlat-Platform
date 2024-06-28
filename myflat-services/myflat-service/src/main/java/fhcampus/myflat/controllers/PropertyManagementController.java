@@ -139,4 +139,13 @@ public class PropertyManagementController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
     // endregion
+
+
+    @PostMapping("/v1/distribute")
+    public ResponseEntity<?> distributeNotification(@RequestBody DistributionRequestDto distributionRequestDto) {
+        boolean success = propertyManagementService.distributeNotification(distributionRequestDto);
+        if (success)
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }

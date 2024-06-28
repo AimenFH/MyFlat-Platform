@@ -36,6 +36,10 @@ public class BookApartment {
     @Size(max = 50)
     private Integer amount;
 
+    @NotBlank(message = "floor cannot be blank")
+    @Column(name = "top", nullable = false)
+    private Long top;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -57,6 +61,7 @@ public class BookApartment {
 
     private BookApartmentStatus bookApartmentStatus;
 
+
     public BookApartmentDto getBookApartmentDto() {
         BookApartmentDto bookApartmentDto = new BookApartmentDto();
         bookApartmentDto.setId(id);
@@ -66,6 +71,7 @@ public class BookApartment {
         bookApartmentDto.setUserId(user.getId());
         bookApartmentDto.setPropertyId(apartment.getId());
         bookApartmentDto.setBookApartmentStatus(bookApartmentStatus);
+        bookApartmentDto.setTop(top);
         return bookApartmentDto;
     }
 }
