@@ -1,5 +1,8 @@
 package fhcampus.myflat.controllers;
 
+import fhcampus.myflat.entities.KeyManagement;
+import fhcampus.myflat.repositories.KeyManagementRepository;
+import fhcampus.myflat.services.KeyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class PropertyManagementController {
     private final AuthService authService;
     private final TenantService tenantService;
     private final DefectService defectService;
+    private final KeyManagementService keyManagementService;
 
     // region Property Section
     @PostMapping("/v1/property")
@@ -138,7 +143,7 @@ public class PropertyManagementController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
-    // endregion
+    //////////////////////////// distribute
 
 
     @PostMapping("/v1/distribute")
@@ -148,4 +153,56 @@ public class PropertyManagementController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    //////////////////////////// Key Management
+
+    private  KeyManagementRepository keyManagementRepository;
+    @PostMapping("/v1/key-management")
+    public ResponseEntity<?> createKeyManagement(@RequestBody KeyManagementDto keyManagementDto) {
+        boolean success = keyManagementService.createKeyManagement(keyManagementDto);
+        if (success) return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/v1/key-management")
+    public ResponseEntity<List<KeyManagementDto>> getAllKeyManagements() {
+        List<KeyManagementDto> keyManagementDtos = keyManagementService.getAllKeyManagements();
+        return ResponseEntity.ok(keyManagementDtos);
+    }
+
+    @GetMapping("/v1/key-management/{id}")
+    public ResponseEntity<KeyManagementDto> getKeyManagementById(@PathVariable Long id) {
+        KeyManagementDto keyManagementDto = keyManagementService.getKeyManagementById(id);
+        if (keyManagementDto != null) return ResponseEntity.ok(keyManagementDto);
+        return ResponseEntity.notFound().build();
+    }
+
+
+    @PutMapping("/v1/key-management")
+    public ResponseEntity<String> updateKeyManagementByUserId(@RequestParam Integer userId, @RequestBody KeyManagementDto keyManagementDto) {
+        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
+        if (keyManagements.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        for (KeyManagement existingKeyManagement : keyManagements) {
+            existingKeyManagement.setIssuanceDate(keyManagementDto.getIssuanceDate());
+            existingKeyManagement.setRedemptionDate(keyManagementDto.getRedemptionDate());
+            existingKeyManagement.setReplacementRequested(keyManagementDto.isReplacementRequested());
+            existingKeyManagement.setKeysNumber(keyManagementDto.getKeysNumber());
+        }
+        keyManagementRepository.saveAll(keyManagements);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/v1/key-management")
+    public ResponseEntity<String> deleteKeyManagementByUserId(@RequestParam Integer userId) {
+        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
+        if (keyManagements.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        keyManagementRepository.deleteAll(keyManagements);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
 }
