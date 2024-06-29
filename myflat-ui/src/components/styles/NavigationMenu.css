@@ -1,7 +1,8 @@
+/**
 .navbar-custom {
-    background-color: #E3F2FD; /* Custom background color */
-    /* Add more custom navbar styles here */
+    background-color: #E3F2FD;
 }
+**/
 
 .logo {
     width: 60px; /* Logo width */
@@ -34,3 +35,4 @@
     color: #fff; / Textfarbe beim Hover /
     transform: scale(1.05); / Button leicht vergrößern beim Hover, um Benutzerfreundlichkeit zu erhöhen */
 }
+

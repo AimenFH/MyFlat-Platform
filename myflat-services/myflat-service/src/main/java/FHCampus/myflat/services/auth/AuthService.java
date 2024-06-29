@@ -4,6 +4,7 @@ import fhcampus.myflat.dtos.AuthenticationRequest;
 import fhcampus.myflat.dtos.AuthenticationResponse;
 import fhcampus.myflat.dtos.SignupRequest;
 import fhcampus.myflat.dtos.UserDto;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface AuthService {
 

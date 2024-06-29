@@ -1,5 +1,6 @@
 package fhcampus.myflat.controllers;
 
+import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.KeyManagement;
@@ -13,7 +14,6 @@ import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
-import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -171,7 +171,7 @@ public class PropertyManagementController {
 
     //////////////////////////// Key Management
 
-    private  KeyManagementRepository keyManagementRepository;
+    private KeyManagementRepository keyManagementRepository;
     @PostMapping("/v1/key-management")
     public ResponseEntity<?> createKeyManagement(@RequestBody KeyManagementDto keyManagementDto) {
         boolean success = keyManagementService.createKeyManagement(keyManagementDto);
@@ -263,4 +263,10 @@ public class PropertyManagementController {
         return new ResponseEntity<>("Document not found for the given apartment", HttpStatus.NOT_FOUND);
     }
 
+
+    @GetMapping(value = "/v1/defects")
+    public List<DefectDto> getAllDefects() {
+        return defectService.getAllDefects();
+    }
+    // endregion
 }

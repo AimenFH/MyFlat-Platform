@@ -1,7 +1,7 @@
 package fhcampus.myflat.dtos;
 
-import fhcampus.myflat.enums.UserRole;
 import fhcampus.myflat.entities.User;
+import fhcampus.myflat.enums.UserRole;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

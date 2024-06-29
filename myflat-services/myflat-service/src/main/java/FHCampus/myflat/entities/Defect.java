@@ -1,5 +1,4 @@
 package fhcampus.myflat.entities;
-
 import fhcampus.myflat.dtos.DefectDto;
 import fhcampus.myflat.enums.DefectCategory;
 import fhcampus.myflat.enums.DefectLocation;
@@ -17,14 +16,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Date;
+
 
 @Entity
 @NoArgsConstructor
 @Data
 @Table(name = "defect")
 public class Defect {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,9 +35,9 @@ public class Defect {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Past(message = "Timestamp cannot be blank")
+    @Past(message = "timestamp cannot be blank")
     @NonNull
-    @Column(name = "timestamp", nullable = false)
+    @Column(name = "Timestamp", nullable = false)
     private Date timestamp;
 
     @Column(columnDefinition = "longblob")
@@ -61,8 +61,6 @@ public class Defect {
 
     private DefectLocation location;
 
-    private LocalDateTime reportedAt;
-
     public Defect(DefectDto defectDto, MultipartFile image, User user, Apartment apartment) throws IOException {
         this.description = defectDto.getDescription();
         this.timestamp = defectDto.getTimestamp();
@@ -73,4 +71,5 @@ public class Defect {
         this.category = defectDto.getCategory();
         this.location = defectDto.getLocation();
     }
+
 }

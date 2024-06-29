@@ -1,5 +1,6 @@
 package fhcampus.myflat.services.propertymanagement;
 
+import fhcampus.myflat.services.propertymanagement.PropertyManagementServiceImpl;
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.BookApartment;

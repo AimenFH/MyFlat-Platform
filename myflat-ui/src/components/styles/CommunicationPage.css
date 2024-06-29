@@ -45,4 +45,12 @@
   .button-link:hover {
     text-decoration: underline;
   }
-  
+
+.communication-page {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--communication-page-bg);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--communication-page-shadow);
+}
