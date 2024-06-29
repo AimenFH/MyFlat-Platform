@@ -1,6 +1,5 @@
 package fhcampus.myflat.services.propertymanagement;
 
-import fhcampus.myflat.services.propertymanagement.PropertyManagementServiceImpl;
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.BookApartment;
@@ -83,8 +82,8 @@ class PropertyManagementServiceImplTest {
     void getAllApartmentsReturnsExpectedList() {
         Property mockProperty = new Property(1L, "Property Name", "Property Address",
                 3, 9);
-        Apartment mockApartment1 = new Apartment(1L, 1, 1, 100f, 500, mockProperty);
-        Apartment mockApartment2 = new Apartment(2L, 2, 1, 100f, 500, mockProperty);
+        Apartment mockApartment1 = new Apartment(1L, 1, 1, 100f, 500, mockProperty, null);
+        Apartment mockApartment2 = new Apartment(2L, 2, 1, 100f, 500, mockProperty, null);
         when(apartmentRepository.findAll()).thenReturn(List.of(mockApartment1, mockApartment2));
 
         List<ApartmentDto> result = propertyManagementService.getAllApartments();
@@ -109,7 +108,7 @@ class PropertyManagementServiceImplTest {
     void getApartmentByIdReturnsExpectedApartment() {
         Property mockProperty = new Property(1L, "Property Name", "Property Address",
                 3, 9);
-        Apartment mockApartment = new Apartment(1L, 1, 1, 100f, 500, mockProperty);
+        Apartment mockApartment = new Apartment(1L, 1, 1, 100f, 500, mockProperty, null);
         when(apartmentRepository.findById(1L)).thenReturn(Optional.of(mockApartment));
 
         ApartmentDto result = propertyManagementService.getApartmentById(1L);
@@ -131,7 +130,7 @@ class PropertyManagementServiceImplTest {
 
     @Test
     void updateApartmentSuccessfully() {
-        Apartment existingApartment = new Apartment(1L, 1, 1, 100f, 500, new Property());
+        Apartment existingApartment = new Apartment(1L, 1, 1, 100f, 500, new Property(), null);
         ApartmentDto apartmentDto = new ApartmentDto(1L, 2, 2, 200f, 1000, 1L);
 
         when(apartmentRepository.findById(1L)).thenReturn(Optional.of(existingApartment));
@@ -238,9 +237,9 @@ class PropertyManagementServiceImplTest {
 
     @Test
     void getBookingsReturnsExpectedList() {
-        BookApartment mockBooking1 = new BookApartment(1L, new Date(), new Date(), 1, new User(),
+        BookApartment mockBooking1 = new BookApartment(1L, new Date(), new Date(), 1, 1L, new User(),
                 new Apartment(), new Property(), BookApartmentStatus.CURRENTENANT);
-        BookApartment mockBooking2 = new BookApartment(2L, new Date(), new Date(), 1, new User(),
+        BookApartment mockBooking2 = new BookApartment(2L, new Date(), new Date(), 1, 1L, new User(),
                 new Apartment(), new Property(), BookApartmentStatus.FORMERTENANT);
         when(bookApartmentRepository.findAll()).thenReturn(List.of(mockBooking1, mockBooking2));
 
@@ -267,8 +266,8 @@ class PropertyManagementServiceImplTest {
     @Test
     void searchApartmentReturnsExpectedList() {
         SearchApartmentDto searchApartmentDto = new SearchApartmentDto(1, 1, 100f, 500);
-        Apartment mockApartment1 = new Apartment(1L, 1, 1, 100f, 500, new Property());
-        Apartment mockApartment2 = new Apartment(2L, 2, 1, 100f, 500, new Property());
+        Apartment mockApartment1 = new Apartment(1L, 1, 1, 100f, 500, new Property(), null);
+        Apartment mockApartment2 = new Apartment(2L, 2, 1, 100f, 500, new Property(), null);
         when(apartmentRepository.findAll(any(Example.class))).thenReturn(List.of(mockApartment1, mockApartment2));
 
         ApartmentDtoList result = propertyManagementService.searchApartment(searchApartmentDto);
