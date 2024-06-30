@@ -3,15 +3,12 @@ package fhcampus.myflat.dtos;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Data
 public class DistributionRequestDto {
 
-        private String message;
-        private MultipartFile document;
-        private Long buildingId;
-        private Long topId;
-
-
+    private String massage;
+    private MultipartFile document;
+    private Integer buildingId;
+    private Integer topId;
+    private String title;
 }

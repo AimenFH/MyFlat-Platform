@@ -1,9 +1,7 @@
 package fhcampus.myflat.controllers;
 
-import fhcampus.myflat.entities.Apartment;
-import fhcampus.myflat.entities.Document;
-import fhcampus.myflat.entities.KeyManagement;
-import fhcampus.myflat.entities.User;
+import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.entities.*;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.KeyManagementRepository;
@@ -13,7 +11,6 @@ import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
-import fhcampus.myflat.dtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +26,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/property-management")
 public class PropertyManagementController {
-
-    private final PropertyManagementService propertyManagementService;
-    private final AuthService authService;
-    private final TenantService tenantService;
-    private final DefectService defectService;
-    private final KeyManagementService keyManagementService;
+    @Autowired
+    private PropertyManagementService propertyManagementService;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private TenantService tenantService;
+    @Autowired
+    private DefectService defectService;
+    @Autowired
+    private KeyManagementService keyManagementService;
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -158,9 +159,8 @@ public class PropertyManagementController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
-    //////////////////////////// distribute
 
-
+    //////////////////////////// distribute notification
     @PostMapping("/v1/distribute")
     public ResponseEntity<?> distributeNotification(@RequestBody DistributionRequestDto distributionRequestDto) {
         boolean success = propertyManagementService.distributeNotification(distributionRequestDto);
@@ -169,9 +169,19 @@ public class PropertyManagementController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("v1/notifications")
+    public ResponseEntity<?> getNotifications(@RequestParam(required = false) Integer buildingId, @RequestParam(required = false) Integer topId) {
+        try {
+            List<Notifications> notifications = propertyManagementService.getNotifications(buildingId, topId);
+            return ResponseEntity.ok(notifications);
+        } catch (NoNotificationsFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     //////////////////////////// Key Management
 
-    private  KeyManagementRepository keyManagementRepository;
+    private KeyManagementRepository keyManagementRepository;
+
     @PostMapping("/v1/key-management")
     public ResponseEntity<?> createKeyManagement(@RequestBody KeyManagementDto keyManagementDto) {
         boolean success = keyManagementService.createKeyManagement(keyManagementDto);
@@ -219,9 +229,7 @@ public class PropertyManagementController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-
-    ///Document
-
+    /////////////////////Document
     @PostMapping("/v1/document")
     public ResponseEntity<Object> createDocument(@RequestBody DocumentDto documentDto) {
         Optional<Apartment> apartment = apartmentRepository.findById(documentDto.getApartmentId());

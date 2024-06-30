@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
@@ -41,9 +40,6 @@ public class User implements UserDetails {
     private String password;
 
     private UserRole userRole;
-
-
-
 
 
     private String phoneNumber;
@@ -97,12 +93,8 @@ public class User implements UserDetails {
     }
 
     @OneToMany(mappedBy = "user")
-    private List<Message> messages;
-
-    @OneToMany(mappedBy = "user")
     private List<BookApartment> bookApartments;
 
     @OneToMany(mappedBy = "user")
     private List<Document> documents;
-
 }

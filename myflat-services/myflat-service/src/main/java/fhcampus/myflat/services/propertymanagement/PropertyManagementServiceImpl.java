@@ -1,16 +1,22 @@
 package fhcampus.myflat.services.propertymanagement;
 
-import fhcampus.myflat.entities.*;
-import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.BookApartment;
+import fhcampus.myflat.entities.Notifications;
+import fhcampus.myflat.entities.Property;
+import fhcampus.myflat.enums.BookApartmentStatus;
+import fhcampus.myflat.repositories.ApartmentRepository;
+import fhcampus.myflat.repositories.BookApartmentRepository;
+import fhcampus.myflat.repositories.NotificationsRepository;
+import fhcampus.myflat.repositories.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,11 +25,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PropertyManagementServiceImpl implements PropertyManagementService {
 
-    private final ApartmentRepository apartmentRepository;
-    private final PropertyRepository propertyRepository;
-    private final BookApartmentRepository bookApartmentRepository;
-    private UserRepository userRepository;
-
+    @Autowired
+    private  ApartmentRepository apartmentRepository;
+    @Autowired
+    private  PropertyRepository propertyRepository;
+    @Autowired
+    private  BookApartmentRepository bookApartmentRepository;
+    @Autowired
+    private  NotificationsRepository notificationsRepository;
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
@@ -44,19 +53,19 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     @Override
     public boolean postApartment(ApartmentDto apartmentDto) {
 
-            Optional<Property> optionalProperty = propertyRepository.findById(apartmentDto.getPropertyId());
-            if (optionalProperty.isPresent()) {
-                Apartment apartment = new Apartment();
-                apartment.setId(apartmentDto.getId());
-                apartment.setNumber(apartmentDto.getNumber());
-                apartment.setFloor(apartmentDto.getFloor());
-                apartment.setArea(apartmentDto.getArea());
-                apartment.setPrice(apartmentDto.getPrice());
-                apartment.setProperty(optionalProperty.get());
-                apartmentRepository.save(apartment);
-                return true;
-            }
-                return false;
+        Optional<Property> optionalProperty = propertyRepository.findById(apartmentDto.getPropertyId());
+        if (optionalProperty.isPresent()) {
+            Apartment apartment = new Apartment();
+            apartment.setId(apartmentDto.getId());
+            apartment.setNumber(apartmentDto.getNumber());
+            apartment.setFloor(apartmentDto.getFloor());
+            apartment.setArea(apartmentDto.getArea());
+            apartment.setPrice(apartmentDto.getPrice());
+            apartment.setProperty(optionalProperty.get());
+            apartmentRepository.save(apartment);
+            return true;
+        }
+        return false;
     }
 
 
@@ -131,40 +140,42 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return carDtoList;
     }
 
-
-
     @Override
+    @JsonIgnore
     public boolean distributeNotification(DistributionRequestDto distributionRequestDto) {
         try {
-            Message message = new Message();
-            message.setMessage(distributionRequestDto.getMessage());
+            Notifications notifications = new Notifications();
+            notifications.setBuildingId(distributionRequestDto.getBuildingId());
+            notifications.setTopId(distributionRequestDto.getTopId());
+            notifications.setTitle(distributionRequestDto.getTitle());
+            notifications.setMassage(distributionRequestDto.getMassage());
+
             if (distributionRequestDto.getDocument() != null) {
-                message.setDocument(distributionRequestDto.getDocument().getBytes());
+                notifications.setDocument(distributionRequestDto.getDocument().getBytes());
             }
 
-            List<BookApartment> users;
-            if (distributionRequestDto.getBuildingId() == null && distributionRequestDto.getTopId() == null) {
-                users = bookApartmentRepository.findAllUserIds();
-            } else if (distributionRequestDto.getBuildingId() != null && distributionRequestDto.getTopId() == null) {
-                users = bookApartmentRepository.findUserIdsByPropertyId(distributionRequestDto.getBuildingId());
-            } else {
-                users = bookApartmentRepository.findUserIdsByPropertyIdAndTop(distributionRequestDto.getBuildingId(), distributionRequestDto.getTopId());
-            }
-
-            for (BookApartment userApp : users) {
-                Long userId = userApp.getUser().getId();
-                Optional<User> userOptional = userRepository.findById(userId);
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    user.getMessages().add(message);
-                    userRepository.save(user);
-                }
-            }
-
+            notificationsRepository.save(notifications);
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public List<Notifications> getNotifications(Integer buildingId, Integer topId) throws NoNotificationsFoundException {
+        List<Notifications> notifications;
+        if (buildingId != null && topId != null) {
+            notifications = notificationsRepository.findByBuildingIdAndTopId(buildingId, topId);
+        } else if (buildingId != null) {
+            notifications = notificationsRepository.findByBuildingId(buildingId);
+        } else {
+            notifications = notificationsRepository.findAll();
+        }
+
+        if (notifications.isEmpty()) {
+            throw new NoNotificationsFoundException("No notifications found for the given criteria");
+        }
+
+        return notifications;
     }
 }
