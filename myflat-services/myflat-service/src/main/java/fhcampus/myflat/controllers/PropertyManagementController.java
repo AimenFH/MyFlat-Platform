@@ -292,6 +292,23 @@ public class PropertyManagementController {
         return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
+    @DeleteMapping("/v1/document")
+    public ResponseEntity<Void> deleteAllDocuments() {
+        documentRepository.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/v1/document/{documentId}")
+    public ResponseEntity<?> deleteDocumentById(@PathVariable Long documentId) {
+        Optional<Document> document = documentRepository.findById(documentId);
+        if (document.isPresent()) {
+            documentRepository.deleteById(documentId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found");
+        }
+    }
+
     /////////////////////////////// defects
     @GetMapping(value = "/v1/defects")
     public List<DefectDto> getAllDefects() {
