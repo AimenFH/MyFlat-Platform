@@ -45,6 +45,9 @@ public class PropertyManagementController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private KeyManagementRepository keyManagementRepository;
+
     // region Property Section
     @PostMapping("/v1/property")
     public ResponseEntity<?> postProperty(@RequestBody PropertyDto propertyDto) {
@@ -178,12 +181,9 @@ public class PropertyManagementController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     //////////////////////////// Key Management
-
-    private KeyManagementRepository keyManagementRepository;
-
     @PostMapping("/v1/key-management")
-
     public ResponseEntity<?> createKeyManagement(@RequestBody KeyManagementDto keyManagementDto) {
         boolean success = keyManagementService.createKeyManagement(keyManagementDto);
         if (success) return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -196,26 +196,35 @@ public class PropertyManagementController {
         return ResponseEntity.ok(keyManagementDtos);
     }
 
-    @GetMapping("/v1/key-management/{id}")
-    public ResponseEntity<KeyManagementDto> getKeyManagementById(@PathVariable Long id) {
-        KeyManagementDto keyManagementDto = keyManagementService.getKeyManagementById(id);
-        if (keyManagementDto != null) return ResponseEntity.ok(keyManagementDto);
-        return ResponseEntity.notFound().build();
+    @GetMapping("/v1/key-management/user/{userId}")
+    public ResponseEntity<?> getKeyManagementByUserId(@PathVariable Integer userId) {
+        Optional<List<KeyManagementDto>> optionalKeyManagementDtos = keyManagementService.getKeyManagementByUserId(userId);
+        if (optionalKeyManagementDtos.isPresent()) {
+            return ResponseEntity.ok(optionalKeyManagementDtos.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
-
     @PutMapping("/v1/key-management")
-    public ResponseEntity<String> updateKeyManagementByUserId(@RequestParam Integer userId, @RequestBody KeyManagementDto keyManagementDto) {
-        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
+    public ResponseEntity<String> updateKeyManagementByUserId(@RequestBody KeyManagementDto keyManagementDto) {
+        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(keyManagementDto.getUserId());
         if (keyManagements.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        for (KeyManagement existingKeyManagement : keyManagements) {
-            existingKeyManagement.setIssuanceDate(keyManagementDto.getIssuanceDate());
-            existingKeyManagement.setRedemptionDate(keyManagementDto.getRedemptionDate());
-            existingKeyManagement.setReplacementRequested(keyManagementDto.isReplacementRequested());
-            existingKeyManagement.setKeysNumber(keyManagementDto.getKeysNumber());
-        }
+        keyManagements.forEach(keyManagement -> {
+            if (!keyManagement.getIssuanceDate().equals(keyManagementDto.getIssuanceDate())) {
+                keyManagement.setIssuanceDate(keyManagementDto.getIssuanceDate());
+            }
+            if (!keyManagement.getRedemptionDate().equals(keyManagementDto.getRedemptionDate())) {
+                keyManagement.setRedemptionDate(keyManagementDto.getRedemptionDate());
+            }
+            if (keyManagement.isReplacementRequested() != keyManagementDto.isReplacementRequested()) {
+                keyManagement.setReplacementRequested(keyManagementDto.isReplacementRequested());
+            }
+            if (!keyManagement.getKeysNumber().equals(keyManagementDto.getKeysNumber())) {
+                keyManagement.setKeysNumber(keyManagementDto.getKeysNumber());
+            }
+        });
         keyManagementRepository.saveAll(keyManagements);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

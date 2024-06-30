@@ -44,9 +44,15 @@ public class KeyManagementService {
                 .collect(Collectors.toList());
     }
 
-    public KeyManagementDto getKeyManagementById(Long id) {
-        Optional<KeyManagement> optionalKeyManagement = keyManagementRepository.findById(id);
-        return optionalKeyManagement.map(KeyManagement::getKeyManagementDto).orElse(null);
+    public Optional<List<KeyManagementDto>> getKeyManagementByUserId(Integer userId) {
+        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
+        if (keyManagements.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(keyManagements.stream()
+                .map(KeyManagement::getKeyManagementDto)
+                .collect(Collectors.toList()));
     }
+
 
 }
