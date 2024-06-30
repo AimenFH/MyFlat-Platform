@@ -246,7 +246,7 @@ public class PropertyManagementController {
                 Document document = new Document();
                 document.setApartment(apartment.get());
                 document.setTitle(documentDto.getTitle());
-                document.setDocument(documentDto.getDocument());
+                document.setContent(documentDto.getContent());
                 document.setArchived(documentDto.isArchived());
                 document.setUser(user.get());
                 Document savedDocument = documentRepository.save(document);
@@ -264,7 +264,7 @@ public class PropertyManagementController {
     @PutMapping("/v1/document/{apartmentId}/{documentId}")
     public ResponseEntity<Object> updateDocumentState(@PathVariable Long apartmentId, @PathVariable Long documentId, @RequestBody DocumentDto documentDto) {
         try {
-            byte[] fileContent = Base64.getDecoder().decode(documentDto.getDocument());
+            byte[] fileContent = Base64.getDecoder().decode(documentDto.getContent());
             List<Document> documents = documentRepository.findAll();
             Optional<Document> apartmentDocument = documents.stream()
                     .filter(document -> document.getApartment().getId().equals(apartmentId) && document.getId().equals(documentId))
@@ -273,7 +273,7 @@ public class PropertyManagementController {
             if (apartmentDocument.isPresent()) {
                 Document document = apartmentDocument.get();
                 document.setArchived(documentDto.isArchived());
-                document.setDocument(fileContent); // Use setDocument() instead of setContent()
+                document.setContent(fileContent);
                 Document updatedDocument = documentRepository.save(document);
                 return new ResponseEntity<>(updatedDocument.documentDto(), HttpStatus.OK);
             }
