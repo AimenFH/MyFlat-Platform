@@ -32,4 +32,8 @@ public interface BookApartmentRepository extends JpaRepository<BookApartment, Lo
 
     @Query("SELECT b.user.id FROM BookApartment b")
     List<Long> findAllUserIds();
+
+    @Query("SELECT b FROM BookApartment b WHERE b.user.id = :userId")
+    List<BookApartment> findByUserId(@Param("userId") Long userId);
+
 }

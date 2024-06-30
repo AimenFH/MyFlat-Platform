@@ -2,8 +2,11 @@ package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.*;
-import fhcampus.myflat.repositories.*;
-import fhcampus.myflat.services.KeyManagementService;
+import fhcampus.myflat.repositories.ApartmentRepository;
+import fhcampus.myflat.repositories.DocumentRepository;
+import fhcampus.myflat.repositories.KeyManagementRepository;
+import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.services.key.KeyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
@@ -287,6 +290,23 @@ public class PropertyManagementController {
     public ResponseEntity<Object> getAllDocuments() {
         List<Document> documents = documentRepository.findAll();
         return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/v1/document")
+    public ResponseEntity<Void> deleteAllDocuments() {
+        documentRepository.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/v1/document/{documentId}")
+    public ResponseEntity<?> deleteDocumentById(@PathVariable Long documentId) {
+        Optional<Document> document = documentRepository.findById(documentId);
+        if (document.isPresent()) {
+            documentRepository.deleteById(documentId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found");
+        }
     }
 
     /////////////////////////////// defects

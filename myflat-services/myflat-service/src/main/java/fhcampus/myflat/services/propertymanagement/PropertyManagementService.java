@@ -29,4 +29,6 @@ public interface PropertyManagementService {
     boolean distributeNotification(DistributionRequestDto distributionRequestDto);
 
     List<Notifications> getNotifications(Integer buildingId, Integer topId);
+
+    List<Notifications> getNotificationsForUser(Long userId);
 }
