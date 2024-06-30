@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,13 +39,10 @@ public class PropertyManagementController {
     private KeyManagementService keyManagementService;
     @Autowired
     private DocumentRepository documentRepository;
-
     @Autowired
     private ApartmentRepository apartmentRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private KeyManagementRepository keyManagementRepository;
 
@@ -56,9 +54,8 @@ public class PropertyManagementController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-    // endregion
 
-    // region Apartment Section
+    ///////////////////////////////////////////// region Apartment Section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postApartment(@RequestBody ApartmentDto apartmentDto) {
         boolean success = propertyManagementService.postApartment(apartmentDto);
@@ -113,9 +110,8 @@ public class PropertyManagementController {
     public ResponseEntity<?> searchApartment(@RequestBody SearchApartmentDto searchApartmentDto) {
         return ResponseEntity.ok(propertyManagementService.searchApartment(searchApartmentDto));
     }
-    // endregion
 
-    // region Tenant Section
+    //////////////// region Tenant Section
     @GetMapping("/v1/apartment/bookings/{userId}")
     public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(tenantService.getBookingsByUserId(userId));
@@ -149,7 +145,7 @@ public class PropertyManagementController {
     }
     // endregion
 
-    // region Defect Section
+    ///////////////////// region Defect Section
     @PostMapping(value = "/v1/defect")
     public ResponseEntity<String> reportDefect(
             @RequestPart("defectDto") DefectDto defectDto,
@@ -242,46 +238,57 @@ public class PropertyManagementController {
     /////////////////////Document
     @PostMapping("/v1/document")
     public ResponseEntity<Object> createDocument(@RequestBody DocumentDto documentDto) {
-        Optional<Apartment> apartment = apartmentRepository.findById(documentDto.getApartmentId());
-        Optional<User> user = userRepository.findById(documentDto.getUserId());
-        if (apartment.isPresent() && user.isPresent()) {
-            Document document = new Document();
-            document.setApartment(apartment.get());
-            document.setTitle(documentDto.getTitle());
-            document.setContent(documentDto.getContent());
-            document.setArchived(documentDto.isArchived());
-            document.setUser(user.get());
-            Document savedDocument = documentRepository.save(document);
-            return new ResponseEntity<>(savedDocument.documentDto(), HttpStatus.CREATED);
+        try {
+            Optional<Apartment> apartment = apartmentRepository.findById(documentDto.getApartmentId());
+            Optional<User> user = userRepository.findById(documentDto.getUserId());
+
+            if (apartment.isPresent() && user.isPresent()) {
+                Document document = new Document();
+                document.setApartment(apartment.get());
+                document.setTitle(documentDto.getTitle());
+                document.setDocument(documentDto.getDocument());
+                document.setArchived(documentDto.isArchived());
+                document.setUser(user.get());
+                Document savedDocument = documentRepository.save(document);
+                return new ResponseEntity<>(savedDocument.documentDto(), HttpStatus.CREATED);
+            } else if (apartment.isEmpty()) {
+                return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Error occurred while decoding file", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Apartment not found", HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/v1/document/{apartmentId}/{documentId}")
+    public ResponseEntity<Object> updateDocumentState(@PathVariable Long apartmentId, @PathVariable Long documentId, @RequestBody DocumentDto documentDto) {
+        try {
+            byte[] fileContent = Base64.getDecoder().decode(documentDto.getDocument());
+            List<Document> documents = documentRepository.findAll();
+            Optional<Document> apartmentDocument = documents.stream()
+                    .filter(document -> document.getApartment().getId().equals(apartmentId) && document.getId().equals(documentId))
+                    .findFirst();
 
+            if (apartmentDocument.isPresent()) {
+                Document document = apartmentDocument.get();
+                document.setArchived(documentDto.isArchived());
+                document.setDocument(fileContent); // Use setDocument() instead of setContent()
+                Document updatedDocument = documentRepository.save(document);
+                return new ResponseEntity<>(updatedDocument.documentDto(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Document not found for the given apartment", HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Error occurred while decoding file", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/v1/document")
     public ResponseEntity<Object> getAllDocuments() {
         List<Document> documents = documentRepository.findAll();
         return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
-
-    @PutMapping("/v1/document/{apartmentId}/{documentId}")
-    public ResponseEntity<Object> updateDocumentState(@PathVariable Long apartmentId, @PathVariable Long documentId, @RequestBody DocumentDto documentDto) {
-        List<Document> documents = documentRepository.findAll();
-        Optional<Document> apartmentDocument = documents.stream()
-                .filter(document -> document.getApartment().getId().equals(apartmentId) && document.getId().equals(documentId))
-                .findFirst();
-
-        if (apartmentDocument.isPresent()) {
-            Document document = apartmentDocument.get();
-            document.setArchived(documentDto.isArchived());
-            Document updatedDocument = documentRepository.save(document);
-            return new ResponseEntity<>(updatedDocument.documentDto(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Document not found for the given apartment", HttpStatus.NOT_FOUND);
-    }
-
-
+    /////////////////////////////// defects
     @GetMapping(value = "/v1/defects")
     public List<DefectDto> getAllDefects() {
         return defectService.getAllDefects();

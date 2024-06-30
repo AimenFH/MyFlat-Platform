@@ -26,30 +26,27 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Size(max = 20)
     private String name;
-
 
     @Size(max = 50)
     @Email
     private String email;
-
 
     @Size(max = 120)
     private String password;
 
     private UserRole userRole;
 
-
     private String phoneNumber;
 
-    public User(String name, String email, String password, UserRole userRole, String phoneNumber) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.userRole = userRole;
-        this.phoneNumber = phoneNumber;
+    @OneToMany(mappedBy = "user")
+    private List<BookApartment> bookApartments;
+
+    @OneToMany(mappedBy = "user")
+    private List<Document> documents;
+
+    public User(String name, String email, String encode, UserRole userRole, String phoneNumber) {
     }
 
     @Override
@@ -91,10 +88,4 @@ public class User implements UserDetails {
         userDto.setUserRole(userRole);
         return userDto;
     }
-
-    @OneToMany(mappedBy = "user")
-    private List<BookApartment> bookApartments;
-
-    @OneToMany(mappedBy = "user")
-    private List<Document> documents;
 }

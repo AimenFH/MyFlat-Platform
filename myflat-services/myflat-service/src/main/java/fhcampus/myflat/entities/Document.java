@@ -17,23 +17,21 @@ public class Document {
     @ManyToOne
     private User user;
 
-    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String content;
+    private byte[] document;
 
     private boolean isArchived;
-
 
     public DocumentDto documentDto() {
         DocumentDto documentDto = new DocumentDto();
         documentDto.setId(id);
         documentDto.setApartmentId(apartment.getId());
         documentDto.setTitle(title);
-        documentDto.setContent(content);
+        documentDto.setDocument(document);
         documentDto.setArchived(isArchived);
         documentDto.setUserId(user.getId());
+
         return documentDto;
     }
 }

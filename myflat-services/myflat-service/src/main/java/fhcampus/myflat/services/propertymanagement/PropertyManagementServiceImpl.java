@@ -52,7 +52,6 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
     @Override
     public boolean postApartment(ApartmentDto apartmentDto) {
-
         Optional<Property> optionalProperty = propertyRepository.findById(apartmentDto.getPropertyId());
         if (optionalProperty.isPresent()) {
             Apartment apartment = new Apartment();
@@ -67,7 +66,6 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         }
         return false;
     }
-
 
     @Override
     public List<ApartmentDto> getAllApartments() {
@@ -151,7 +149,7 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
             notifications.setMassage(distributionRequestDto.getMassage());
 
             if (distributionRequestDto.getDocument() != null) {
-                notifications.setDocument(distributionRequestDto.getDocument().getBytes());
+                notifications.setDocument(distributionRequestDto.getDocument());
             }
 
             notificationsRepository.save(notifications);

@@ -38,7 +38,6 @@ public class Property {
     @Column(name = "number_of_apartments", nullable = false)
     private Integer numberOfApartments;
 
-
     public PropertyDto getPropertyDto() {
         PropertyDto propertyDto = new PropertyDto();
         propertyDto.setId(id);
