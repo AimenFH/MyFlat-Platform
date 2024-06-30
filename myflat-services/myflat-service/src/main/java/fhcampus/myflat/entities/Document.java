@@ -20,8 +20,9 @@ public class Document {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String content;
+    @Column(nullable = false, columnDefinition="LONGBLOB")
+    @Lob
+    private byte[] content;
 
     private boolean isArchived;
 

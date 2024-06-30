@@ -21,7 +21,7 @@ function LoginPage() {
     axios.post('http://localhost:8080/api/auth/v1/login', data)
         .then(async response => {
           console.log('Success:', response.data);
-          await login({username: data.email, role: response.data.userRole, jwt: response.data.jwt});
+          await login({username: data.email, role: response.data.userRole, jwt: response.data.jwt, userId: response.data.userId});
           navigate('/');
         })
         .catch(error => {

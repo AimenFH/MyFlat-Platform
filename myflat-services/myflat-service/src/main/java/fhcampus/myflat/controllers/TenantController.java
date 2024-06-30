@@ -7,8 +7,8 @@ import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.tenant.TenantService;
+import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +24,9 @@ import java.util.stream.Collectors;
 public class TenantController {
 
     private final TenantService tenantService;
-
     private final DefectService defectService;
-
     private final DocumentRepository documentRepository;
+    private final UserService userService;
 
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
@@ -67,6 +66,35 @@ public class TenantController {
         return new ResponseEntity<>("No documents found for the given user and apartment", HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/v1/document/{userId}/{apartmentId}/tenant")
+    public ResponseEntity<Object> getTenantDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
+        List<Document> documents = documentRepository.findAll();
+        List<Document> userApartmentDocuments = documents.stream()
+                .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/v1/document/{userId}/{apartmentId}/general")
+    public ResponseEntity<Object> getGeneralDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
+        List<Document> documents = documentRepository.findAll();
+        List<Document> userApartmentDocuments = documents.stream()
+                .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/v1/document/{userId}/{apartmentId}/archived")
+    public ResponseEntity<Object> getArchivedDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
+        List<Document> documents = documentRepository.findAll();
+        List<Document> userApartmentDocuments = documents.stream()
+                .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && document.isArchived())
+                .toList();
+
+        return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
 
     @GetMapping("/defects/user/{userId}")
     public ResponseEntity<List<DefectDto>> getDefectsByUserId(@PathVariable Long userId) {

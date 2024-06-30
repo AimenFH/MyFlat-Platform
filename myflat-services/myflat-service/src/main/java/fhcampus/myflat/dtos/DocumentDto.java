@@ -11,7 +11,7 @@ public class DocumentDto {
     private Long id;
     private Long apartmentId;
     private String title;
-    private String content;
+    private byte[] content;
     private boolean isArchived;
     private Long userId;
 }
