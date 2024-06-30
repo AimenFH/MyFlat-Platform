@@ -1,7 +1,14 @@
 package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.*;
+<<<<<<< HEAD:myflat-services/myflat-service/src/main/java/fhcampus/myflat/controllers/PropertyManagementController.java
 import fhcampus.myflat.entities.*;
+=======
+import fhcampus.myflat.entities.Apartment;
+import fhcampus.myflat.entities.Document;
+import fhcampus.myflat.entities.KeyManagement;
+import fhcampus.myflat.entities.User;
+>>>>>>> 7eaa3ed5c07ba9ff5de62686302ab285743db8ab:myflat-services/myflat-service/src/main/java/FHCampus/myflat/controllers/PropertyManagementController.java
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.KeyManagementRepository;
@@ -181,7 +188,10 @@ public class PropertyManagementController {
     //////////////////////////// Key Management
 
     private KeyManagementRepository keyManagementRepository;
+<<<<<<< HEAD:myflat-services/myflat-service/src/main/java/fhcampus/myflat/controllers/PropertyManagementController.java
 
+=======
+>>>>>>> 7eaa3ed5c07ba9ff5de62686302ab285743db8ab:myflat-services/myflat-service/src/main/java/FHCampus/myflat/controllers/PropertyManagementController.java
     @PostMapping("/v1/key-management")
     public ResponseEntity<?> createKeyManagement(@RequestBody KeyManagementDto keyManagementDto) {
         boolean success = keyManagementService.createKeyManagement(keyManagementDto);
@@ -271,4 +281,10 @@ public class PropertyManagementController {
         return new ResponseEntity<>("Document not found for the given apartment", HttpStatus.NOT_FOUND);
     }
 
+
+    @GetMapping(value = "/v1/defects")
+    public List<DefectDto> getAllDefects() {
+        return defectService.getAllDefects();
+    }
+    // endregion
 }

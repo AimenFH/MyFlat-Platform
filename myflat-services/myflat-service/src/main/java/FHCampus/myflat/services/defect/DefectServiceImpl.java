@@ -1,10 +1,10 @@
 package fhcampus.myflat.services.defect;
 
 import fhcampus.myflat.dtos.DefectDto;
-import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.Defect;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DefectRepository;
+import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.User;
 import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,13 @@ public class DefectServiceImpl implements DefectService {
 
         Defect newDefect = new Defect(defectDto, image, user, apartment);
         defectRepository.save(newDefect);
+    }
+
+    @Override
+    public List<DefectDto> getAllDefects() {
+        return defectRepository.findAll().stream()
+                .map(DefectDto::new)
+                .collect(Collectors.toList());
     }
 
 

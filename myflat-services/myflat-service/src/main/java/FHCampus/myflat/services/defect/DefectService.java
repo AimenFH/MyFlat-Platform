@@ -10,5 +10,7 @@ public interface DefectService {
 
     void reportDefect(DefectDto defectDto, MultipartFile image) throws IOException;
 
+    List<DefectDto> getAllDefects();
+
     List<DefectDto> getDefectsByUserId(Long userId);
 }

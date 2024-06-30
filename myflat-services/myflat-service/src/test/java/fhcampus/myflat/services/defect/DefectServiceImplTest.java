@@ -6,6 +6,7 @@ import fhcampus.myflat.entities.Defect;
 import fhcampus.myflat.entities.User;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DefectRepository;
+import fhcampus.myflat.services.defect.DefectServiceImpl;
 import fhcampus.myflat.services.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
