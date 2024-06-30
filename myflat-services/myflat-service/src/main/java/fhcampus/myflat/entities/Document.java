@@ -17,7 +17,6 @@ public class Document {
     @ManyToOne
     private User user;
 
-    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false, columnDefinition="LONGBLOB")

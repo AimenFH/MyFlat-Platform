@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhcampus.myflat.dtos.DistributionRequestDto;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Data
@@ -33,6 +34,7 @@ public class Notifications {
         distributionRequestDto.setTopId(topId);
         distributionRequestDto.setTitle(title);
         distributionRequestDto.setMassage(massage);
+        distributionRequestDto.setDocument(document);
         return distributionRequestDto;
     }
 }
