@@ -1,6 +1,5 @@
 package fhcampus.myflat.services.propertymanagement;
 
-<<<<<<< HEAD:myflat-services/myflat-service/src/main/java/fhcampus/myflat/services/propertymanagement/PropertyManagementServiceImpl.java
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
@@ -11,19 +10,9 @@ import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.BookApartmentRepository;
 import fhcampus.myflat.repositories.NotificationsRepository;
-=======
-import fhcampus.myflat.entities.*;
-import fhcampus.myflat.dtos.*;
-import fhcampus.myflat.entities.Apartment;
-import fhcampus.myflat.entities.BookApartment;
-import fhcampus.myflat.entities.Property;
-import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.*;
-import fhcampus.myflat.repositories.ApartmentRepository;
-import fhcampus.myflat.repositories.BookApartmentRepository;
->>>>>>> 7eaa3ed5c07ba9ff5de62686302ab285743db8ab:myflat-services/myflat-service/src/main/java/FHCampus/myflat/services/propertymanagement/PropertyManagementServiceImpl.java
 import fhcampus.myflat.repositories.PropertyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -37,13 +26,13 @@ import java.util.Optional;
 public class PropertyManagementServiceImpl implements PropertyManagementService {
 
     @Autowired
-    private  ApartmentRepository apartmentRepository;
+    private ApartmentRepository apartmentRepository;
     @Autowired
-    private  PropertyRepository propertyRepository;
+    private PropertyRepository propertyRepository;
     @Autowired
-    private  BookApartmentRepository bookApartmentRepository;
+    private BookApartmentRepository bookApartmentRepository;
     @Autowired
-    private  NotificationsRepository notificationsRepository;
+    private NotificationsRepository notificationsRepository;
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
