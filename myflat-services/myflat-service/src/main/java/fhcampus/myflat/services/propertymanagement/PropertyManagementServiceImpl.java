@@ -2,24 +2,20 @@ package fhcampus.myflat.services.propertymanagement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhcampus.myflat.dtos.*;
-import fhcampus.myflat.entities.Apartment;
-import fhcampus.myflat.entities.BookApartment;
-import fhcampus.myflat.entities.Notifications;
-import fhcampus.myflat.entities.Property;
+import fhcampus.myflat.entities.*;
 import fhcampus.myflat.enums.BookApartmentStatus;
-import fhcampus.myflat.repositories.ApartmentRepository;
-import fhcampus.myflat.repositories.BookApartmentRepository;
-import fhcampus.myflat.repositories.NotificationsRepository;
-import fhcampus.myflat.repositories.PropertyRepository;
+import fhcampus.myflat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +29,8 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     private BookApartmentRepository bookApartmentRepository;
     @Autowired
     private NotificationsRepository notificationsRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
@@ -172,6 +170,27 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
         if (notifications.isEmpty()) {
             throw new NoNotificationsFoundException("No notifications found for the given criteria");
+        }
+
+        return notifications;
+    }
+
+    @Override
+    public List<Notifications> getNotificationsForUser(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        List<BookApartment> bookApartments = bookApartmentRepository.findByUserId(userId);
+
+        List<Long> apartmentIds = bookApartments.stream()
+                .map(bookApartment -> bookApartment.getApartment().getId())
+                .toList();
+
+        List<Notifications> notifications = new ArrayList<>();
+        for (Long apartmentId : apartmentIds) {
+            notifications.addAll(notificationsRepository.findByBuildingId(Math.toIntExact(apartmentId)));
         }
 
         return notifications;

@@ -1,14 +1,15 @@
 package fhcampus.myflat.controllers;
 
-import fhcampus.myflat.dtos.DefectDto;
-import fhcampus.myflat.dtos.DocumentDto;
-import fhcampus.myflat.dtos.UserDto;
+import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Document;
+import fhcampus.myflat.entities.Notifications;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.services.defect.DefectService;
+import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
 import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,10 @@ public class TenantController {
     private final TenantService tenantService;
     private final DefectService defectService;
     private final DocumentRepository documentRepository;
-    private final UserService userService;
+
+
+    @Autowired
+    private PropertyManagementService propertyManagementService;
 
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
@@ -102,5 +106,23 @@ public class TenantController {
         return ResponseEntity.ok(defects);
     }
 
+    //////////////////////////// distribute notification
+    @PostMapping("/v1/distribute")
+    public ResponseEntity<?> distributeNotification(@RequestBody DistributionRequestDto distributionRequestDto) {
+        boolean success = propertyManagementService.distributeNotification(distributionRequestDto);
+        if (success)
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/v1/notification/{userId}")
+    public ResponseEntity<List<Notifications>> getNotificationsForUser(@PathVariable Long userId) {
+        try {
+            List<Notifications> notifications = propertyManagementService.getNotificationsForUser(userId);
+            return new ResponseEntity<>(notifications, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

@@ -1,4 +1,4 @@
-package fhcampus.myflat.services;
+package fhcampus.myflat.services.key;
 
 import fhcampus.myflat.dtos.KeyManagementDto;
 import fhcampus.myflat.entities.KeyManagement;
