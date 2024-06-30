@@ -14,6 +14,7 @@ import fhcampus.myflat.services.tenant.TenantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -236,8 +237,11 @@ public class PropertyManagementController {
     }
 
     /////////////////////Document
-    @PostMapping("/v1/document")
-    public ResponseEntity<Object> createDocument(@RequestBody DocumentDto documentDto) {
+    @PostMapping(value = "/v1/document")
+    public ResponseEntity<Object> createDocument(
+            @RequestPart("documentDto") DocumentDto documentDto,
+            @RequestParam("file") MultipartFile file
+    ) {
         try {
             Optional<Apartment> apartment = apartmentRepository.findById(documentDto.getApartmentId());
             Optional<User> user = userRepository.findById(documentDto.getUserId());
@@ -246,7 +250,7 @@ public class PropertyManagementController {
                 Document document = new Document();
                 document.setApartment(apartment.get());
                 document.setTitle(documentDto.getTitle());
-                document.setContent(documentDto.getContent());
+                document.setContent(file.getBytes());
                 document.setArchived(documentDto.isArchived());
                 document.setUser(user.get());
                 Document savedDocument = documentRepository.save(document);
@@ -256,7 +260,7 @@ public class PropertyManagementController {
             } else {
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IOException e) {
             return new ResponseEntity<>("Error occurred while decoding file", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
