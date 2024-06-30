@@ -1,15 +1,45 @@
 import React, { useState } from 'react';
 import { Container, Form, Card, Row, Col } from 'react-bootstrap';
 import '../styles/DocumentPage.css';
+import axios from "axios";
+import {useAuth} from "../AuthContext";
 
 const DocumentPagePropMgmt = () => {
+  const { user } = useAuth();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [generalFiles, setGeneralFiles] = useState([]);
   const [archivedFiles, setArchivedFiles] = useState([]);
   const [apartmentFiles, setApartmentFiles] = useState([]);
+  const [apartmentId, setApartmentId] = useState('');
+  const [userId, setUserId] = useState('');
 
-  const handleFileUpload = (event, category) => {
+  const handleFileUpload = async (event, category) => {
     const files = event.target.files;
+    let formData = new FormData();
+    formData.append('file', files[0]);
+
+    const documentDto = {
+      "apartmentId": apartmentId, // todo should this really be retrieved from the front end?
+      "title": files[0].name,
+      "isArchived": false,
+      "userId": userId // todo should this really be retrieved from the front end?
+    };
+
+    const documentDtoBlob = new Blob([JSON.stringify(documentDto)], { type: 'application/json' });
+    formData.append('documentDto', documentDtoBlob);
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/property-management/v1/document', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${user.jwt}` // Set the bearer token here
+        }
+      });
+      console.log('File upload response:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+
     switch (category) {
       case 'general':
         setGeneralFiles([...generalFiles, ...files]);
@@ -65,19 +95,14 @@ const DocumentPagePropMgmt = () => {
             <Form.Control type="file" multiple onChange={(e) => handleFileUpload(e, 'general')} />
           </Form.Group>
         </Col>
-        <Col>
-          <Form.Group controlId="archivedFileUploadForm">
-            <Form.Label>Upload Archived Documents:</Form.Label>
-            <Form.Control type="file" multiple onChange={(e) => handleFileUpload(e, 'archived')} />
-          </Form.Group>
-        </Col>
       </Row>
-
       <Row className="mb-3">
         <Col>
           <Form.Group controlId="apartmentFileUploadForm">
             <Form.Label>Upload Apartment Documents:</Form.Label>
-            <Form.Control type="file" multiple onChange={(e) => handleFileUpload(e, 'apartment')} />
+            <Form.Control type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="Enter User ID"/>
+            <Form.Control type="text" value={apartmentId} onChange={(e) => setApartmentId(e.target.value)} placeholder="Enter Apartment ID"/>
+            <Form.Control type="file" multiple onChange={(e) => handleFileUpload(e, 'apartment')}/>
           </Form.Group>
         </Col>
       </Row>
@@ -87,14 +112,9 @@ const DocumentPagePropMgmt = () => {
           {renderUploadedFiles({ title: 'General Documents', files: generalFiles })}
         </Col>
         <Col>
-          {renderUploadedFiles({ title: 'Archived Documents', files: archivedFiles })}
-        </Col>
-        <Col>
           {renderUploadedFiles({ title: 'Apartment Documents', files: apartmentFiles })}
         </Col>
       </Row>
-
-   
     </Container>
   );
 };

@@ -2,10 +2,7 @@ package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.*;
-import fhcampus.myflat.repositories.ApartmentRepository;
-import fhcampus.myflat.repositories.DocumentRepository;
-import fhcampus.myflat.repositories.KeyManagementRepository;
-import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.repositories.*;
 import fhcampus.myflat.services.KeyManagementService;
 import fhcampus.myflat.services.auth.AuthService;
 import fhcampus.myflat.services.defect.DefectService;
