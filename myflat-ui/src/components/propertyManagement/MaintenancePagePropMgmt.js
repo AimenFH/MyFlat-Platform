@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios';
 import '../styles/MaintenancePage.css';
@@ -11,8 +11,13 @@ const MaintenancePagePropMgmt = () => {
     const [location, setLocation] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [image, setImage] = useState(null);
+    const [defects, setDefects] = useState([]);
 
     const { user } = useAuth();
+
+    useEffect(() => {
+        fetchDefects();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,7 +46,7 @@ const MaintenancePagePropMgmt = () => {
             }
         })
             .then(response => {
-                console.log('Success:', response.data);
+                fetchDefects();
                 setSubmitted(true);
             })
             .catch(error => {
@@ -50,6 +55,21 @@ const MaintenancePagePropMgmt = () => {
     };
 
     const options = Array.from({ length: 10 }, (_, i) => i + 1);
+
+    const fetchDefects = () => {
+        axios.get('http://localhost:8080/api/property-management/v1/defects', {
+            headers: {
+                Authorization: `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                console.log('Success:', response.data);
+                setDefects(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+    };
 
     return (
         <div className="maintenance-page">
@@ -114,8 +134,29 @@ const MaintenancePagePropMgmt = () => {
                 <button type="submit" className="submit-btn">Submit Request</button>
             </form>
             {submitted && <div className="confirmation-message">Your maintenance request has been submitted.</div>}
+            <div className="defects-list">
+                <h2>All Defects</h2>
+                {defects.map(defect => {
+                    const imageSrc = `data:image/jpeg;base64,${defect.image}`;
+
+                    return (
+                        <div key={defect.id} className="defect-item">
+                            <h3>{defect.description}</h3>
+                            <p>Id: {defect.id}</p>
+                            <p>Timestamp: {new Date(defect.timestamp).toLocaleString()}</p>
+                            <p>User Id: {defect.userId}</p>
+                            <p>Apartment: {defect.apartmentId}</p>
+                            <p>Status: {defect.status}</p>
+                            <p>Category: {defect.category}</p>
+                            <p>Location: {defect.location}</p>
+                            <img src={imageSrc} alt="Defect"/>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
-    );
+    )
+        ;
 };
 
 export default MaintenancePagePropMgmt;
