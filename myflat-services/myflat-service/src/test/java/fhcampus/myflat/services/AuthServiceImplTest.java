@@ -58,7 +58,7 @@ class AuthServiceImplTest {
 
         User mockUser = new User(1L, signupRequest.getName(), signupRequest.getEmail(),
                 new BCryptPasswordEncoder().encode(signupRequest.getPassword()), UserRole.TENANT,
-                signupRequest.getPhoneNumber(), null, null, null);
+                signupRequest.getPhoneNumber(), null, null);
 
         when(userRepository.findFirstByEmail(signupRequest.getEmail())).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(mockUser);
@@ -92,7 +92,7 @@ class AuthServiceImplTest {
 
         User mockUser = new User(1L, signupRequest.getName(), signupRequest.getEmail(),
                 new BCryptPasswordEncoder().encode(signupRequest.getPassword()), UserRole.PROPERTY_MANAGEMENT,
-                signupRequest.getPhoneNumber(), null, null, null);
+                signupRequest.getPhoneNumber(),null, null);
 
         when(userRepository.findFirstByEmail(signupRequest.getEmail())).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenReturn(mockUser);
@@ -128,7 +128,7 @@ class AuthServiceImplTest {
 
         User mockUser = new User(1L, "Valid User", authenticationRequest.getEmail(),
                 new BCryptPasswordEncoder().encode(authenticationRequest.getPassword()), UserRole.TENANT,
-                "123456789", null, null, null);
+                "123456789", null, null);
 
         UserDetailsService mockUserDetailsService = mock(UserDetailsService.class);
         when(mockUserDetailsService.loadUserByUsername(authenticationRequest.getEmail())).thenReturn(mockUserDetails);
