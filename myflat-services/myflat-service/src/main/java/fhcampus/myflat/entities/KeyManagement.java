@@ -51,4 +51,15 @@ public class KeyManagement {
         keyManagementDto.setKeysNumber(keysNumber);
         return keyManagementDto;
     }
+
+    public KeyManagement update(KeyManagementDto keyManagementDto) {
+        this.propertyId = keyManagementDto.getPropertyId();
+        this.userId = keyManagementDto.getUserId();
+        this.apartmentId = keyManagementDto.getApartmentId();
+        this.issuanceDate = keyManagementDto.getIssuanceDate();
+        this.redemptionDate = keyManagementDto.getRedemptionDate();
+        this.replacementRequested = keyManagementDto.isReplacementRequested();
+        this.keysNumber = keyManagementDto.getKeysNumber();
+        return this;
+    }
 }
