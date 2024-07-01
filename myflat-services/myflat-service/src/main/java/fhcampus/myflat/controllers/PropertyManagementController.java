@@ -9,7 +9,6 @@ import fhcampus.myflat.services.key.KeyManagementService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +22,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/property-management")
 public class PropertyManagementController {
-    @Autowired
-    private PropertyManagementService propertyManagementService;
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private TenantService tenantService;
-    @Autowired
-    private DefectService defectService;
-    @Autowired
-    private KeyManagementService keyManagementService;
-    @Autowired
-    private KeyManagementRepository keyManagementRepository;
+
+    private final PropertyManagementService propertyManagementService;
+    private final AuthService authService;
+    private final TenantService tenantService;
+    private final DefectService defectService;
+    private final KeyManagementService keyManagementService;
+    private final KeyManagementRepository keyManagementRepository;
 
     ////////////////////////// region Property Section
     @PostMapping("/v1/property")

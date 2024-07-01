@@ -2,7 +2,7 @@ package fhcampus.myflat.controllers;
 
 import fhcampus.myflat.dtos.DistributionRequestDto;
 import fhcampus.myflat.dtos.DocumentDto;
-import fhcampus.myflat.dtos.NoNotificationsFoundException;
+import fhcampus.myflat.exceptions.NoNotificationsFoundException;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.Notifications;

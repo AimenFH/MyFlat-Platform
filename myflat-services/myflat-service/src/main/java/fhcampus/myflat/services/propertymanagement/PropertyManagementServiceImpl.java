@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.*;
 import fhcampus.myflat.enums.BookApartmentStatus;
+import fhcampus.myflat.exceptions.NoNotificationsFoundException;
 import fhcampus.myflat.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

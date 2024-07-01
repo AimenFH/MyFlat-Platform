@@ -11,7 +11,6 @@ import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +29,7 @@ public class TenantController {
     private final DefectService defectService;
     private final DocumentRepository documentRepository;
     private final NotificationsRepository notificationsRepository;
-
-    @Autowired
-    private PropertyManagementService propertyManagementService;
+    private final PropertyManagementService propertyManagementService;
 
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {

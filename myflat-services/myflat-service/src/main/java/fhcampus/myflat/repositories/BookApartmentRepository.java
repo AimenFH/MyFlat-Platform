@@ -23,16 +23,6 @@ public interface BookApartmentRepository extends JpaRepository<BookApartment, Lo
     List<BookApartment> findByApartmentAndToDateGreaterThanEqualAndFromDateLessThanEqual(
             Apartment apartment, Date fromDate, Date toDate);
 
-
-    @Query("SELECT b.user.id FROM BookApartment b WHERE b.property = :propertyId")
-    List<Long> findUserIdsByPropertyId(Long propertyId);
-
-    @Query("SELECT b FROM BookApartment b WHERE b.property.id = :propertyId AND b.top = :top")
-    List<BookApartment> findUserIdsByPropertyIdAndTop(Long propertyId,Long top);
-
-    @Query("SELECT b.user.id FROM BookApartment b")
-    List<Long> findAllUserIds();
-
     @Query("SELECT b FROM BookApartment b WHERE b.user.id = :userId")
     List<BookApartment> findByUserId(@Param("userId") Long userId);
 
