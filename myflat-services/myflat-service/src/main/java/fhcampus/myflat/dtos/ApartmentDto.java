@@ -8,18 +8,11 @@ import lombok.Data;
 public class ApartmentDto {
 
     private Long id;
-
     private Integer number;
-
     private int floor;
-
     private float area;
-
     private Integer price;
-
     private Long propertyId;
-
     public ApartmentDto() {
     }
-
 }

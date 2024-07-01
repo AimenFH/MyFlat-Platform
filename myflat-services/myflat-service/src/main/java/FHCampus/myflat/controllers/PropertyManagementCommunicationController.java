@@ -1,5 +1,6 @@
 package fhcampus.myflat.controllers;
 
+import fhcampus.myflat.dtos.AppointmentDto;
 import fhcampus.myflat.dtos.DistributionRequestDto;
 import fhcampus.myflat.dtos.DocumentDto;
 import fhcampus.myflat.exceptions.NoNotificationsFoundException;
@@ -11,6 +12,7 @@ import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.KeyManagementRepository;
 import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.services.AppointmentService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class PropertyManagementCommunicationController {
     private final DocumentRepository documentRepository;
     private final ApartmentRepository apartmentRepository;
     private final UserRepository userRepository;
-    private final KeyManagementRepository keyManagementRepository;
+    private final AppointmentService appointmentService;
 
     //////////////////////////// distribute notification
     @PostMapping("/v1/distribute")
@@ -124,6 +126,37 @@ public class PropertyManagementCommunicationController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Document not found");
+        }
+    }
+
+   ////////////////////////// Appointment
+   @PostMapping("/appointment/create")
+   public ResponseEntity<String> createAppointment(@RequestBody AppointmentDto appointmentDto) {
+       boolean isCreated = appointmentService.createAppointment(appointmentDto);
+       if (isCreated) {
+           return ResponseEntity.ok("Appointment created successfully.");
+       } else {
+           return ResponseEntity.badRequest().body("Failed to create appointment.");
+       }
+   }
+
+    @DeleteMapping("/appointment/delete/{id}")
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
+        try {
+            appointmentService.deleteAppointment(id);
+            return ResponseEntity.ok("Appointment deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete appointment.");
+        }
+    }
+
+    @GetMapping("/appointment/all")
+    public ResponseEntity<Object> getAllAppointments() {
+        List<AppointmentDto> appointments = appointmentService.getAllAppointments();
+        if (appointments.isEmpty()) {
+            return ResponseEntity.ok("There are no appointments.");
+        } else {
+            return ResponseEntity.ok(appointments);
         }
     }
 }

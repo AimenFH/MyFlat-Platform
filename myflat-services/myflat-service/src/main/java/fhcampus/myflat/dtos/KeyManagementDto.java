@@ -19,6 +19,4 @@ public class KeyManagementDto {
     private Date redemptionDate;
     private boolean replacementRequested;
     private Integer keysNumber;
-
-
 }

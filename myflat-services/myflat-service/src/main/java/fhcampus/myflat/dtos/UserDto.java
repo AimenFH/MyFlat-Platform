@@ -10,17 +10,11 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     private Long id;
-
     private String name;
-
     private String email;
-
     private String password;
-
     private UserRole userRole;
-
     private  String phoneNumber;
-
     public UserDto(User user) {
         this.id = user.getId();
         this.name = user.getName();
@@ -29,5 +23,4 @@ public class UserDto {
         this.userRole = user.getUserRole();
         this.phoneNumber = user.getPhoneNumber();
     }
-
 }

@@ -10,13 +10,8 @@ import lombok.NoArgsConstructor;
 public class PropertyDto {
 
     private Long id;
-
     private String propertyName;
-
     private String propertyAddress;
-
     private Integer numberOfFloors;
-
     private Integer numberOfApartments;
-
 }
