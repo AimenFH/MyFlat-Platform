@@ -1,40 +1,51 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert, DropdownButton, Dropdown, Badge } from 'react-bootstrap';
+import axios from 'axios';
 import '../styles/CommunicationPage.css';
+import { useAuth } from '../AuthContext';
 
 function CommunicationPageTenant() {
     const [message, setMessage] = useState('');
-    const [file, setFile] = useState(null);
     const [recipient, setRecipient] = useState('');
     const [tenantName, setTenantName] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState('');
 
-    const handleSendMessage = (e) => {
+    const { user } = useAuth();
+
+    const handleSendMessage = async (e) => {
         e.preventDefault();
-        setShowAlert(true);
-        const recipientText = recipient === 'propertyManagement' ? 'Property Management' : recipient === 'TENANT' ? `Other Tenant: ${tenantName}` : 'Group Chat';
-        setFeedbackMessage(`Your message to ${recipientText} has been sent.`);
-        setMessage('');
-        setRecipient('');
-        setTenantName('');
-        setTimeout(() => setShowAlert(false), 3000);
+        try {
+            const headers = {
+                Authorization: `Bearer ${user.jwt}`
+            };
+
+            const senderId = user.userId;
+            const conversationId = 1;
+
+            await axios.post('http://localhost:8080/api/messages', {
+                senderId,
+                content: message,
+                conversationId
+            }, { headers });
+
+            setShowAlert(true);
+            const recipientText = recipient === 'propertyManagement' ? 'Property Management' : recipient === 'tenant' ? `Other Tenant: ${tenantName}` : 'Group Chat';
+            setFeedbackMessage(`Your message to ${recipientText} has been sent.`);
+            setMessage('');
+            setRecipient('');
+            setTenantName('');
+            setTimeout(() => setShowAlert(false), 3000);
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
     };
 
     const handleRecipientChange = (eventKey) => {
         setRecipient(eventKey);
-        if (eventKey !== 'TENANT') {
+        if (eventKey !== 'tenant') {
             setTenantName('');
         }
-    };
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-    const handleUploadFile = () => {
-        console.log('File uploaded:', file ? file.name : 'No file');
-        setFile(null);
     };
 
     return (
@@ -47,7 +58,7 @@ function CommunicationPageTenant() {
                 <Form.Group className="mb-3">
                     <DropdownButton
                         id="dropdown-basic-button"
-                        title={recipient ? (recipient === 'propertyManagement' ? "Property Management" : recipient === 'TENANT' ? `Other Tenant: ${tenantName || 'Select'}` : "Group Chat") : "Select Recipient"}
+                        title={recipient ? (recipient === 'propertyManagement' ? "Property Management" : recipient === 'tenant' ? `Other Tenant: ${tenantName || 'Select'}` : "Group Chat") : "Select Recipient"}
                         variant="outline-secondary"
                         onSelect={handleRecipientChange}
                     >
@@ -57,7 +68,7 @@ function CommunicationPageTenant() {
                     </DropdownButton>
                 </Form.Group>
 
-                {recipient === 'TENANT' && (
+                {recipient === 'tenant' && (
                     <Form.Group controlId="tenantName" className="mb-3">
                         <Form.Label>Tenant Name:</Form.Label>
                         <Form.Control
@@ -65,7 +76,7 @@ function CommunicationPageTenant() {
                             placeholder="Enter tenant's name"
                             value={tenantName}
                             onChange={(e) => setTenantName(e.target.value)}
-                            required={recipient === 'TENANT'}
+                            required={recipient === 'tenant'}
                         />
                     </Form.Group>
                 )}
@@ -82,22 +93,7 @@ function CommunicationPageTenant() {
                     />
                 </Form.Group>
 
-                <Button variant="outline-success" type="submit" disabled={!recipient || (recipient === 'TENANT' && !tenantName)} className="me-2">Send Message</Button>
-                <Form.Group controlId="fileForm" className="d-inline-block">
-                    <Form.Control
-                        type="file"
-                        onChange={handleFileChange}
-                        size="sm"
-                        className="d-inline-block me-2"
-                    />
-                    <Button
-                        variant="outline-primary"
-                        onClick={handleUploadFile}
-                        disabled={!file}
-                    >
-                        Upload File
-                    </Button>
-                </Form.Group>
+                <Button variant="outline-success" type="submit" disabled={!recipient || (recipient === 'tenant' && !tenantName)} className="me-2">Send Message</Button>
             </Form>
 
             <Card className="mb-4">

@@ -36,6 +36,8 @@ public class WebSecurityConfiguration {
                         request.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/property-management/**").hasAnyAuthority(UserRole.PROPERTY_MANAGEMENT.name()).
                                 requestMatchers("/api/tenant/**").hasAnyAuthority(UserRole.TENANT.name()).
+                                requestMatchers("/api/conversations/**").hasAnyAuthority(UserRole.TENANT.name()).
+                                requestMatchers("/api/messages/**").hasAnyAuthority(UserRole.TENANT.name()).
                                 anyRequest().authenticated()).sessionManagement(manager ->
                         manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 authenticationProvider(authenticationProvider()).
