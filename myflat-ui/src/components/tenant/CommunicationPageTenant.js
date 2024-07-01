@@ -21,12 +21,11 @@ function CommunicationPageTenant() {
             };
 
             const senderId = user.userId;
-            const conversationId = 1;
+            const conversationId = 1; // This should be dynamically set based on your application's logic
 
-            await axios.post('http://localhost:8080/api/messages', {
+            await axios.post(`http://localhost:8080/api/messages?conversationId=${conversationId}`, {
                 senderId,
                 content: message,
-                conversationId
             }, { headers });
 
             setShowAlert(true);
