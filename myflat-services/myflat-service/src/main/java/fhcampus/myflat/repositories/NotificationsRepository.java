@@ -11,7 +11,6 @@ public interface NotificationsRepository extends JpaRepository<Notifications, Lo
 
     List<Notifications> findByBuildingId(Integer buildingId);
 
-
     List<Notifications> findByTopId(Integer topId);
 
 
