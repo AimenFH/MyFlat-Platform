@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
@@ -10,8 +10,27 @@ const ManageApartments = () => {
     const [price, setPrice] = useState('');
     const [propertyId, setPropertyId] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [apartments, setApartments] = useState([]);
 
     const { user } = useAuth();
+
+    const fetchApartments = () => {
+        axios.get('http://localhost:8080/api/property-management/v1/apartments', {
+            headers: {
+                'Authorization': `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                setApartments(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
+
+    useEffect(() => {
+        fetchApartments();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,7 +51,8 @@ const ManageApartments = () => {
         })
             .then(response => {
                 console.log('Success:', response.data);
-                setSubmitted(true); // Set submitted to true when the request is successful
+                setSubmitted(true);
+                fetchApartments();
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -66,6 +86,16 @@ const ManageApartments = () => {
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>
             {submitted && <div className="confirmation-message">Apartment created successfully.</div>}
+            <h3>All Apartments</h3>
+            {apartments.map(apartment => (
+                <div key={apartment.id}>
+                    <h4>Apartment {apartment.number}</h4>
+                    <p>Floor: {apartment.floor}</p>
+                    <p>Area: {apartment.area}</p>
+                    <p>Price: {apartment.price}</p>
+                    <p>Property ID: {apartment.propertyId}</p>
+                </div>
+            ))}
         </Container>
     );
 };
