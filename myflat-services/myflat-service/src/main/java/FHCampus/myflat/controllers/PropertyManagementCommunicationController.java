@@ -3,6 +3,7 @@ package fhcampus.myflat.controllers;
 import fhcampus.myflat.dtos.AppointmentDto;
 import fhcampus.myflat.dtos.DistributionRequestDto;
 import fhcampus.myflat.dtos.DocumentDto;
+import fhcampus.myflat.dtos.FeedbackDto;
 import fhcampus.myflat.exceptions.NoNotificationsFoundException;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.Document;
@@ -13,6 +14,7 @@ import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.KeyManagementRepository;
 import fhcampus.myflat.repositories.UserRepository;
 import fhcampus.myflat.services.AppointmentService;
+import fhcampus.myflat.services.Feedback.FeedbackService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ public class PropertyManagementCommunicationController {
     private final ApartmentRepository apartmentRepository;
     private final UserRepository userRepository;
     private final AppointmentService appointmentService;
+    private final FeedbackService feedbackService;
 
     //////////////////////////// distribute notification
     @PostMapping("/v1/distribute")
@@ -158,5 +161,12 @@ public class PropertyManagementCommunicationController {
         } else {
             return ResponseEntity.ok(appointments);
         }
+    }
+
+    ////////feedback
+    @GetMapping("/feedback")
+    public ResponseEntity<List<FeedbackDto>> getAllFeedback() {
+        List<FeedbackDto> allFeedback = feedbackService.getAllFeedback();
+        return ResponseEntity.ok(allFeedback);
     }
 }

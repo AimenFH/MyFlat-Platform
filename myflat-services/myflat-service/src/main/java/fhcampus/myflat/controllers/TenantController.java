@@ -1,12 +1,13 @@
 package fhcampus.myflat.controllers;
 
-import fhcampus.myflat.dtos.DefectDto;
-import fhcampus.myflat.dtos.DistributionRequestDto;
-import fhcampus.myflat.dtos.UserDto;
+import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.Notifications;
+import fhcampus.myflat.repositories.AppointmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.NotificationsRepository;
+import fhcampus.myflat.services.AppointmentService;
+import fhcampus.myflat.services.Feedback.FeedbackService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
@@ -30,6 +31,8 @@ public class TenantController {
     private final DocumentRepository documentRepository;
     private final NotificationsRepository notificationsRepository;
     private final PropertyManagementService propertyManagementService;
+    private final AppointmentService appointmentService;
+    private final FeedbackService feedbackService;
 
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
@@ -122,5 +125,21 @@ public class TenantController {
         } else {
             return ResponseEntity.ok(notifications);
         }
+    }
+
+    @GetMapping("/appointment/all")
+    public ResponseEntity<Object> getAllAppointments() {
+        List<AppointmentDto> appointments = appointmentService.getAllAppointments();
+        if (appointments.isEmpty()) {
+            return ResponseEntity.ok("There are no appointments.");
+        } else {
+            return ResponseEntity.ok(appointments);
+        }
+    }
+
+    @PostMapping("/feedback")
+    public ResponseEntity<FeedbackDto> addFeedback(@RequestBody FeedbackDto feedbackDto) {
+        FeedbackDto createdFeedback = feedbackService.createFeedback(feedbackDto);
+        return ResponseEntity.ok(createdFeedback);
     }
 }
