@@ -7,7 +7,6 @@ const HomePagePropertyMgmt = () => {
     const [showSettings, setShowSettings] = useState(false);
     const [visibility, setVisibility] = useState({
         tenantManagement: true,
-        documentArchive: true,
         keyManagement: true,
         maintenanceRequests: true,
         manageProperties: true,
@@ -22,10 +21,9 @@ const HomePagePropertyMgmt = () => {
     };
 
     const managementButtons = [
-        { key: 'tenantManagement', text: 'Tenant Management', variant: 'primary', href: '/tenant-management' },
-        { key: 'documentArchive', text: 'Document Archive', variant: 'secondary', href: '/document-archive' },
+        { key: 'tenantManagement', text: 'Tenant Management', variant: 'primary', href: '/registerTenant' },
         { key: 'keyManagement', text: 'Key Management', variant: 'success', href: '/key-management', className: 'custom-key-management' },
-        { key: 'maintenanceRequests', text: 'Maintenance Requests', variant: 'warning', href: '/maintenance-requests' },
+        { key: 'maintenanceRequests', text: 'Maintenance Requests', variant: 'warning', href: '/maintenance' },
         { key: 'manageProperties', text: 'Manage Properties', variant: 'info', href: '/manage-properties' },
         { key: 'manageApartments', text: 'Manage Apartments', variant: 'info', href: '/manage-apartments' },
     ];

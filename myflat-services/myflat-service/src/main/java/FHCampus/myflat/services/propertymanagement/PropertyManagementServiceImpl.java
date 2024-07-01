@@ -195,4 +195,9 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
 
         return notifications;
     }
+
+    @Override
+    public List<PropertyDto> getAllProperties() {
+        return propertyRepository.findAll().stream().map(Property::getPropertyDto).toList();
+    }
 }
