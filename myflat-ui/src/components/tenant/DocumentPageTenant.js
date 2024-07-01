@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import '../styles/DocumentPage.css';
 import { useAuth } from '../AuthContext';
@@ -9,8 +9,6 @@ const DocumentPageTenant = () => {
     const [tenantDocuments, setTenantDocuments] = useState([]);
     const [generalDocuments, setGeneralDocuments] = useState([]);
     const [archivedDocuments, setArchivedDocuments] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [uploadMessage, setUploadMessage] = useState(null);
 
     const { user } = useAuth();  // Get user and token
 
@@ -42,34 +40,6 @@ const DocumentPageTenant = () => {
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], {type: "application/pdf"});
         saveAs(blob, `${doc.title}.pdf`);
-    };
-
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
-    };
-
-    const handleFileUpload = async (event) => {
-        event.preventDefault();
-        if (!selectedFile) return;
-
-        const headers = {
-            Authorization: `Bearer ${user.jwt}`,
-            'Content-Type': 'multipart/form-data'
-        };
-
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('userId', user.userId);
-
-        try {
-            const response = await axios.post('http://localhost:8080/api/tenant/v1/document/upload', formData, { headers });
-            setUploadMessage({ type: 'success', text: 'Document uploaded successfully!' });
-            setSelectedFile(null);
-            // Refresh documents after upload
-            fetchDocuments();
-        } catch (error) {
-            setUploadMessage({ type: 'danger', text: 'Failed to upload document.' });
-        }
     };
 
     return (
@@ -122,24 +92,6 @@ const DocumentPageTenant = () => {
                         </li>
                     ))}
                 </ul>
-            </div>
-
-            <div className="upload-section">
-                <h3>Upload New Document</h3>
-                <Form onSubmit={handleFileUpload}>
-                    <Form.Group controlId="formFile">
-                        <Form.Label>Choose Document</Form.Label>
-                        <Form.Control type="file" onChange={handleFileChange} />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" disabled={!selectedFile}>
-                        Upload
-                    </Button>
-                </Form>
-                {uploadMessage && (
-                    <Alert variant={uploadMessage.type} className="mt-3">
-                        {uploadMessage.text}
-                    </Alert>
-                )}
             </div>
         </div>
     );
