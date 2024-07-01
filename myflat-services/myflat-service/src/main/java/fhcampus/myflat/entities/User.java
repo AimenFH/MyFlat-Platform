@@ -46,10 +46,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Document> documents;
 
-    public User(String name, String email, String encode, UserRole userRole, String phoneNumber) {
-    }
-
-    public User(long l, String name, String email, String encode, UserRole userRole, String phoneNumber, Object o, Object o1, Object o2) {
+    public User(String name, String email, String password, UserRole userRole, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
