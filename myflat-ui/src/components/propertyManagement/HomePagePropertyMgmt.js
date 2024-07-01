@@ -11,6 +11,7 @@ const HomePagePropertyMgmt = () => {
         keyManagement: true,
         maintenanceRequests: true,
         propertyManagement: true,
+        manageApartments: true,
     });
 
     const toggleVisibility = key => {
@@ -21,29 +22,30 @@ const HomePagePropertyMgmt = () => {
     };
 
     const managementButtons = [
-        { key: 'tenantManagement', text: 'Mieterverwaltung', variant: 'primary', href: '/tenant-management' },
-        { key: 'documentArchive', text: 'Dokumentenarchiv', variant: 'secondary', href: '/document-archive' },
-        { key: 'keyManagement', text: 'Schlüsselverwaltung', variant: 'success', href: '/key-management', className: 'custom-key-management' },
-        { key: 'maintenanceRequests', text: 'Wartungsanfragen', variant: 'warning', href: '/maintenance-requests' },
-        { key: 'propertyManagement', text: 'Immobilienverwaltung', variant: 'info', href: '/property-management' },
+        { key: 'tenantManagement', text: 'Tenant Management', variant: 'primary', href: '/tenant-management' },
+        { key: 'documentArchive', text: 'Document Archive', variant: 'secondary', href: '/document-archive' },
+        { key: 'keyManagement', text: 'Key Management', variant: 'success', href: '/key-management', className: 'custom-key-management' },
+        { key: 'maintenanceRequests', text: 'Maintenance Requests', variant: 'warning', href: '/maintenance-requests' },
+        { key: 'propertyManagement', text: 'Property Management', variant: 'info', href: '/property-management' },
+        { key: 'manageApartments', text: 'Manage Apartments', variant: 'info', href: '/manage-apartments' },
     ];
 
     return (
         <>
             <Navbar className="navbar-custom" bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="/">MyFlat Verwaltungsbereich</Navbar.Brand>
+                    <Navbar.Brand href="/">MyFlat Administration Area</Navbar.Brand>
                     <Nav className="me-auto">
                         <Button variant="outline-secondary" onClick={() => setShowSettings(true)}>
-                            Anpassen <i className="bi bi-gear-fill"></i>
+                            Customize <i className="bi bi-gear-fill"></i>
                         </Button>
                     </Nav>
                 </Container>
             </Navbar>
 
             <Container className="container-custom my-5">
-                <h1>Willkommen im Verwaltungsbereich von MyFlat</h1>
-                <p>Hier finden Sie alle Tools zur effizienten Verwaltung Ihrer Immobilien.</p>
+                <h1>Welcome to the administration area of MyFlat</h1>
+                <p>Here you will find all the tools for efficient management of your properties.</p>
                 <div className="d-flex flex-wrap">
                     {managementButtons.map(({ key, text, variant, href, className }) => visibility[key] && (
                         <Link to={href} className={`button-custom ${className || ''}`} key={key}>
@@ -58,7 +60,7 @@ const HomePagePropertyMgmt = () => {
 
             <Modal className="modal-custom" show={showSettings} onHide={() => setShowSettings(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Shortcuts Anpassen</Modal.Title>
+                    <Modal.Title>Customize Shortcuts</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {managementButtons.map(({ key, text }) => (
@@ -75,7 +77,7 @@ const HomePagePropertyMgmt = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowSettings(false)}>
-                        Schließen
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
