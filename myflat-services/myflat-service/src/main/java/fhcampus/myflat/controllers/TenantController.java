@@ -1,13 +1,15 @@
 package fhcampus.myflat.controllers;
 
-import fhcampus.myflat.dtos.*;
+import fhcampus.myflat.dtos.DefectDto;
+import fhcampus.myflat.dtos.DistributionRequestDto;
+import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.Notifications;
 import fhcampus.myflat.repositories.DocumentRepository;
+import fhcampus.myflat.repositories.NotificationsRepository;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import fhcampus.myflat.services.tenant.TenantService;
-import fhcampus.myflat.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class TenantController {
     private final TenantService tenantService;
     private final DefectService defectService;
     private final DocumentRepository documentRepository;
-
+    private final NotificationsRepository notificationsRepository;
 
     @Autowired
     private PropertyManagementService propertyManagementService;
@@ -115,13 +117,13 @@ public class TenantController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/v1/notification/{userId}")
-    public ResponseEntity<List<Notifications>> getNotificationsForUser(@PathVariable Long userId) {
-        try {
-            List<Notifications> notifications = propertyManagementService.getNotificationsForUser(userId);
-            return new ResponseEntity<>(notifications, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/v1/notification/top/{topId}")
+    public ResponseEntity<List<Notifications>> getNotificationsByTopId(@PathVariable Integer topId) {
+        List<Notifications> notifications = notificationsRepository.findByTopId(topId);
+        if (notifications.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(notifications);
         }
     }
 }
