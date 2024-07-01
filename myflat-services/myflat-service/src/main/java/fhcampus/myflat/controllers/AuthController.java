@@ -7,7 +7,6 @@ import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
 import fhcampus.myflat.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
     private final AuthService authService;
 
     @PostMapping("/v1/register/property-management")
