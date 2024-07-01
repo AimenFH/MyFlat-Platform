@@ -1,6 +1,6 @@
 package fhcampus.myflat.configurations;
 
-import fhcampus.myflat.servicesTest.jwt.JwtUserService;
+import fhcampus.myflat.services.jwt.JwtUserService;
 import fhcampus.myflat.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
