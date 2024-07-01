@@ -76,7 +76,7 @@ public class TenantController {
         List<Document> documents = documentRepository.findAll();
         List<Document> userApartmentDocuments = documents.stream()
                 .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
@@ -86,7 +86,7 @@ public class TenantController {
         List<Document> documents = documentRepository.findAll();
         List<Document> userApartmentDocuments = documents.stream()
                 .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }

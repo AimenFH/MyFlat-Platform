@@ -39,7 +39,7 @@ function NavigationMenu() {
                     <Nav.Link as={Link} to="/communication" className="nav-link">Communication</Nav.Link>
                     <Nav.Link as={Link} to="/documents" className="nav-link">Documents</Nav.Link>
                     <Nav.Link as={Link} to="/maintenance" className="nav-link">Maintenance</Nav.Link>
-                    {user?.role === 'PROPERTY_MANAGEMENT' && <Nav.Link as={Link} to="/manageProperties" className="nav-link">Properties</Nav.Link>}
+                    {user?.role === 'PROPERTY_MANAGEMENT' && <Nav.Link as={Link} to="/manage-properties" className="nav-link">Properties</Nav.Link>}
                     {user?.role === 'PROPERTY_MANAGEMENT' && <Nav.Link as={Link} to="/registerTenant" className="nav-link">Tenants</Nav.Link>}
                     <Nav.Link className="optionalLink">Settings</Nav.Link>
                   </>

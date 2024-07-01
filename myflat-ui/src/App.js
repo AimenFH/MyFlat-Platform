@@ -21,6 +21,7 @@ import EditApartment from './components/propertyManagement/EditApartment';
 import KeyManagementPagePropMgmt from "./components/propertyManagement/KeyManagementPagePropMgmt";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AppointmentPageTenant from "./components/tenant/AppointmentPageTenant";
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
               <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
+              <Route path="/appointments" element={<AppointmentPageTenant />} />
             </Routes>
           </DarkModeProvider>
         </AuthProvider>
