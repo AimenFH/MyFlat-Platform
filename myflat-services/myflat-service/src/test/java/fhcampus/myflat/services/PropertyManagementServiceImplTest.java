@@ -1,4 +1,4 @@
-package fhcampus.myflat.services.propertymanagement;
+package fhcampus.myflat.services;
 
 import fhcampus.myflat.dtos.*;
 import fhcampus.myflat.entities.Apartment;
@@ -9,6 +9,7 @@ import fhcampus.myflat.enums.BookApartmentStatus;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.BookApartmentRepository;
 import fhcampus.myflat.repositories.PropertyRepository;
+import fhcampus.myflat.services.propertymanagement.PropertyManagementServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

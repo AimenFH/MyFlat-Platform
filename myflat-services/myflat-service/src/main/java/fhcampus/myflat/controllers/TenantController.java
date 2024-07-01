@@ -6,7 +6,7 @@ import fhcampus.myflat.entities.Notifications;
 import fhcampus.myflat.repositories.AppointmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
 import fhcampus.myflat.repositories.NotificationsRepository;
-import fhcampus.myflat.services.AppointmentService;
+import fhcampus.myflat.services.Appointment.AppointmentService;
 import fhcampus.myflat.services.Feedback.FeedbackService;
 import fhcampus.myflat.services.defect.DefectService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;

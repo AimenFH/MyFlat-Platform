@@ -4,16 +4,15 @@ import fhcampus.myflat.dtos.AppointmentDto;
 import fhcampus.myflat.dtos.DistributionRequestDto;
 import fhcampus.myflat.dtos.DocumentDto;
 import fhcampus.myflat.dtos.FeedbackDto;
-import fhcampus.myflat.exceptions.NoNotificationsFoundException;
 import fhcampus.myflat.entities.Apartment;
 import fhcampus.myflat.entities.Document;
 import fhcampus.myflat.entities.Notifications;
 import fhcampus.myflat.entities.User;
+import fhcampus.myflat.exceptions.NoNotificationsFoundException;
 import fhcampus.myflat.repositories.ApartmentRepository;
 import fhcampus.myflat.repositories.DocumentRepository;
-import fhcampus.myflat.repositories.KeyManagementRepository;
 import fhcampus.myflat.repositories.UserRepository;
-import fhcampus.myflat.services.AppointmentService;
+import fhcampus.myflat.services.Appointment.AppointmentService;
 import fhcampus.myflat.services.Feedback.FeedbackService;
 import fhcampus.myflat.services.propertymanagement.PropertyManagementService;
 import lombok.RequiredArgsConstructor;
@@ -132,16 +131,16 @@ public class PropertyManagementCommunicationController {
         }
     }
 
-   ////////////////////////// Appointment
-   @PostMapping("/appointment/create")
-   public ResponseEntity<String> createAppointment(@RequestBody AppointmentDto appointmentDto) {
-       boolean isCreated = appointmentService.createAppointment(appointmentDto);
-       if (isCreated) {
-           return ResponseEntity.ok("Appointment created successfully.");
-       } else {
-           return ResponseEntity.badRequest().body("Failed to create appointment.");
-       }
-   }
+    ////////////////////////// Appointment
+    @PostMapping("/appointment/create")
+    public ResponseEntity<String> createAppointment(@RequestBody AppointmentDto appointmentDto) {
+        boolean isCreated = appointmentService.createAppointment(appointmentDto);
+        if (isCreated) {
+            return ResponseEntity.ok("Appointment created successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to create appointment.");
+        }
+    }
 
     @DeleteMapping("/appointment/delete/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {

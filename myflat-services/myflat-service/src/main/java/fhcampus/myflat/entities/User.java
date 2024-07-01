@@ -49,6 +49,9 @@ public class User implements UserDetails {
     public User(String name, String email, String encode, UserRole userRole, String phoneNumber) {
     }
 
+    public User(long l, String name, String email, String encode, UserRole userRole, String phoneNumber, Object o, Object o1, Object o2) {
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(userRole.name()));

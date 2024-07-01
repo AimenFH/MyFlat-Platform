@@ -1,4 +1,4 @@
-package fhcampus.myflat.services.defect;
+package fhcampus.myflat.services;
 
 import fhcampus.myflat.dtos.DefectDto;
 import fhcampus.myflat.entities.Apartment;

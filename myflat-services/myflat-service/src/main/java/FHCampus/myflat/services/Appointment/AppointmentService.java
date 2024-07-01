@@ -1,4 +1,4 @@
-package fhcampus.myflat.services;
+package fhcampus.myflat.services.Appointment;
 
 import fhcampus.myflat.dtos.AppointmentDto;
 import fhcampus.myflat.entities.Appointment;

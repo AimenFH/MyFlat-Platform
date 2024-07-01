@@ -1,4 +1,4 @@
-package fhcampus.myflat.services.auth;
+package fhcampus.myflat.services;
 
 import fhcampus.myflat.dtos.AuthenticationRequest;
 import fhcampus.myflat.dtos.AuthenticationResponse;
@@ -8,6 +8,7 @@ import fhcampus.myflat.entities.User;
 import fhcampus.myflat.enums.UserRole;
 import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
 import fhcampus.myflat.repositories.UserRepository;
+import fhcampus.myflat.services.auth.AuthServiceImpl;
 import fhcampus.myflat.services.jwt.JwtUserService;
 import fhcampus.myflat.utils.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
