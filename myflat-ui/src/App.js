@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
@@ -19,7 +18,7 @@ import HomePageTenant from './components/tenant/HomePageTenant';
 import HomePagePropertyMgmt from './components/propertyManagement/HomePagePropertyMgmt';
 import ManageApartments from './components/propertyManagement/ManageApartments';
 import EditApartment from './components/propertyManagement/EditApartment';
-
+import KeyManagementPagePropMgmt from "./components/propertyManagement/KeyManagementPagePropMgmt";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -38,7 +37,7 @@ const App = () => {
               <Route path="/documents" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><DocumentPage /></ProtectedRoute>} />
               <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><MaintenancePage /></ProtectedRoute>} />
               <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageProperties /></ProtectedRoute>} />
-              <Route path="/keys" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
+              <Route path="/key-management" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyManagementPagePropMgmt /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
               <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />

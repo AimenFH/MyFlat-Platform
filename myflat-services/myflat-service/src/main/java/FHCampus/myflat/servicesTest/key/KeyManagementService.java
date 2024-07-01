@@ -22,7 +22,6 @@ public class KeyManagementService {
     public boolean createKeyManagement(KeyManagementDto keyManagementDto) {
         try {
             KeyManagement keyManagement = new KeyManagement();
-            keyManagement.setId(keyManagementDto.getId());
             keyManagement.setPropertyId(keyManagementDto.getPropertyId());
             keyManagement.setUserId(keyManagementDto.getUserId());
             keyManagement.setApartmentId(keyManagementDto.getApartmentId());

@@ -172,35 +172,18 @@ public class PropertyManagementController {
 
     @PutMapping("/v1/key-management")
     public ResponseEntity<String> updateKeyManagementByUserId(@RequestBody KeyManagementDto keyManagementDto) {
-        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(keyManagementDto.getUserId());
-        if (keyManagements.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-        keyManagements.forEach(keyManagement -> {
-            if (!keyManagement.getIssuanceDate().equals(keyManagementDto.getIssuanceDate())) {
-                keyManagement.setIssuanceDate(keyManagementDto.getIssuanceDate());
-            }
-            if (!keyManagement.getRedemptionDate().equals(keyManagementDto.getRedemptionDate())) {
-                keyManagement.setRedemptionDate(keyManagementDto.getRedemptionDate());
-            }
-            if (keyManagement.isReplacementRequested() != keyManagementDto.isReplacementRequested()) {
-                keyManagement.setReplacementRequested(keyManagementDto.isReplacementRequested());
-            }
-            if (!keyManagement.getKeysNumber().equals(keyManagementDto.getKeysNumber())) {
-                keyManagement.setKeysNumber(keyManagementDto.getKeysNumber());
-            }
-        });
-        keyManagementRepository.saveAll(keyManagements);
+        KeyManagement keyManagement = keyManagementRepository.findById(keyManagementDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Key not found"));
+        keyManagement.update(keyManagementDto);
+        keyManagementRepository.save(keyManagement);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/v1/key-management")
-    public ResponseEntity<String> deleteKeyManagementByUserId(@RequestParam Integer userId) {
-        List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
-        if (keyManagements.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-        keyManagementRepository.deleteAll(keyManagements);
+    public ResponseEntity<String> deleteKeyManagementByUserId(@RequestParam Long keyId) {
+        KeyManagement keyManagement = keyManagementRepository.findById(keyId)
+                .orElseThrow(() -> new IllegalArgumentException("Key not found"));
+        keyManagementRepository.delete(keyManagement);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
