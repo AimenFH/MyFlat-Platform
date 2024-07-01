@@ -5,7 +5,7 @@ import fhcampus.myflat.dtos.AuthenticationResponse;
 import fhcampus.myflat.dtos.SignupRequest;
 import fhcampus.myflat.dtos.UserDto;
 import fhcampus.myflat.exceptions.EmailAlreadyExistsException;
-import fhcampus.myflat.services.auth.AuthService;
+import fhcampus.myflat.servicesTest.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
