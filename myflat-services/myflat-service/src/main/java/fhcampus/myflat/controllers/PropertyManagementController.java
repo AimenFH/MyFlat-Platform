@@ -39,6 +39,12 @@ public class PropertyManagementController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("/v1/properties")
+    public ResponseEntity<List<PropertyDto>> getAllProperties() {
+        List<PropertyDto> propertyDtoList = propertyManagementService.getAllProperties();
+        return ResponseEntity.ok(propertyDtoList);
+    }
+
     ///////////////////////// region Apartment Section
     @PostMapping("/v1/apartment")
     public ResponseEntity<?> postApartment(@RequestBody ApartmentDto apartmentDto) {

@@ -1,90 +1,96 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Container, Modal, Form } from 'react-bootstrap';
-import '../styles/ManageProperties.css';
+import React, {useEffect, useState} from 'react';
+import { Container, Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../AuthContext';
 
-const initialProperties = [
-  { id: 1, name: 'Eigentum 1', address: 'Straße 1, Stadt', tenants: 5 },
-  { id: 2, name: 'Eigentum 2', address: 'Straße 2, Stadt', tenants: 3 },
-];
+const ManageProperties = () => {
+    const [propertyName, setPropertyName] = useState('');
+    const [propertyAddress, setPropertyAddress] = useState('');
+    const [numberOfFloors, setNumberOfFloors] = useState('');
+    const [numberOfApartments, setNumberOfApartments] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    const [properties, setProperties] = useState([]);
 
-function ManageProperties() {
-  const [properties, setProperties] = useState(initialProperties);
-  const [showModal, setShowModal] = useState(false);
-  const [newPropertyName, setNewPropertyName] = useState('');
-  const [newPropertyAddress, setNewPropertyAddress] = useState('');
-  const [newPropertyTenants, setNewPropertyTenants] = useState('');
-  const navigate = useNavigate();
+    const { user } = useAuth();
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
-  const handleAddProperty = () => {
-    const newProperty = {
-      id: properties.length + 1,
-      name: newPropertyName,
-      address: newPropertyAddress,
-      tenants: parseInt(newPropertyTenants, 10),
+    const fetchProperties = () => {
+        axios.get('http://localhost:8080/api/property-management/v1/properties', {
+            headers: {
+                'Authorization': `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                setProperties(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     };
-    setProperties([...properties, newProperty]);
-    handleCloseModal(); // Modal schließen
-    // Eingabefelder zurücksetzen
-    setNewPropertyName('');
-    setNewPropertyAddress('');
-    setNewPropertyTenants('');
-  };
 
-  const manageApartments = (id) => {
-    navigate(`/properties/${id}/apartments`);
-  };
+    useEffect(() => {
+        fetchProperties();
+    }, []);
 
-  const deleteProperty = (id) => {
-    setProperties(properties.filter(property => property.id !== id));
-  };
-  return (
-    <Container className="manage-properties">
-      <h2>Verwalte deine Immobilien</h2>
-      <Button onClick={handleShowModal} className="add-btn">Eigentum hinzufügen</Button>
-  
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Neue Immobilie hinzufügen</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Name der Immobilie</Form.Label>
-              <Form.Control type="text" value={newPropertyName} onChange={e => setNewPropertyName(e.target.value)} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Adresse der Immobilie</Form.Label>
-              <Form.Control type="text" value={newPropertyAddress} onChange={e => setNewPropertyAddress(e.target.value)} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Anzahl der Mieter</Form.Label>
-              <Form.Control type="number" value={newPropertyTenants} onChange={e => setNewPropertyTenants(e.target.value)} />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>Schließen</Button>
-          <Button variant="primary" onClick={handleAddProperty}>Speichern</Button>
-        </Modal.Footer>
-      </Modal>
-  
-      <div className="properties-list">
-        {properties.map((property) => (
-          <div key={property.id} className="property-item">
-            <h3>{property.name}</h3>
-            <p>Adresse: {property.address}</p>
-            <p>Mieter: {property.tenants}</p>
-            <Button variant="info" onClick={() => manageApartments(property.id)}>Wohnungen verwalten</Button>
-            <Button variant="info" onClick={() => navigate(`/keys/${property.id}`)}>Schlüssel verwalten</Button>
-            <Button variant="danger" onClick={() => deleteProperty(property.id)} className="delete-btn">Löschen</Button>
-          </div>
-        ))}
-      </div>
-    </Container>
-  );}  
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const propertyDto = {
+            propertyName: propertyName,
+            propertyAddress: propertyAddress,
+            numberOfFloors: parseInt(numberOfFloors),
+            numberOfApartments: parseInt(numberOfApartments)
+        };
+
+        axios.post('http://localhost:8080/api/property-management/v1/property', propertyDto, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                console.log('Success:', response.data);
+                setSubmitted(true);
+                fetchProperties();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
+
+    return (
+        <Container className="manage-properties">
+            <h2>Manage Properties</h2>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                    <Form.Label>Property Name</Form.Label>
+                    <Form.Control type="text" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Property Address</Form.Label>
+                    <Form.Control type="text" value={propertyAddress} onChange={(e) => setPropertyAddress(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Number of Floors</Form.Label>
+                    <Form.Control type="number" value={numberOfFloors} onChange={(e) => setNumberOfFloors(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Number of Apartments</Form.Label>
+                    <Form.Control type="number" value={numberOfApartments} onChange={(e) => setNumberOfApartments(e.target.value)} required />
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            {submitted && <div className="confirmation-message">Property created successfully.</div>}
+            <h3>All Properties</h3>
+            {properties.map(property => (
+                <div key={property.id}>
+                    <h4>Property {property.propertyName}</h4>
+                    <p>Address: {property.propertyAddress}</p>
+                    <p>Number of Floors: {property.numberOfFloors}</p>
+                    <p>Number of Apartments: {property.numberOfApartments}</p>
+                </div>
+            ))}
+        </Container>
+    );
+};
 
 export default ManageProperties;

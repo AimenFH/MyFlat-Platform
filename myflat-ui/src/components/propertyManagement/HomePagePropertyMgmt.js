@@ -10,7 +10,7 @@ const HomePagePropertyMgmt = () => {
         documentArchive: true,
         keyManagement: true,
         maintenanceRequests: true,
-        propertyManagement: true,
+        manageProperties: true,
         manageApartments: true,
     });
 
@@ -26,7 +26,7 @@ const HomePagePropertyMgmt = () => {
         { key: 'documentArchive', text: 'Document Archive', variant: 'secondary', href: '/document-archive' },
         { key: 'keyManagement', text: 'Key Management', variant: 'success', href: '/key-management', className: 'custom-key-management' },
         { key: 'maintenanceRequests', text: 'Maintenance Requests', variant: 'warning', href: '/maintenance-requests' },
-        { key: 'propertyManagement', text: 'Property Management', variant: 'info', href: '/property-management' },
+        { key: 'manageProperties', text: 'Manage Properties', variant: 'info', href: '/manage-properties' },
         { key: 'manageApartments', text: 'Manage Apartments', variant: 'info', href: '/manage-apartments' },
     ];
 
