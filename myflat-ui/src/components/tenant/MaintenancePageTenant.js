@@ -17,12 +17,12 @@ const MaintenancePageTenant = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const timestamp = new Date().toISOString(); // Current timestamp
-        const status = 'OPEN'; // Default status
+        const timestamp = new Date().toISOString();
+        const status = 'OPEN';
 
         const formData = new FormData();
         const defectDto = JSON.stringify({
-            userId: user.id, // Assuming user.id is available from the authentication context
+            userId: user.id,
             apartmentId,
             description,
             timestamp,
@@ -100,7 +100,6 @@ const MaintenancePageTenant = () => {
                         <Dropdown.Item eventKey="PLUMBING">Plumbing</Dropdown.Item>
                         <Dropdown.Item eventKey="ELECTRICAL">Electrical</Dropdown.Item>
                         <Dropdown.Item eventKey="CONSTRUCTION">Construction</Dropdown.Item>
-                        <Dropdown.Item eventKey="KEY">New Key</Dropdown.Item>
                     </DropdownButton>
                 </Form.Group>
 
