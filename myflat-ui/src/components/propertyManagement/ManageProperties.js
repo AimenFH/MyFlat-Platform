@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import {Container, Form, Button, Card} from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
 
@@ -82,12 +82,14 @@ const ManageProperties = () => {
             {submitted && <div className="confirmation-message">Property created successfully.</div>}
             <h3>All Properties</h3>
             {properties.map(property => (
-                <div key={property.id}>
-                    <h4>Property {property.propertyName}</h4>
-                    <p>Address: {property.propertyAddress}</p>
-                    <p>Number of Floors: {property.numberOfFloors}</p>
-                    <p>Number of Apartments: {property.numberOfApartments}</p>
-                </div>
+                <Card key={property.id} style={{ width: '100%', marginBottom: '1rem' }}>
+                    <Card.Body>
+                        <Card.Title>Property {property.propertyName}</Card.Title>
+                        <Card.Text>Address: {property.propertyAddress}</Card.Text>
+                        <Card.Text>Number of Floors: {property.numberOfFloors}</Card.Text>
+                        <Card.Text>Number of Apartments: {property.numberOfApartments}</Card.Text>
+                    </Card.Body>
+                </Card>
             ))}
         </Container>
     );

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import {Container, Form, Button, Card} from 'react-bootstrap';
 import axios from 'axios';
 import { useAuth } from '../AuthContext';
 
@@ -88,13 +88,15 @@ const ManageApartments = () => {
             {submitted && <div className="confirmation-message">Apartment created successfully.</div>}
             <h3>All Apartments</h3>
             {apartments.map(apartment => (
-                <div key={apartment.id}>
-                    <h4>Apartment {apartment.number}</h4>
-                    <p>Floor: {apartment.floor}</p>
-                    <p>Area: {apartment.area}</p>
-                    <p>Price: {apartment.price}</p>
-                    <p>Property ID: {apartment.propertyId}</p>
-                </div>
+                <Card key={apartment.id} style={{ width: '100%', marginBottom: '1rem' }}>
+                    <Card.Body>
+                        <Card.Title>Apartment {apartment.number}</Card.Title>
+                        <Card.Text>Floor: {apartment.floor}</Card.Text>
+                        <Card.Text>Area: {apartment.area} sqm</Card.Text>
+                        <Card.Text>Price: ${apartment.price}</Card.Text>
+                        <Card.Text>Property ID: {apartment.propertyId}</Card.Text>
+                    </Card.Body>
+                </Card>
             ))}
         </Container>
     );

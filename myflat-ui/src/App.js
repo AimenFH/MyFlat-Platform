@@ -22,6 +22,7 @@ import AppointmentPageTenant from "./components/tenant/AppointmentPageTenant";
 import AppointmentPagePropertyMgmt from "./components/propertyManagement/AppointmentPagePropertyMgmt";
 import FeedbackPageTenant from './components/tenant/FeedbackPageTenant';
 import FeedbackPagePropertyMgmt from './components/propertyManagement/FeedbackPagePropertyMgmt';
+import AssignTenantPagePropertyMgmt from "./components/propertyManagement/AssignTenantPagePropertyMgmt";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/registerTenant" element={<RegisterPageTenant />} />
+              <Route path="/assign-tenant" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><AssignTenantPagePropertyMgmt /></ProtectedRoute>} />
               <Route path="/registerPropertyMgmt" element={<RegisterPagePropertyMgmt />} />
               <Route path="/communication" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><CommunicationPage /></ProtectedRoute>} />
               <Route path="/documents" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><DocumentPage /></ProtectedRoute>} />
