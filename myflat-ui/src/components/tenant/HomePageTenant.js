@@ -43,18 +43,27 @@ const HomePageTenant = () => {
                 <Col>
                     <Card className="card-custom">
                         <Card.Body>
-                            <Card.Title className="card-title">Community Events</Card.Title>
-                            <Card.Text className="card-text">Discover upcoming events and meetings in your residential complex.</Card.Text>
-                            <Button variant="success" as={Link} to="/events" className="button-custom">Events</Button>
+                            <Card.Title className="card-title">Appointments</Card.Title>
+                            <Card.Text className="card-text">Manage your appointments with the property management team or book resources.</Card.Text>
+                            <Button variant="danger" as={Link} to="/appointments" className="button-custom">View appointments</Button>
                         </Card.Body>
                     </Card>
                 </Col>
                 <Col>
                     <Card className="card-custom">
                         <Card.Body>
-                            <Card.Title className="card-title">Appointments</Card.Title>
-                            <Card.Text className="card-text">Manage your appointments with the property management team or book resources.</Card.Text>
-                            <Button variant="danger" as={Link} to="/appointments" className="button-custom">View appointments</Button>
+                            <Card.Title className="card-title">Feedback and Suggestions</Card.Title>
+                            <Card.Text className="card-text">Your feedback is important to us. Share your suggestions or feedback with the property management team.</Card.Text>
+                            <Button variant="warning" as={Link} to="/feedback" className="button-custom">Give Feedback</Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col>
+                    <Card className="card-custom">
+                        <Card.Body>
+                            <Card.Title className="card-title">Community Events</Card.Title>
+                            <Card.Text className="card-text">Discover upcoming events and meetings in your residential complex.</Card.Text>
+                            <Button variant="success" as={Link} to="/events" className="button-custom">Events</Button>
                         </Card.Body>
                     </Card>
                 </Col>

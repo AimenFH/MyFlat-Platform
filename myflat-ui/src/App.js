@@ -18,10 +18,12 @@ import HomePagePropertyMgmt from './components/propertyManagement/HomePageProper
 import ManageApartments from './components/propertyManagement/ManageApartments';
 import EditApartment from './components/propertyManagement/EditApartment';
 import KeyManagementPagePropMgmt from "./components/propertyManagement/KeyManagementPagePropMgmt";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
 import AppointmentPageTenant from "./components/tenant/AppointmentPageTenant";
 import AppointmentPagePropertyMgmt from "./components/propertyManagement/AppointmentPagePropertyMgmt";
+import FeedbackPageTenant from './components/tenant/FeedbackPageTenant';
+import FeedbackPagePropertyMgmt from './components/propertyManagement/FeedbackPagePropertyMgmt';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
@@ -43,6 +45,7 @@ const App = () => {
               <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
               <Route path="/appointments" element={<AppointmentPage />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
             </Routes>
           </DarkModeProvider>
         </AuthProvider>
@@ -74,6 +77,11 @@ const CommunicationPage = () => {
 const AppointmentPage = () => {
   const { user } = useAuth();
   return user.role === 'TENANT' ? <AppointmentPageTenant /> : <AppointmentPagePropertyMgmt />;
+};
+
+const FeedbackPage = () => {
+  const { user } = useAuth();
+  return user.role === 'TENANT' ? <FeedbackPageTenant /> : <FeedbackPagePropertyMgmt />;
 };
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
