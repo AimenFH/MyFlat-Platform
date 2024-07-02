@@ -60,6 +60,7 @@ public class DefectServiceImpl implements DefectService {
         defectDto.setStatus(defect.getStatus());
         defectDto.setCategory(defect.getCategory());
         defectDto.setLocation(defect.getLocation());
+        defectDto.setImage(defect.getImage());
         return defectDto;
     }
 

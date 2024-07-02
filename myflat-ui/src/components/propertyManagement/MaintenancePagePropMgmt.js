@@ -63,7 +63,6 @@ const MaintenancePagePropMgmt = () => {
             }
         })
             .then(response => {
-                console.log('Success:', response.data);
                 setDefects(response.data);
             })
             .catch(error => {
