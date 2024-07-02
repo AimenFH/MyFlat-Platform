@@ -86,6 +86,19 @@ public class PropertyManagementCommunicationController {
         }
     }
 
+    @PutMapping("/v1/document/{documentId}/archive")
+    public ResponseEntity<Object> archiveDocument(@PathVariable Long documentId) {
+        Optional<Document> document = documentRepository.findById(documentId);
+        if (document.isPresent()) {
+            Document doc = document.get();
+            doc.setArchived(true);
+            Document updatedDocument = documentRepository.save(doc);
+            return new ResponseEntity<>(updatedDocument.documentDto(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Document not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/v1/document/{apartmentId}/{documentId}")
     public ResponseEntity<Object> updateDocumentState(@PathVariable Long apartmentId, @PathVariable Long documentId, @RequestBody DocumentDto documentDto) {
         try {
@@ -110,7 +123,13 @@ public class PropertyManagementCommunicationController {
 
     @GetMapping("/v1/document")
     public ResponseEntity<Object> getAllDocuments() {
-        List<Document> documents = documentRepository.findAll();
+        List<Document> documents = documentRepository.findAll().stream().filter(document -> !document.isArchived()).toList();
+        return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/v1/document/archived")
+    public ResponseEntity<Object> getAllArchivedDocuments() {
+        List<Document> documents = documentRepository.findAll().stream().filter(Document::isArchived).toList();
         return new ResponseEntity<>(documents.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
