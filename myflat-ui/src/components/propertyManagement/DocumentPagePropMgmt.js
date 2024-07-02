@@ -32,7 +32,7 @@ const DocumentPagePropMgmt = () => {
       const response = await axios.post('http://localhost:8080/api/property-management/v1/document', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${user.jwt}` // Set the bearer token here
+          'Authorization': `Bearer ${user.jwt}`
         }
       });
       console.log('File upload response:', response.data);

@@ -132,7 +132,7 @@ public class PropertyManagementCommunicationController {
     }
 
     ////////////////////////// Appointment
-    @PostMapping("/appointment/create")
+    @PostMapping("/v1/appointment/create")
     public ResponseEntity<String> createAppointment(@RequestBody AppointmentDto appointmentDto) {
         boolean isCreated = appointmentService.createAppointment(appointmentDto);
         if (isCreated) {
@@ -142,7 +142,7 @@ public class PropertyManagementCommunicationController {
         }
     }
 
-    @DeleteMapping("/appointment/delete/{id}")
+    @DeleteMapping("/v1/appointment/delete/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
         try {
             appointmentService.deleteAppointment(id);
@@ -152,7 +152,7 @@ public class PropertyManagementCommunicationController {
         }
     }
 
-    @GetMapping("/appointment/all")
+    @GetMapping("/v1/appointment/all")
     public ResponseEntity<Object> getAllAppointments() {
         List<AppointmentDto> appointments = appointmentService.getAllAppointments();
         if (appointments.isEmpty()) {

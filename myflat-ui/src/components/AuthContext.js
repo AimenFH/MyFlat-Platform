@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userObj) => {
     setUser(userObj);
-    localStorage.setItem('user', JSON.stringify(userObj)); // Store the user object in local storage
+    localStorage.setItem('user', JSON.stringify(userObj));
   };
 
   const logout = () => {

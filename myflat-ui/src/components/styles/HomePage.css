@@ -82,3 +82,9 @@
 .custom-key-management .btn-success:hover {
     background-color: #143044; /* Slightly darker variant for hover */
 }
+
+.card-custom .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -66,7 +66,7 @@ const AppointmentPagePropertyMgmt = () => {
         })
             .then(response => {
                 if (response.status === 200) {
-                    fetchAppointments(); // Refresh the list of appointments
+                    fetchAppointments();
                 } else {
                     console.error('Failed to delete the appointment:', response);
                 }

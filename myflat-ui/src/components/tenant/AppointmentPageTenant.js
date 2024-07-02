@@ -25,7 +25,7 @@ const AppointmentPageTenant = () => {
         <Container className="tenant-appointments">
             <h2>Your Appointments</h2>
             {appointments.map(appointment => (
-                <Card style={{ width: '18rem', marginBottom: '10px' }} key={appointment.id}>
+                <Card style={{ width: '35rem', marginBottom: '10px' }} key={appointment.id}>
                     <Card.Body>
                         <Card.Title>{appointment.title}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">{new Date(appointment.date).toLocaleString()}</Card.Subtitle>
