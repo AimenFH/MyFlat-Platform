@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Button, Container, Modal, Form } from 'react-bootstrap';
+import {Button, Container, Modal, Form, Card} from 'react-bootstrap';
 import { useAuth } from '../AuthContext';
 
 const KeyManagementPage = () => {
@@ -122,7 +122,7 @@ const KeyManagementPage = () => {
     return (
         <Container className="key-management-page">
             <h2>Key Management</h2>
-            <Button onClick={handleShowModal} className="add-btn">Add Key Record</Button>
+            <Button onClick={handleShowModal} className="add-btn mb-4">Add Key Record</Button>
 
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
@@ -132,30 +132,35 @@ const KeyManagementPage = () => {
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Property ID</Form.Label>
-                            <Form.Control type="number" value={propertyId} onChange={e => setPropertyId(e.target.value)} />
+                            <Form.Control type="number" value={propertyId}
+                                          onChange={e => setPropertyId(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>User ID</Form.Label>
-                            <Form.Control type="number" value={userId} onChange={e => setUserId(e.target.value)} />
+                            <Form.Control type="number" value={userId} onChange={e => setUserId(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Apartment ID</Form.Label>
-                            <Form.Control type="number" value={apartmentId} onChange={e => setApartmentId(e.target.value)} />
+                            <Form.Control type="number" value={apartmentId}
+                                          onChange={e => setApartmentId(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Issuance Date</Form.Label>
-                            <Form.Control type="date" value={issuanceDate} onChange={e => setIssuanceDate(e.target.value)} />
+                            <Form.Control type="date" value={issuanceDate}
+                                          onChange={e => setIssuanceDate(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Redemption Date</Form.Label>
-                            <Form.Control type="date" value={redemptionDate} onChange={e => setRedemptionDate(e.target.value)} />
+                            <Form.Control type="date" value={redemptionDate}
+                                          onChange={e => setRedemptionDate(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Check type="checkbox" label="Replacement Requested" checked={replacementRequested} onChange={e => setReplacementRequested(e.target.checked)} />
+                            <Form.Check type="checkbox" label="Replacement Requested" checked={replacementRequested}
+                                        onChange={e => setReplacementRequested(e.target.checked)}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Key Number</Form.Label>
-                            <Form.Control type="number" value={keyNumber} onChange={e => setKeyNumber(e.target.value)} />
+                            <Form.Control type="number" value={keyNumber} onChange={e => setKeyNumber(e.target.value)}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -167,20 +172,22 @@ const KeyManagementPage = () => {
 
             <div className="keys-list">
                 {keys.map((key) => (
-                    <div key={key.id} className="key-item">
-                        <h3>Key ID: {key.id}</h3>
-                        <p>Property ID: {key.propertyId}</p>
-                        <p>User ID: {key.userId}</p>
-                        <p>Apartment ID: {key.apartmentId}</p>
-                        <p>Issuance Date: {formatDate(key.issuanceDate)}</p>
-                        <p>Redemption Date: {formatDate(key.redemptionDate)}</p>
-                        <p>Replacement Requested: {key.replacementRequested ? 'Yes' : 'No'}</p>
-                        <p>Key Number: {key.keysNumber}</p>
-                        <Button variant="danger" onClick={() => handleDeleteKey(key.id)}
-                                className="delete-btn">Delete</Button>
-                        <Button variant="info" onClick={() => handleShowChangeModal(key)}
-                                className="change-btn">Change</Button>
-                    </div>
+                    <Card key={key.id} className="mb-3">
+                        <Card.Body>
+                            <Card.Title>Key ID: {key.id}</Card.Title>
+                            <Card.Text>Property ID: {key.propertyId}</Card.Text>
+                            <Card.Text>User ID: {key.userId}</Card.Text>
+                            <Card.Text>Apartment ID: {key.apartmentId}</Card.Text>
+                            <Card.Text>Issuance Date: {formatDate(key.issuanceDate)}</Card.Text>
+                            <Card.Text>Redemption Date: {formatDate(key.redemptionDate)}</Card.Text>
+                            <Card.Text>Replacement Requested: {key.replacementRequested ? 'Yes' : 'No'}</Card.Text>
+                            <Card.Text>Key Number: {key.keysNumber}</Card.Text>
+                            <Button variant="danger" onClick={() => handleDeleteKey(key.id)}
+                                    className="delete-btn">Delete</Button>
+                            <Button variant="info" onClick={() => handleShowChangeModal(key)}
+                                    className="change-btn">Change</Button>
+                        </Card.Body>
+                    </Card>
                 ))}
             </div>
         </Container>

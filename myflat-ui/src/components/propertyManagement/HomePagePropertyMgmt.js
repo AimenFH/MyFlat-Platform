@@ -11,6 +11,7 @@ const HomePagePropertyMgmt = () => {
         maintenanceRequests: true,
         manageProperties: true,
         manageApartments: true,
+        manageAppointments: true
     });
 
     const toggleVisibility = key => {
@@ -26,6 +27,7 @@ const HomePagePropertyMgmt = () => {
         { key: 'maintenanceRequests', text: 'Maintenance Requests', variant: 'warning', href: '/maintenance' },
         { key: 'manageProperties', text: 'Manage Properties', variant: 'info', href: '/manage-properties' },
         { key: 'manageApartments', text: 'Manage Apartments', variant: 'info', href: '/manage-apartments' },
+        { key: 'manageAppointments', text: 'Manage Appointments', variant: 'dark', href: '/appointments' },
     ];
 
     return (

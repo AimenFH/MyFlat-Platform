@@ -12,7 +12,6 @@ import DocumentPagePropMgmt from './components/propertyManagement/DocumentPagePr
 import MaintenancePageTenant from './components/tenant/MaintenancePageTenant';
 import MaintenancePagePropMgmt from './components/propertyManagement/MaintenancePagePropMgmt';
 import NavigationMenu from './components/NavigationMenu';
-import KeyPage from './components/propertyManagement/KeyPage';
 import ManageProperties from './components/propertyManagement/ManageProperties';
 import HomePageTenant from './components/tenant/HomePageTenant';
 import HomePagePropertyMgmt from './components/propertyManagement/HomePagePropertyMgmt';
@@ -22,6 +21,7 @@ import KeyManagementPagePropMgmt from "./components/propertyManagement/KeyManage
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppointmentPageTenant from "./components/tenant/AppointmentPageTenant";
+import AppointmentPagePropertyMgmt from "./components/propertyManagement/AppointmentPagePropertyMgmt";
 
 const App = () => {
   return (
@@ -42,8 +42,7 @@ const App = () => {
               <Route path="/key-management" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyManagementPagePropMgmt /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
-              <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
-              <Route path="/appointments" element={<AppointmentPageTenant />} />
+              <Route path="/appointments" element={<AppointmentPage />} />
             </Routes>
           </DarkModeProvider>
         </AuthProvider>
@@ -70,6 +69,11 @@ const MaintenancePage = () => {
 const CommunicationPage = () => {
   const { user } = useAuth();
   return user.role === 'TENANT' ? <CommunicationPageTenant /> : <CommunicationPagePropMgmt />;
+};
+
+const AppointmentPage = () => {
+  const { user } = useAuth();
+  return user.role === 'TENANT' ? <AppointmentPageTenant /> : <AppointmentPagePropertyMgmt />;
 };
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
