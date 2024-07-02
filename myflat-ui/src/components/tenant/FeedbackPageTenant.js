@@ -10,6 +10,7 @@ const FeedbackPageTenant = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const feedback = {
       message: message,
       timestamp: new Date().toISOString(),
@@ -22,7 +23,7 @@ const FeedbackPageTenant = () => {
         },
       });
       setSubmitted(true);
-      setMessage(''); // Reset message after successful submission
+      setMessage('');
     } catch (error) {
       console.error('Error submitting feedback:', error);
       alert('Error submitting feedback');
