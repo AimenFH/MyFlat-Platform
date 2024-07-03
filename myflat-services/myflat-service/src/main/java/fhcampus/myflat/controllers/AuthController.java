@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling authentication requests such as login and registration.
+ * Utilizes AuthService to perform the actual authentication logic.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -22,6 +26,12 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Registers a new property management user.
+     *
+     * @param signupRequest The signup request containing user details.
+     * @return ResponseEntity with the created UserDto or an error message in case of failure.
+     */
     @PostMapping("/v1/register/property-management")
     public ResponseEntity<?> registerPropertyManagement(@RequestBody SignupRequest signupRequest) {
         UserDto createdUserDto;
@@ -33,6 +43,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
     }
 
+    /**
+     * Authenticates a user and generates a token.
+     *
+     * @param authenticationRequest The authentication request containing login credentials.
+     * @return ResponseEntity with the AuthenticationResponse containing the token or an error message in case of failure.
+     */
     @PostMapping("/v1/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
         AuthenticationResponse authenticationResponse;
