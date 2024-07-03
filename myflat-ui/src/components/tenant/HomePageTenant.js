@@ -1,64 +1,69 @@
 import React from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import '../styles/HomePage.css'; // Pfad anpassen, falls nötig
+import '../styles/HomePage.css';
 
 const HomePageTenant = () => {
     return (
         <Container className="mt-5 container-custom">
             <Row className="mb-4">
                 <Col>
-                    <h1>Willkommen bei MyFlat</h1>
-                    <p>MyFlat revolutioniert die Kommunikation und Verwaltung in Mehrparteienhäusern. Als Mieter profitieren Sie von einer zentralisierten Plattform, die den Austausch mit dem Hausverwaltungsteam und anderen Mietern vereinfacht, wichtige Dokumente sicher verwahrt und es Ihnen ermöglicht, schnell auf gemeinsame Ressourcen und Ankündigungen zuzugreifen.</p>
+                    <h1>Welcome to MyFlat</h1>
+                    <p>MyFlat revolutionizes communication and management in multi-party houses. As a tenant, you benefit from a centralized platform that simplifies exchange with the property management team and other tenants, securely stores important documents, and allows you to quickly access common resources and announcements.</p>
                 </Col>
             </Row>
-            <Row xs={1} md={2} lg={4} className="g-4"> {/* Aktualisiert für ein 4-Spalten-Layout auf größeren Bildschirmen */}
-                {/* Defekt melden Karte */}
+            <Row xs={1} md={2} lg={4} className="g-4">
                 <Col>
                     <Card className="card-custom">
-                        <Card.Body>
-                            <Card.Title className="card-title">Defekt melden</Card.Title>
-                            <Card.Text className="card-text">Melden Sie schnell und einfach Schäden oder Defekte in Ihrer Wohnung oder im Gebäude.</Card.Text>
-                            <Button variant="primary" as={Link} to="/maintenance" className="button-custom">Zum Formular</Button>
+                        <Card.Body className="text-center">
+                            <Card.Title className="card-title">Report a defect</Card.Title>
+                            <Card.Text className="card-text">Quickly and easily report damages or defects in your apartment or the building.</Card.Text>
+                            <Button variant="primary" as={Link} to="/maintenance" className="button-custom">To the form</Button>
                         </Card.Body>
                     </Card>
                 </Col>
-                {/* Digitales Schwarzes Brett Karte */}
                 <Col>
                     <Card className="card-custom">
                         <Card.Body>
-                            <Card.Title className="card-title">Digitales Schwarzes Brett</Card.Title>
-                            <Card.Text className="card-text">Informieren Sie sich über aktuelle Ankündigungen und Neuigkeiten rund um Ihr Wohnhaus.</Card.Text>
-                            <Button variant="secondary" as={Link} to="/communication" className="button-custom">Anschauen</Button>
+                            <Card.Title className="card-title">Digital Bulletin Board</Card.Title>
+                            <Card.Text className="card-text">Find out about current announcements and news around your residential building.</Card.Text>
+                            <Button variant="secondary" as={Link} to="/communication" className="button-custom">View</Button>
                         </Card.Body>
                     </Card>
                 </Col>
-                {/* Ihre Dokumente Karte */}
                 <Col>
                     <Card className="card-custom">
                         <Card.Body>
-                            <Card.Title className="card-title">Ihre Dokumente</Card.Title>
-                            <Card.Text className="card-text">Finden Sie wichtige Dokumente wie Verträge und Betriebskostenabrechnungen an einem Ort.</Card.Text>
-                            <Button variant="info" as={Link} to="/documents" className="button-custom">Dokumente</Button>
+                            <Card.Title className="card-title">Your Documents</Card.Title>
+                            <Card.Text className="card-text">Find important documents such as contracts and operating cost statements in one place.</Card.Text>
+                            <Button variant="info" as={Link} to="/documents" className="button-custom">Documents</Button>
                         </Card.Body>
                     </Card>
                 </Col>
-                {/* Beispiel für eine zusätzliche Karte */}
+                <Col>
+                    <Card className="card-custom">
+                        <Card.Body>
+                            <Card.Title className="card-title">Appointments</Card.Title>
+                            <Card.Text className="card-text">Manage your appointments with the property management team or book resources.</Card.Text>
+                            <Button variant="danger" as={Link} to="/appointments" className="button-custom">View appointments</Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col>
+                    <Card className="card-custom">
+                        <Card.Body>
+                            <Card.Title className="card-title">Feedback and Suggestions</Card.Title>
+                            <Card.Text className="card-text">Your feedback is important to us. Share your suggestions or feedback with the property management team.</Card.Text>
+                            <Button variant="warning" as={Link} to="/feedback" className="button-custom">Give Feedback</Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
                 <Col>
                     <Card className="card-custom">
                         <Card.Body>
                             <Card.Title className="card-title">Community Events</Card.Title>
-                            <Card.Text className="card-text">Entdecken Sie kommende Events und Treffen in Ihrer Wohnanlage.</Card.Text>
+                            <Card.Text className="card-text">Discover upcoming events and meetings in your residential complex.</Card.Text>
                             <Button variant="success" as={Link} to="/events" className="button-custom">Events</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className="card-custom">
-                        <Card.Body>
-                            <Card.Title className="card-title">Termine</Card.Title>
-                            <Card.Text className="card-text">Verwalten Sie Ihre Termine mit dem Hausverwaltungsteam oder buchen Sie Ressourcen.</Card.Text>
-                            <Button variant="danger" as={Link} to="/appointments" className="button-custom">Termine anzeigen</Button>
                         </Card.Body>
                     </Card>
                 </Col>

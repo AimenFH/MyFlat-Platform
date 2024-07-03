@@ -24,6 +24,7 @@ public class DefectDto {
     private DefectStatus status;
     private DefectCategory category;
     private DefectLocation location;
+    private byte[] image;
 
     public DefectDto(Defect defect) {
         this.id = defect.getId();
@@ -34,5 +35,6 @@ public class DefectDto {
         this.status = defect.getStatus();
         this.category = defect.getCategory();
         this.location = defect.getLocation();
+        this.image = defect.getImage();
     }
 }

@@ -31,4 +31,6 @@ public interface PropertyManagementService {
     List<Notifications> getNotifications(Integer buildingId, Integer topId);
 
     List<Notifications> getNotificationsForUser(Long userId);
+
+    List<PropertyDto> getAllProperties();
 }

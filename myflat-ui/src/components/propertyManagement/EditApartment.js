@@ -1,4 +1,3 @@
-// In ./components/EditApartment.js
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -8,7 +7,7 @@ const EditApartment = () => {
 
 
   const saveApartmentDetails = () => {
-    navigate(-1); // Zurück zur vorherigen Seite navigieren
+    navigate(-1);
   };
 
   return (

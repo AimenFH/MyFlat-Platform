@@ -8,17 +8,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * Service class for managing key-related operations.
+ * Provides functionality to create, retrieve all, and retrieve key management entries by user ID.
+ */
 @Service
 @RequiredArgsConstructor
 public class KeyManagementService {
 
     private final KeyManagementRepository keyManagementRepository;
 
-
-
-
+    /**
+     * Creates a new key management entry in the repository.
+     * The entry is created based on the provided KeyManagementDto.
+     *
+     * @param keyManagementDto Data transfer object containing key management details.
+     * @return boolean True if the key management entry is successfully created, false otherwise.
+     */
     public boolean createKeyManagement(KeyManagementDto keyManagementDto) {
         try {
             KeyManagement keyManagement = new KeyManagement();
@@ -36,13 +43,23 @@ public class KeyManagementService {
         }
     }
 
-
+    /**
+     * Retrieves all key management entries from the repository.
+     *
+     * @return List<KeyManagementDto> A list of key management DTOs.
+     */
     public List<KeyManagementDto> getAllKeyManagements() {
         return keyManagementRepository.findAll().stream()
                 .map(KeyManagement::getKeyManagementDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
+    /**
+     * Retrieves key management entries for a specific user ID.
+     *
+     * @param userId The ID of the user for whom to retrieve key management entries.
+     * @return Optional<List<KeyManagementDto>> An optional containing a list of key management DTOs if found, or empty otherwise.
+     */
     public Optional<List<KeyManagementDto>> getKeyManagementByUserId(Integer userId) {
         List<KeyManagement> keyManagements = keyManagementRepository.findAllByUserId(userId);
         if (keyManagements.isEmpty()) {
@@ -50,8 +67,6 @@ public class KeyManagementService {
         }
         return Optional.of(keyManagements.stream()
                 .map(KeyManagement::getKeyManagementDto)
-                .collect(Collectors.toList()));
+                .toList());
     }
-
-
 }

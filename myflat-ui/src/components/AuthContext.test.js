@@ -2,7 +2,6 @@ import {render, fireEvent} from '@testing-library/react';
 import {AuthProvider, useAuth} from './AuthContext';
 import React from "react";
 
-// Mock component to simulate child component
 const MockComponent = () => {
     const {user, login, logout} = useAuth();
 
@@ -16,7 +15,6 @@ const MockComponent = () => {
 };
 
 describe('AuthProvider', () => {
-    // Clear localStorage before each test
     beforeEach(() => {
         localStorage.clear();
     });

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Form, Card, Row, Col } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Container, Form, Card, Row, Col, ListGroup, Button} from 'react-bootstrap';
 import '../styles/DocumentPage.css';
 import axios from "axios";
 import {useAuth} from "../AuthContext";
@@ -12,69 +12,72 @@ const DocumentPagePropMgmt = () => {
   const [apartmentFiles, setApartmentFiles] = useState([]);
   const [apartmentId, setApartmentId] = useState('');
   const [userId, setUserId] = useState('');
+  const [generalDocuments, setGeneralDocuments] = useState([]);
+  const [archivedDocuments, setArchivedDocuments] = useState([]);
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const fetchDocuments = async () => {
+    try {
+      const generalResponse = await axios.get('http://localhost:8080/api/property-management/v1/document', {
+        headers: { 'Authorization': `Bearer ${user.jwt}` }
+      });
+      setGeneralDocuments(generalResponse.data);
+
+      const archivedResponse = await axios.get('http://localhost:8080/api/property-management/v1/document/archived', {
+        headers: { 'Authorization': `Bearer ${user.jwt}` }
+      });
+      setArchivedDocuments(archivedResponse.data);
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+    }
+  };
 
   const handleFileUpload = async (event, category) => {
+    if (event.target.files.length === 0) {
+      // No file selected, exit the function early
+      return;
+    }
+
     const files = event.target.files;
     let formData = new FormData();
     formData.append('file', files[0]);
 
     const documentDto = {
-      "apartmentId": apartmentId, // todo should this really be retrieved from the front end?
+      "apartmentId": apartmentId,
       "title": files[0].name,
       "isArchived": false,
-      "userId": userId // todo should this really be retrieved from the front end?
+      "userId": userId
     };
 
     const documentDtoBlob = new Blob([JSON.stringify(documentDto)], { type: 'application/json' });
     formData.append('documentDto', documentDtoBlob);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/property-management/v1/document', formData, {
+      await axios.post('http://localhost:8080/api/property-management/v1/document', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${user.jwt}` // Set the bearer token here
+          'Authorization': `Bearer ${user.jwt}`
         }
       });
-      console.log('File upload response:', response.data);
+      fetchDocuments();
     } catch (error) {
       console.error('Error uploading file:', error);
     }
+  };
 
-    switch (category) {
-      case 'general':
-        setGeneralFiles([...generalFiles, ...files]);
-        break;
-      case 'archived':
-        setArchivedFiles([...archivedFiles, ...files]);
-        break;
-      case 'apartment':
-        setApartmentFiles([...apartmentFiles, ...files]);
-        break;
-      default:
-        break;
+  const archiveDocument = async (documentId) => {
+    try {
+      await axios.put(`http://localhost:8080/api/property-management/v1/document/${documentId}/archive`, {}, {
+        headers: { 'Authorization': `Bearer ${user.jwt}` }
+      });
+      fetchDocuments();
+    } catch (error) {
+      console.error('Error archiving document:', error);
     }
-    setUploadedFiles([...uploadedFiles, ...files]);
   };
-
-  const renderUploadedFiles = ({ title, files }) => {
-    return (
-      <div className="document-section">
-        <h3>{title}</h3>
-        <ul className="documents-list">
-          {files && files.length > 0 ? (
-            files.map((file, index) => (
-              <li key={index} className="document">
-                {file.name}
-              </li>
-            ))
-          ) : (
-            <li>No files uploaded</li>
-          )}
-        </ul>
-      </div>
-    );
-  };
-  
 
   return (
     <Container className="document-page">
@@ -109,10 +112,29 @@ const DocumentPagePropMgmt = () => {
 
       <Row>
         <Col>
-          {renderUploadedFiles({ title: 'General Documents', files: generalFiles })}
+          <h3>General Documents</h3>
+          <ListGroup>
+            {generalDocuments.map((doc, index) => (
+                <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
+                  {doc.title}
+                  <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => archiveDocument(doc.id)}
+                      style={{ width: '75px' }}> {/* Adjust the width as needed */}
+                    Archive
+                  </Button>
+                </ListGroup.Item>
+            ))}
+          </ListGroup>
         </Col>
         <Col>
-          {renderUploadedFiles({ title: 'Apartment Documents', files: apartmentFiles })}
+          <h3>Archived Documents</h3>
+          <ListGroup>
+            {archivedDocuments.map((doc, index) => (
+                <ListGroup.Item key={index}>{doc.title}</ListGroup.Item>
+            ))}
+          </ListGroup>
         </Col>
       </Row>
     </Container>

@@ -52,7 +52,7 @@ public class KeyManagement {
         return keyManagementDto;
     }
 
-    public KeyManagement update(KeyManagementDto keyManagementDto) {
+    public void update(KeyManagementDto keyManagementDto) {
         this.propertyId = keyManagementDto.getPropertyId();
         this.userId = keyManagementDto.getUserId();
         this.apartmentId = keyManagementDto.getApartmentId();
@@ -60,6 +60,5 @@ public class KeyManagement {
         this.redemptionDate = keyManagementDto.getRedemptionDate();
         this.replacementRequested = keyManagementDto.isReplacementRequested();
         this.keysNumber = keyManagementDto.getKeysNumber();
-        return this;
     }
 }

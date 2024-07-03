@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Service implementation for managing property-related operations.
+ * This includes handling properties, apartments, bookings, and notifications.
+ */
 @Service
 @RequiredArgsConstructor
 public class PropertyManagementServiceImpl implements PropertyManagementService {
@@ -32,6 +36,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Posts a new property to the repository.
+     * @param propertyDto Data transfer object containing property details.
+     * @return boolean indicating the success of the operation.
+     */
     @Override
     public boolean postProperty(PropertyDto propertyDto) {
         try {
@@ -48,6 +57,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         }
     }
 
+    /**
+     * Posts a new apartment to the repository.
+     * @param apartmentDto Data transfer object containing apartment details.
+     * @return boolean indicating the success of the operation.
+     */
     @Override
     public boolean postApartment(ApartmentDto apartmentDto) {
         Optional<Property> optionalProperty = propertyRepository.findById(apartmentDto.getPropertyId());
@@ -65,22 +79,41 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return false;
     }
 
+    /**
+     * Retrieves all apartments from the repository.
+     * @return List of ApartmentDto representing all apartments.
+     */
     @Override
     public List<ApartmentDto> getAllApartments() {
         return apartmentRepository.findAll().stream().map(Apartment::getApartmentDto).toList();
     }
 
+    /**
+     * Deletes an apartment by its ID.
+     * @param carId The ID of the apartment to delete.
+     */
     @Override
     public void deleteApartment(Long carId) {
         apartmentRepository.deleteById(carId);
     }
 
+    /**
+     * Retrieves an apartment by its ID.
+     * @param cardId The ID of the apartment.
+     * @return ApartmentDto of the requested apartment or null if not found.
+     */
     @Override
     public ApartmentDto getApartmentById(Long cardId) {
         Optional<Apartment> optionalCar = apartmentRepository.findById(cardId);
         return optionalCar.map(Apartment::getApartmentDto).orElse(null);
     }
 
+    /**
+     * Updates an existing apartment with new details.
+     * @param apartmentId The ID of the apartment to update.
+     * @param apartmentDto Data transfer object containing new apartment details.
+     * @return boolean indicating the success of the operation.
+     */
     @Override
     public boolean updateApartment(Long apartmentId, ApartmentDto apartmentDto) {
         Optional<Apartment> optionalApartment = apartmentRepository.findById(apartmentId);
@@ -97,11 +130,21 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return false;
     }
 
+    /**
+     * Retrieves all bookings from the repository.
+     * @return List of BookApartmentDto representing all bookings.
+     */
     @Override
     public List<BookApartmentDto> getBookings() {
         return bookApartmentRepository.findAll().stream().map(BookApartment::getBookApartmentDto).toList();
     }
 
+    /**
+     * Changes the booking status of an apartment booking.
+     * @param bookingId The ID of the booking to change.
+     * @param status The new status of the booking.
+     * @return boolean indicating the success of the operation.
+     */
     @Override
     public boolean changeBookingStatus(Long bookingId, Integer status) {
         Optional<BookApartment> optionalBookACar = bookApartmentRepository.findById(bookingId);
@@ -117,6 +160,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return false;
     }
 
+    /**
+     * Searches for apartments matching the given criteria.
+     * @param searchApartmentDto Data transfer object containing search criteria.
+     * @return ApartmentDtoList containing the search results.
+     */
     @Override
     public ApartmentDtoList searchApartment(SearchApartmentDto searchApartmentDto) {
         Apartment apartment = new Apartment();
@@ -136,6 +184,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return carDtoList;
     }
 
+    /**
+     * Distributes a notification to users.
+     * @param distributionRequestDto Data transfer object containing distribution details.
+     * @return boolean indicating the success of the operation.
+     */
     @Override
     @JsonIgnore
     public boolean distributeNotification(DistributionRequestDto distributionRequestDto) {
@@ -157,6 +210,13 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         }
     }
 
+    /**
+     * Retrieves notifications based on building and top ID.
+     * @param buildingId Optional building ID to filter notifications.
+     * @param topId Optional top ID to filter notifications.
+     * @return List of Notifications matching the criteria.
+     * @throws NoNotificationsFoundException if no notifications are found.
+     */
     @Override
     public List<Notifications> getNotifications(Integer buildingId, Integer topId) throws NoNotificationsFoundException {
         List<Notifications> notifications;
@@ -175,6 +235,11 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         return notifications;
     }
 
+    /**
+     * Retrieves notifications for a specific user based on their apartment bookings.
+     * @param userId The ID of the user.
+     * @return List of Notifications relevant to the user.
+     */
     @Override
     public List<Notifications> getNotificationsForUser(Long userId) {
         Optional<User> user = userRepository.findById(userId);
@@ -194,5 +259,14 @@ public class PropertyManagementServiceImpl implements PropertyManagementService 
         }
 
         return notifications;
+    }
+
+    /**
+     * Retrieves all properties from the repository.
+     * @return List of PropertyDto representing all properties.
+     */
+    @Override
+    public List<PropertyDto> getAllProperties() {
+        return propertyRepository.findAll().stream().map(Property::getPropertyDto).toList();
     }
 }

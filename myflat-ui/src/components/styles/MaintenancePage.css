@@ -43,4 +43,21 @@
     padding: 10px;
     border-radius: 5px;
   }
+
+  .defects-list {
+    margin-top: 2rem;
+  }
+
+  .defect-item img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .defect-item {
+    margin-bottom: 4rem;
+  }
+
+  .defect-item:last-child {
+    margin-bottom: 0;
+  }
   

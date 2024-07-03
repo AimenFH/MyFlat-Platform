@@ -11,6 +11,7 @@ function RegisterPageTenant() {
   const [password, setPassword] = useState('');
   const [property, setProperty] = useState('');
   const [apartment, setApartment] = useState('');
+  const [top, setTop] = useState('');
 
   const { user } = useAuth();
 
@@ -69,12 +70,20 @@ function RegisterPageTenant() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="apartment">
-          <Form.Label>Apartment/Top:</Form.Label>
+          <Form.Label>Apartment:</Form.Label>
           <Form.Control
-            type="text"
-            value={apartment}
-            onChange={(e) => setApartment(e.target.value)}
-            required
+              type="text"
+              value={apartment}
+              onChange={(e) => setApartment(e.target.value)}
+              required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="top">
+          <Form.Label>Top:</Form.Label>
+          <Form.Control
+              type="text"
+              value={top}
+              onChange={(e) => setTop(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="property">

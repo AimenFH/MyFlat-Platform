@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for tenant-related operations.
+ * This controller handles operations such as retrieving tenant information, managing bookings,
+ * reporting defects, managing documents, and handling feedback and appointments.
+ */
 @RestController
 @RequestMapping("/api/tenant")
 @RequiredArgsConstructor
@@ -33,6 +38,11 @@ public class TenantController {
     private final AppointmentService appointmentService;
     private final FeedbackService feedbackService;
 
+    /**
+     * Retrieves tenant information by tenant ID.
+     * @param userId The ID of the tenant.
+     * @return ResponseEntity containing the tenant's information or a not found status.
+     */
     @GetMapping("/v1/{userId}")
     public ResponseEntity<UserDto> getTenantById(@PathVariable long userId) {
         UserDto userDto = tenantService.getTenantById(userId);
@@ -40,11 +50,23 @@ public class TenantController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Retrieves bookings made by a tenant.
+     * @param userId The ID of the tenant.
+     * @return ResponseEntity containing a list of bookings.
+     */
     @GetMapping("/v1/apartment/bookings/{userId}")
     public ResponseEntity<?> getBookingsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(tenantService.getBookingsByUserId(userId));
     }
 
+    /**
+     * Reports a defect associated with a tenant's apartment.
+     * @param defectDto DTO containing defect details.
+     * @param image The image file of the defect.
+     * @return ResponseEntity indicating the result of the defect report.
+     * @throws IOException If an error occurs during file processing.
+     */
     @PostMapping(value = "/v1/defect")
     public ResponseEntity<String> reportDefect(
             @RequestPart("defectDto") DefectDto defectDto,
@@ -58,6 +80,12 @@ public class TenantController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Defect reported successfully.");
     }
 
+    /**
+     * Retrieves documents associated with a tenant and their apartment.
+     * @param userId The ID of the tenant.
+     * @param apartmentId The ID of the apartment.
+     * @return ResponseEntity containing a list of documents or a not found status.
+     */
     @GetMapping("/v1/document/{userId}/{apartmentId}")
     public ResponseEntity<Object> getDocumentsByUserAndApartment(@PathVariable Long userId, @PathVariable Long apartmentId) {
         List<Document> documents = documentRepository.findAll();
@@ -71,26 +99,44 @@ public class TenantController {
         return new ResponseEntity<>("No documents found for the given user and apartment", HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Retrieves non-archived documents for a tenant.
+     * @param userId The ID of the tenant.
+     * @param apartmentId The ID of the apartment.
+     * @return ResponseEntity containing a list of non-archived documents.
+     */
     @GetMapping("/v1/document/{userId}/{apartmentId}/tenant")
     public ResponseEntity<Object> getTenantDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
         List<Document> documents = documentRepository.findAll();
         List<Document> userApartmentDocuments = documents.stream()
                 .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves general documents for a tenant.
+     * @param userId The ID of the tenant.
+     * @param apartmentId The ID of the apartment.
+     * @return ResponseEntity containing a list of general documents.
+     */
     @GetMapping("/v1/document/{userId}/{apartmentId}/general")
     public ResponseEntity<Object> getGeneralDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
         List<Document> documents = documentRepository.findAll();
         List<Document> userApartmentDocuments = documents.stream()
                 .filter(document -> document.getUser().getId().equals(userId) && document.getApartment().getId().equals(apartmentId) && !document.isArchived())
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves archived documents for a tenant.
+     * @param userId The ID of the tenant.
+     * @param apartmentId The ID of the apartment.
+     * @return ResponseEntity containing a list of archived documents.
+     */
     @GetMapping("/v1/document/{userId}/{apartmentId}/archived")
     public ResponseEntity<Object> getArchivedDocuments(@PathVariable Long userId, @PathVariable Long apartmentId) {
         List<Document> documents = documentRepository.findAll();
@@ -101,12 +147,22 @@ public class TenantController {
         return new ResponseEntity<>(userApartmentDocuments.stream().map(Document::documentDto).toList(), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves defects reported by a tenant.
+     * @param userId The ID of the tenant.
+     * @return ResponseEntity containing a list of defects.
+     */
     @GetMapping("/defects/user/{userId}")
     public ResponseEntity<List<DefectDto>> getDefectsByUserId(@PathVariable Long userId) {
         List<DefectDto> defects = defectService.getDefectsByUserId(userId);
         return ResponseEntity.ok(defects);
     }
 
+    /**
+     * Distributes a notification to tenants.
+     * @param distributionRequestDto DTO containing distribution details.
+     * @return ResponseEntity indicating the result of the distribution operation.
+     */
     //////////////////////////// distribute notification
     @PostMapping("/v1/distribute")
     public ResponseEntity<?> distributeNotification(@RequestBody DistributionRequestDto distributionRequestDto) {
@@ -116,6 +172,11 @@ public class TenantController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    /**
+     * Retrieves notifications by top ID.
+     * @param topId The top ID used to filter notifications.
+     * @return ResponseEntity containing a list of notifications or a not found status.
+     */
     @GetMapping("/v1/notification/top/{topId}")
     public ResponseEntity<List<Notifications>> getNotificationsByTopId(@PathVariable Integer topId) {
         List<Notifications> notifications = notificationsRepository.findByTopId(topId);
@@ -126,6 +187,10 @@ public class TenantController {
         }
     }
 
+    /**
+     * Retrieves all appointments for a tenant.
+     * @return ResponseEntity containing a list of appointments or a message indicating no appointments.
+     */
     @GetMapping("/appointment/all")
     public ResponseEntity<Object> getAllAppointments() {
         List<AppointmentDto> appointments = appointmentService.getAllAppointments();
@@ -136,6 +201,11 @@ public class TenantController {
         }
     }
 
+    /**
+     * Adds feedback from a tenant.
+     * @param feedbackDto DTO containing feedback details.
+     * @return ResponseEntity containing the created feedback.
+     */
     @PostMapping("/feedback")
     public ResponseEntity<FeedbackDto> addFeedback(@RequestBody FeedbackDto feedbackDto) {
         FeedbackDto createdFeedback = feedbackService.createFeedback(feedbackDto);

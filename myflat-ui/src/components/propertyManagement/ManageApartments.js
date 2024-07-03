@@ -1,50 +1,105 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
-
+import React, {useEffect, useState} from 'react';
+import {Container, Form, Button, Card} from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../AuthContext';
 
 const ManageApartments = () => {
-  let { propertyId } = useParams();
-  let navigate = useNavigate();
+    const [number, setNumber] = useState('');
+    const [floor, setFloor] = useState('');
+    const [area, setArea] = useState('');
+    const [price, setPrice] = useState('');
+    const [propertyId, setPropertyId] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    const [apartments, setApartments] = useState([]);
 
-  const [apartments, setApartments] = useState([
-    { id: 1, name: 'Top1' },
-    { id: 2, name: 'Top2' },
-  ]);
+    const { user } = useAuth();
 
-  const addApartment = () => {
-    const newId = apartments.length > 0 ? apartments[apartments.length - 1].id + 1 : 1;
-    const newName = `Top${newId}`;
-    setApartments([...apartments, { id: newId, name: newName }]);
-  };
+    const fetchApartments = () => {
+        axios.get('http://localhost:8080/api/property-management/v1/apartments', {
+            headers: {
+                'Authorization': `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                setApartments(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
 
-  const deleteApartment = (id) => {
-    setApartments(apartments.filter(apartment => apartment.id !== id));
-  };
+    useEffect(() => {
+        fetchApartments();
+    }, []);
 
-  const editApartment = (apartmentId) => {
-    navigate(`/properties/${propertyId}/apartments/${apartmentId}/edit`);
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-  return (
-    <div>
-       <Container className="mt-5">
-    <h2 className="mb-3">Verwaltung der Apartments für Eigentum ID: {propertyId}</h2>
-    <Button onClick={addApartment} variant="primary" className="mb-3">Neues Apartment hinzufügen</Button>
-    <ListGroup>
-      {apartments.map(apartment => (
-        <ListGroupItem key={apartment.id} className="d-flex justify-content-between align-items-center">
-          {apartment.name}
-          <div>
-            <Button onClick={() => editApartment(apartment.id)} variant="outline-secondary" className="me-2">Bearbeiten</Button>
-            <Button onClick={() => deleteApartment(apartment.id)} variant="outline-danger">Löschen</Button>
-          </div>
-        </ListGroupItem>
-      ))}
-    </ListGroup>
-  </Container>
-    </div>
-  );
+        const apartmentDto = {
+            number: parseInt(number),
+            floor: parseInt(floor),
+            area: parseFloat(area),
+            price: parseInt(price),
+            propertyId: parseInt(propertyId)
+        };
+
+        axios.post('http://localhost:8080/api/property-management/v1/apartment', apartmentDto, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.jwt}`
+            }
+        })
+            .then(response => {
+                console.log('Success:', response.data);
+                setSubmitted(true);
+                fetchApartments();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    };
+
+    return (
+        <Container className="manage-apartments">
+            <h2>Manage Apartments</h2>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                    <Form.Label>Number</Form.Label>
+                    <Form.Control type="number" value={number} onChange={(e) => setNumber(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Floor</Form.Label>
+                    <Form.Control type="number" value={floor} onChange={(e) => setFloor(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Area</Form.Label>
+                    <Form.Control type="number" step="0.01" value={area} onChange={(e) => setArea(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Property ID</Form.Label>
+                    <Form.Control type="number" value={propertyId} onChange={(e) => setPropertyId(e.target.value)} required />
+                </Form.Group>
+                <Button variant="primary" type="submit">Submit</Button>
+            </Form>
+            {submitted && <div className="confirmation-message">Apartment created successfully.</div>}
+            <h3>All Apartments</h3>
+            {apartments.map(apartment => (
+                <Card key={apartment.id} style={{ width: '100%', marginBottom: '1rem' }}>
+                    <Card.Body>
+                        <Card.Title>Apartment {apartment.number}</Card.Title>
+                        <Card.Text>Floor: {apartment.floor}</Card.Text>
+                        <Card.Text>Area: {apartment.area} sqm</Card.Text>
+                        <Card.Text>Price: ${apartment.price}</Card.Text>
+                        <Card.Text>Property ID: {apartment.propertyId}</Card.Text>
+                    </Card.Body>
+                </Card>
+            ))}
+        </Container>
+    );
 };
 
 export default ManageApartments;

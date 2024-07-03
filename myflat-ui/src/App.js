@@ -12,13 +12,17 @@ import DocumentPagePropMgmt from './components/propertyManagement/DocumentPagePr
 import MaintenancePageTenant from './components/tenant/MaintenancePageTenant';
 import MaintenancePagePropMgmt from './components/propertyManagement/MaintenancePagePropMgmt';
 import NavigationMenu from './components/NavigationMenu';
-import KeyPage from './components/propertyManagement/KeyPage';
 import ManageProperties from './components/propertyManagement/ManageProperties';
 import HomePageTenant from './components/tenant/HomePageTenant';
 import HomePagePropertyMgmt from './components/propertyManagement/HomePagePropertyMgmt';
 import ManageApartments from './components/propertyManagement/ManageApartments';
 import EditApartment from './components/propertyManagement/EditApartment';
 import KeyManagementPagePropMgmt from "./components/propertyManagement/KeyManagementPagePropMgmt";
+import AppointmentPageTenant from "./components/tenant/AppointmentPageTenant";
+import AppointmentPagePropertyMgmt from "./components/propertyManagement/AppointmentPagePropertyMgmt";
+import FeedbackPageTenant from './components/tenant/FeedbackPageTenant';
+import FeedbackPagePropertyMgmt from './components/propertyManagement/FeedbackPagePropertyMgmt';
+import AssignTenantPagePropertyMgmt from "./components/propertyManagement/AssignTenantPagePropertyMgmt";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -32,15 +36,18 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/registerTenant" element={<RegisterPageTenant />} />
+              <Route path="/assign-tenant" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><AssignTenantPagePropertyMgmt /></ProtectedRoute>} />
               <Route path="/registerPropertyMgmt" element={<RegisterPagePropertyMgmt />} />
               <Route path="/communication" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><CommunicationPage /></ProtectedRoute>} />
               <Route path="/documents" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><DocumentPage /></ProtectedRoute>} />
               <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['TENANT', 'PROPERTY_MANAGEMENT']}><MaintenancePage /></ProtectedRoute>} />
-              <Route path="/manageProperties" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageProperties /></ProtectedRoute>} />
+              <Route path="/manage-properties" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageProperties /></ProtectedRoute>} />
+              <Route path="/manage-apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/key-management" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyManagementPagePropMgmt /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><ManageApartments /></ProtectedRoute>} />
               <Route path="/properties/:propertyId/apartments/:apartmentId/edit" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><EditApartment /></ProtectedRoute>} />
-              <Route path="/keys/:propertyId" element={<ProtectedRoute allowedRoles={['PROPERTY_MANAGEMENT']}><KeyPage /></ProtectedRoute>} />
+              <Route path="/appointments" element={<AppointmentPage />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
             </Routes>
           </DarkModeProvider>
         </AuthProvider>
@@ -67,6 +74,16 @@ const MaintenancePage = () => {
 const CommunicationPage = () => {
   const { user } = useAuth();
   return user.role === 'TENANT' ? <CommunicationPageTenant /> : <CommunicationPagePropMgmt />;
+};
+
+const AppointmentPage = () => {
+  const { user } = useAuth();
+  return user.role === 'TENANT' ? <AppointmentPageTenant /> : <AppointmentPagePropertyMgmt />;
+};
+
+const FeedbackPage = () => {
+  const { user } = useAuth();
+  return user.role === 'TENANT' ? <FeedbackPageTenant /> : <FeedbackPagePropertyMgmt />;
 };
 
 const ProtectedRoute = ({ children, allowedRoles }) => {

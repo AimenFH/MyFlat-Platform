@@ -1,4 +1,3 @@
-// DarkModeContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const DarkModeContext = createContext();
@@ -52,8 +51,7 @@ export const DarkModeProvider = ({ children }) => {
             document.documentElement.style.setProperty('--navbar-bg', '#ffffff'); // light mode background color
             document.documentElement.style.setProperty('--navbar-shadow', 'rgba(0, 0, 0, 0.1)'); // light mode box shadow
             document.documentElement.style.setProperty('--navbar-custom-bg', '#ffffff'); // light mode background color
-            document.documentElement.style.setProperty('--navbar-custom-shadow', 'rgba(0, 0, 0, 0.1)'); // light mode box shado
-            // Add more lines here to update other CSS variables
+            document.documentElement.style.setProperty('--navbar-custom-shadow', 'rgba(0, 0, 0, 0.1)'); // light mode box shadow
         }
         localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     }, [isDarkMode]);
